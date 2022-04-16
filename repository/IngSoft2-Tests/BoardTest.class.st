@@ -1,11 +1,11 @@
 Class {
-	#name : #BoardCreatorTest,
+	#name : #BoardTest,
 	#superclass : #TestCase,
 	#category : #'IngSoft2-Tests'
 }
 
 { #category : #asserting }
-BoardCreatorTest >> should: errorBlock raise: errorClass withMessage: expectedErrorMessage [
+BoardTest >> should: errorBlock raise: errorClass withMessage: expectedErrorMessage [
 
 	| errorWasRaised errorMessage |
 	errorBlock
@@ -19,21 +19,28 @@ BoardCreatorTest >> should: errorBlock raise: errorClass withMessage: expectedEr
 ]
 
 { #category : #test }
-BoardCreatorTest >> testCreateBoardWithAtLeastMinimunAmountOfSlotsIsValid [
+BoardTest >> testBoardReturnHowManySlotsItHasIsValid [
+	| aBoard |
+	aBoard := (Board with: 70).
+	self assert: ((aBoard boardLength) isNumber ).
+]
+
+{ #category : #test }
+BoardTest >> testCreateBoardWithAtLeastMinimunAmountOfSlotsIsValid [
 	| aBoard |
 	aBoard := (Board with: 7).
 	self assert: (aBoard isValid: 4).
 ]
 
 { #category : #test }
-BoardCreatorTest >> testCreateBoardWithAtLeastThreeSlotsIsValid [
+BoardTest >> testCreateBoardWithAtLeastThreeSlotsIsValid [
 	| aBoard |
 	aBoard := (Board with: 7).
 	self assert: (aBoard isValid).
 ]
 
 { #category : #test }
-BoardCreatorTest >> testCreateBoardWithLessThanThreeSlotsIsInvalid [
+BoardTest >> testCreateBoardWithLessThanThreeSlotsIsInvalid [
 
 	self
 		should: [ Board  with: 1 ]
