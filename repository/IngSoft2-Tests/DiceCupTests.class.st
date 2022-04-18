@@ -7,17 +7,9 @@ Class {
 { #category : #'tests-DiceCup' }
 DiceCupTests >> testDiceCupRollResultIsTheSumOfLoadedDiceSumResult [
 
-	| die1 die2 die3 die4 aDiceCup rollResult |
-	die1 := LoadedDie with: 4.
-	die2 := LoadedDie with: 6.
-	die3 := LoadedDie with: 9.
-	die4 := LoadedDie with: 1.
+	| aDiceCup rollResult |
 
-	aDiceCup := DiceCup witAll: { 
-			        die1.
-			        die2.
-			        die3.
-					  die4. }.
+	aDiceCup := DiceCup witAllLoaded: #(6 4 3 7). 
 	rollResult := aDiceCup roll.
 	self assert: rollResult equals: 20.
 
