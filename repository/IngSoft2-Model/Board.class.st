@@ -33,6 +33,11 @@ Board class >> with: aNumberOfSlots [
 	^ self new initializeWith: aNumberOfSlots.
 ]
 
+{ #category : #'as yet unclassified' }
+Board >> boardLength [
+	^NumberOfSlots .
+]
+
 { #category : #initialization }
 Board >> initializeWith: aNumberOfSlots [ 
 	NumberOfSlots := aNumberOfSlots.
