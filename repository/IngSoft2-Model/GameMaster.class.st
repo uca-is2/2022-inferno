@@ -2,15 +2,22 @@ Class {
 	#name : #GameMaster,
 	#superclass : #Object,
 	#classVars : [
+		'CurrentPlayerId',
 		'GameBoard',
 		'GameDiceCup',
+		'IsGameFinished',
 		'Players'
 	],
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #'as yet unclassified' }
-GameMaster class >> gameHasFinished [
+{ #category : #'instance creation' }
+GameMaster class >> newGameMaster [
+	^self new initializeGameMaster.
+]
+
+{ #category : #showing }
+GameMaster >> gameHasFinished [
 	| weHaveAWinner amoutOfPlayers |
 	weHaveAWinner := false.
 	amoutOfPlayers := Players size.
@@ -19,39 +26,54 @@ GameMaster class >> gameHasFinished [
 ]
 
 { #category : #testing }
-GameMaster class >> hasBoard [
+GameMaster >> hasBoard [
 	^GameBoard isValid.
 ]
 
 { #category : #testing }
-GameMaster class >> hasDiceCup [
+GameMaster >> hasDiceCup [
 	^GameDiceCup isValid.
 	
 ]
 
 { #category : #testing }
-GameMaster class >> hasGame [
+GameMaster >> hasGame [
 	^true.
 ]
 
 { #category : #testing }
-GameMaster class >> hasThreePlayers [
+GameMaster >> hasGameFinished [
+	^IsGameFinished.
+]
+
+{ #category : #testing }
+GameMaster >> hasThreePlayers [
 	^(Players size = 3).
 ]
 
-{ #category : #'as yet unclassified' }
-GameMaster class >> movePlayer: playerID [ 
-	| positionBeforeRoll winner rollNumber|
-	winner:= false.
-	positionBeforeRoll := Players at: playerID.
-	rollNumber := GameDiceCup  roll.
-	((positionBeforeRoll + rollNumber) >= GameBoard boardLength) ifTrue: [ winner := true ].
-	Players at: playerID put: (positionBeforeRoll+rollNumber).
-	^winner.
+{ #category : #initialization }
+GameMaster >> initializeGameMaster [
+	IsGameFinished:=false.
+	CurrentPlayerId:=1.
 ]
 
-{ #category : #'as yet unclassified' }
-GameMaster class >> movePlayer: playerID and: rollNumber [
+{ #category : #execution }
+GameMaster >> movePlayer: playerID [
+
+	| positionBeforeRoll winner rollNumber |
+	winner := false.
+	positionBeforeRoll := Players at: playerID.
+	rollNumber := GameDiceCup roll.
+	positionBeforeRoll + rollNumber >= GameBoard boardLength ifTrue: [ 
+		winner := true.
+		Players at: playerID put: GameBoard boardLength ].
+	winner ifFalse: [ 
+		Players at: playerID put: positionBeforeRoll + rollNumber ].
+	^ winner
+]
+
+{ #category : #execution }
+GameMaster >> movePlayer: playerID and: rollNumber [
 	| positionBeforeRoll winner|
 	winner:= false.
 	positionBeforeRoll := Players at: playerID.
@@ -62,19 +84,33 @@ GameMaster class >> movePlayer: playerID and: rollNumber [
 ]
 
 { #category : #'instance creation' }
-GameMaster class >> newBoard: aNumberOfSlots [ 
+GameMaster >> newBoard: aNumberOfSlots [ 
 	GameBoard := (Board with: aNumberOfSlots ).
 	
 ]
 
 { #category : #'instance creation' }
-GameMaster class >> newDiceCup: aNumberOfSides [
+GameMaster >> newDiceCup: aNumberOfSides [
 	GameDiceCup := (DiceCup witAll: aNumberOfSides).
 	
 ]
 
-{ #category : #'as yet unclassified' }
-GameMaster class >> playGame [
+{ #category : #'instance creation' }
+GameMaster >> newLoadedDiceCup: aNumberOfLoadedSides [
+
+	GameDiceCup := (DiceCup witAllLoaded: aNumberOfLoadedSides).
+]
+
+{ #category : #execution }
+GameMaster >> nextInLine [
+	CurrentPlayerId:=CurrentPlayerId + 1.
+	(CurrentPlayerId > Players size) ifTrue: [ CurrentPlayerId :=1 ].
+	
+	
+]
+
+{ #category : #execution }
+GameMaster >> playGame [
 
 	| aPlayerFinished amountOfPlayers rollNumber i |
 	aPlayerFinished := false.
@@ -88,14 +124,26 @@ GameMaster class >> playGame [
 			ifFalse: [i:=i+1 ]].
 ]
 
-{ #category : #'as yet unclassified' }
-GameMaster class >> playingWith: amountOfPlayers [
+{ #category : #execution }
+GameMaster >> playNextTurn [
+	( IsGameFinished) ifFalse: [ IsGameFinished :=self movePlayer: CurrentPlayerId ].
+	( IsGameFinished) ifTrue:  [ Error signal: 'Game has already finished, you can not keep playing'].
+	self nextInLine.
+]
+
+{ #category : #testing }
+GameMaster >> playerOneHasMovedSpots: anInteger [ 
+ 	^((Players at: 1)=anInteger).
+]
+
+{ #category : #execution }
+GameMaster >> playingWith: amountOfPlayers [
 	Players := Dictionary new.
 	1 to: amountOfPlayers do: [ :i | Players at: i put: 0 ].
 ]
 
-{ #category : #'as yet unclassified' }
-GameMaster class >> positionsAfterFinishIsValid: finishingPositions [ 
+{ #category : #testing }
+GameMaster >> positionsAfterFinishIsValid: finishingPositions [ 
 	|amountOfPlayers validation|
 	validation := true.
 	amountOfPlayers := Players size.
@@ -104,8 +152,8 @@ GameMaster class >> positionsAfterFinishIsValid: finishingPositions [
 	^validation.
 ]
 
-{ #category : #'as yet unclassified' }
-GameMaster class >> showPositions [
+{ #category : #showing }
+GameMaster >> showPositions [
 	|positions amountOfPlayers|
 	amountOfPlayers := Players size.
 	positions:= Array new: amountOfPlayers.
@@ -113,8 +161,8 @@ GameMaster class >> showPositions [
 	^positions.
 ]
 
-{ #category : #'as yet unclassified' }
-GameMaster class >> showTheWinner [
+{ #category : #showing }
+GameMaster >> showTheWinner [
 	|amountOfPlayers|
 	amountOfPlayers := Players size.
 	1 to: amountOfPlayers do: [:i | ((Players at: i)= (GameBoard boardLength)) ifTrue: [^i]].
