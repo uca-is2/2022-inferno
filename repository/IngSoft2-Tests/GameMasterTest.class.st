@@ -161,3 +161,18 @@ GameMasterTest >> testPlayOnlyOneTurnWithLoadedDiceCupIsValid [
 
 
 ]
+
+{ #category : #tests }
+GameMasterTest >> testRollAfterGameIsFinishedIsNotValid [
+
+	| aGameMaster |
+	aGameMaster := GameMaster newGameMaster.
+	aGameMaster newBoard: 100.
+	aGameMaster playingWith: 5.
+	aGameMaster newLoadedDiceCup: #( 30 10 1 ).
+	aGameMaster playGame.
+	self
+		should: [ aGameMaster playNextTurn ]
+		raise: Error
+		withMessage: 'Game has already finished, you can not keep playing'
+]

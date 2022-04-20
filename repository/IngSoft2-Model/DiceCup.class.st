@@ -49,7 +49,7 @@ DiceCup class >> witAll: aNumberOfSides [
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
 DiceCup class >> witAllLoaded: aNumberOfLoadedSides [
 	|aLoadedDice|
 	aLoadedDice := Array new: (aNumberOfLoadedSides size).

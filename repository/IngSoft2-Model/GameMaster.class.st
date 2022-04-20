@@ -16,7 +16,7 @@ GameMaster class >> newGameMaster [
 	^self new initializeGameMaster.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #showing }
 GameMaster >> gameHasFinished [
 	| weHaveAWinner amoutOfPlayers |
 	weHaveAWinner := false.
@@ -57,7 +57,7 @@ GameMaster >> initializeGameMaster [
 	CurrentPlayerId:=1.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #execution }
 GameMaster >> movePlayer: playerID [
 
 	| positionBeforeRoll winner rollNumber |
@@ -72,7 +72,7 @@ GameMaster >> movePlayer: playerID [
 	^ winner
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #execution }
 GameMaster >> movePlayer: playerID and: rollNumber [
 	| positionBeforeRoll winner|
 	winner:= false.
@@ -101,7 +101,7 @@ GameMaster >> newLoadedDiceCup: aNumberOfLoadedSides [
 	GameDiceCup := (DiceCup witAllLoaded: aNumberOfLoadedSides).
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #execution }
 GameMaster >> nextInLine [
 	CurrentPlayerId:=CurrentPlayerId + 1.
 	(CurrentPlayerId > Players size) ifTrue: [ CurrentPlayerId :=1 ].
@@ -109,7 +109,7 @@ GameMaster >> nextInLine [
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #execution }
 GameMaster >> playGame [
 
 	| aPlayerFinished amountOfPlayers rollNumber i |
@@ -124,25 +124,25 @@ GameMaster >> playGame [
 			ifFalse: [i:=i+1 ]].
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #execution }
 GameMaster >> playNextTurn [
-
 	( IsGameFinished) ifFalse: [ IsGameFinished :=self movePlayer: CurrentPlayerId ].
+	( IsGameFinished) ifTrue:  [ Error signal: 'Game has already finished, you can not keep playing'].
 	self nextInLine.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #testing }
 GameMaster >> playerOneHasMovedSpots: anInteger [ 
  	^((Players at: 1)=anInteger).
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #execution }
 GameMaster >> playingWith: amountOfPlayers [
 	Players := Dictionary new.
 	1 to: amountOfPlayers do: [ :i | Players at: i put: 0 ].
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #testing }
 GameMaster >> positionsAfterFinishIsValid: finishingPositions [ 
 	|amountOfPlayers validation|
 	validation := true.
@@ -152,7 +152,7 @@ GameMaster >> positionsAfterFinishIsValid: finishingPositions [
 	^validation.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #showing }
 GameMaster >> showPositions [
 	|positions amountOfPlayers|
 	amountOfPlayers := Players size.
@@ -161,7 +161,7 @@ GameMaster >> showPositions [
 	^positions.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #showing }
 GameMaster >> showTheWinner [
 	|amountOfPlayers|
 	amountOfPlayers := Players size.

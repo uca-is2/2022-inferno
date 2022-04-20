@@ -43,7 +43,7 @@ BoardTest >> testCreateBoardWithAtLeastThreeSlotsIsValid [
 BoardTest >> testCreateBoardWithLessThanThreeSlotsIsInvalid [
 
 	self
-		should: [ Board  with: 1 ]
+		should: [ Board with: 1 ]
 		raise: Error
 		withMessage: 'Minimun length should be more than three'
 ]

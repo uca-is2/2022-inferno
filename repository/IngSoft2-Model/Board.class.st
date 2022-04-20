@@ -7,7 +7,7 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #testing }
 Board class >> checkIsMoreThanThree: aNumberOfSlots [
 	aNumberOfSlots > 3 ifFalse: [ 
 		Error signal: 'Minimun length should be more than three' ]
@@ -33,7 +33,7 @@ Board class >> with: aNumberOfSlots [
 	^ self new initializeWith: aNumberOfSlots.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #helpers }
 Board >> boardLength [
 	^NumberOfSlots .
 ]

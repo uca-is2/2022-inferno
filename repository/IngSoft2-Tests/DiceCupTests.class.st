@@ -17,8 +17,9 @@ DiceCupTests >> testDiceCupRollResultIsTheSumOfLoadedDiceSumResult [
 
 { #category : #'tests-DiceCup' }
 DiceCupTests >> testDiceCupRollWithRandomIsAnInteger [
-|aDiceCup rollResult|
-aDiceCup := DiceCup witAll: #(4 5 6).
-rollResult := aDiceCup roll.
-self assert: rollResult isInteger
+
+	| aDiceCup rollResult |
+	aDiceCup := DiceCup witAll: #( 4 5 6 ).
+	rollResult := aDiceCup roll.
+	self assert: rollResult isInteger
 ]
