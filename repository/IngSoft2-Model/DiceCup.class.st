@@ -12,15 +12,18 @@ Class {
 
 { #category : #initialization }
 DiceCup class >> with: aCollectionOfDice [
-	^ self new initializeWith: aCollectionOfDice.
+
+	^ self new initializeWith: aCollectionOfDice
 ]
 
 { #category : #initialization }
 DiceCup >> initializeWith: aCollectionOfDice [
-	dice:=aCollectionOfDice.
+
+	dice := aCollectionOfDice
 ]
 
 { #category : #diceCupRolling }
 DiceCup >> roll [
-	^dice sum: [:die | die roll].
+
+	^ dice sum: [ :die | die roll ]
 ]
