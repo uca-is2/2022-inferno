@@ -29,6 +29,18 @@ GameTest >> testAGameCanBeCreated [
 ]
 
 { #category : #tests }
+GameTest >> testAGameCannotBeCreatedWithoutBoard [
+
+	| aGame error errorMessage aDie |
+	aDie := Die with: 9.
+	aGame := [ 
+	         Game withDice: aDie withBoard: nil withAmountOfSpaceships: 2 ].
+	error := Error.
+	errorMessage := 'A game cannot be created without a board.'.
+	self should: aGame raise: error withMessage: errorMessage
+]
+
+{ #category : #tests }
 GameTest >> testAGameCannotBeCreatedWithoutDice [
 
 	| aBoard aGame error errorMessage |
@@ -40,5 +52,21 @@ GameTest >> testAGameCannotBeCreatedWithoutDice [
 		         withAmountOfSpaceships: 2 ].
 	error := Error.
 	errorMessage := 'A game cannot be created without dice.'.
+	self should: aGame raise: error withMessage: errorMessage
+]
+
+{ #category : #tests }
+GameTest >> testAGameCannotBeCreatedWithoutSpaceShips [
+
+	| aGame error errorMessage aDie aBoard |
+	aDie := Die with: 9.
+	aBoard := [ Board with: 70 ].
+	aGame := [ 
+	         Game
+		         withDice: aDie
+		         withBoard: aBoard
+		         withAmountOfSpaceships: 1 ].
+	error := Error.
+	errorMessage := 'A game cannot be created with a number of spaceships lower than two.'.
 	self should: aGame raise: error withMessage: errorMessage
 ]
