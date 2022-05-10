@@ -5,9 +5,11 @@ Class {
 	#name : #Game,
 	#superclass : #Object,
 	#instVars : [
-		'numberOfSpaceships',
 		'dice',
-		'board'
+		'board',
+		'isGameFinished',
+		'spaceshipsPositions',
+		'currentSpaceshipID'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -31,11 +33,53 @@ Game class >> withDice: aDice withBoard: aBoard withAmountOfSpaceships: aNumberO
 		  withAmountOfSpaceships: aNumberOfSpaceships
 ]
 
+{ #category : #accessing }
+Game >> hasGameFinished [
+	^ isGameFinished.
+]
+
 { #category : #initialization }
 Game >> initializeWithDice: aDice withBoard: aBoard withAmountOfSpaceships: aNumberOfSpaceships [
  
-	numberOfSpaceships := aNumberOfSpaceships.
+	spaceshipsPositions := Dictionary new.
+	1 to: aNumberOfSpaceships do: [ :spaceshipID | spaceshipsPositions at: spaceshipID put: 0 ].
+	currentSpaceshipID := 1. 
 	dice := aDice .
 	board := aBoard .
+	isGameFinished := false.
 	
+]
+
+{ #category : #movement }
+Game >> move: aSpaceshipID [
+
+	| positionBeforeRoll rollNumber |
+	positionBeforeRoll := spaceshipsPositions at: currentSpaceshipID.
+	rollNumber := dice roll.
+	positionBeforeRoll + rollNumber >= board lenght
+		ifTrue: [ 
+			spaceshipsPositions at: currentSpaceshipID put: board lenght ]
+		ifFalse: [ 
+			spaceshipsPositions at: currentSpaceshipID put: positionBeforeRoll + rollNumber ]
+]
+
+{ #category : #iteration }
+Game >> nextSpaceshipInLine [
+   currentSpaceshipID :=currentSpaceshipID  + 1.
+   (currentSpaceshipID > spaceshipsPositions  size) ifTrue: [ currentSpaceshipID :=1 ].
+]
+
+{ #category : #playing }
+Game >> playEntireGame [
+	[isGameFinished] whileFalse: [ self playNextTurn ].
+	^'Game has finished!.'.
+]
+
+{ #category : #playingByTurns }
+Game >> playNextTurn [
+	(isGameFinished) ifTrue: [ Error signal: 'Game is finished! You cannot keep playing this game.'].
+	(isGameFinished) ifFalse: [ self move: currentSpaceshipID ].
+	(spaceshipsPositions at: currentSpaceshipID ) >= board lenght ifTrue: [ 
+		isGameFinished := true ].
+	self nextSpaceshipInLine.
 ]
