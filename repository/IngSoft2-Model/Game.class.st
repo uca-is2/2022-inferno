@@ -72,7 +72,7 @@ Game >> nextSpaceshipInLine [
 { #category : #playing }
 Game >> playEntireGame [
 	[isGameFinished] whileFalse: [ self playNextTurn ].
-	^'Game has finished!.'.
+	^spaceshipsPositions.
 ]
 
 { #category : #playingByTurns }

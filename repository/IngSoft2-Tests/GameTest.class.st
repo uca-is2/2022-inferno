@@ -29,33 +29,22 @@ GameTest >> testAGameCanBeCreated [
 ]
 
 { #category : #tests }
-GameTest >> testAGameCanBePlayed [
-
-	| aDie1 aDie2 aDie3 aDice |
-	aDie1 := Die with: 6.
-	aDie2 := Die with: 4.
-	aDie3 := Die with: 6.
-	aDice := DiceCup with: [ aDie1, aDie2, aDie3 ].  
-]
-
-{ #category : #tests }
 GameTest >> testAGameCanBePlayedByIndividualTurns [
 
 	| aDie1 aDie2 aBoard aGame aCollection aDiceCup |
 	aDie1 := Die with: 6.
 	aDie2 := Die with: 6.
-	aCollection:= Array new: 2. 
+	aCollection := Array new: 2.
 	aCollection at: 1 put: aDie1.
 	aCollection at: 2 put: aDie2.
-	aDiceCup:= DiceCup with: aCollection.
+	aDiceCup := DiceCup with: aCollection.
 	aBoard := Board with: 50.
 	aGame := Game
 		         withDice: aDiceCup
 		         withBoard: aBoard
 		         withAmountOfSpaceships: 3.
-	aGame playEntireGame.
-	self assert: (aGame hasGameFinished).
-	
+	[ aGame hasGameFinished ] whileFalse: [ aGame playNextTurn ].
+	self assert: (aGame hasGameFinished)
 ]
 
 { #category : #tests }
