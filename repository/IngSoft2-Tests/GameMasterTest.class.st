@@ -40,8 +40,8 @@ GameMasterTest >> testGameMasterCanPlayItsGameTilTheEnd [
 	anArrayOfDieSides at: 2 put: 6.
 	anArrayOfDieSides at: 3 put: 6.
 	anArrayOfDieSides at: 4 put: 7.
-	aGameMaster := GameMaster createGameWithDice: anArrayOfDieSides withBoard: 57 withAmountOfplayers: 4.
+	aGameMaster := GameMaster createGameWithDice: anArrayOfDieSides withBoard: 50 withAmountOfplayers: 4.
 	aGameMaster playEntireGame.
-	aGameMaster showPodium.
+	aGameMaster showFinalPositions.
 	
 ]

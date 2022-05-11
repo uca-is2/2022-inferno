@@ -41,6 +41,6 @@ GameMaster >> playEntireGame [
 ]
 
 { #category : #showing }
-GameMaster >> showPodium [
-	self shouldBeImplemented.
+GameMaster >> showFinalPositions [
+	^ finalPositions
 ]
