@@ -1,54 +1,39 @@
+"
+I represent a Board of slots to be played with.
+
+"
 Class {
 	#name : #Board,
 	#superclass : #Object,
-	#classVars : [
-		'NumberOfSlots'
+	#instVars : [
+		'numberOfSlots'
 	],
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #testing }
-Board class >> checkIsMoreThanThree: aNumberOfSlots [
-	aNumberOfSlots > 3 ifFalse: [ 
-		Error signal: 'Minimun length should be more than three' ]
-
-	
-]
-
-{ #category : #validation }
-Board class >> isValid [
-	^(NumberOfSlots  > 3).
-]
-
-{ #category : #validation }
-Board class >> isValid: aMinimunLength [
-	^(NumberOfSlots > aMinimunLength ).
-]
-
 { #category : #'instance creation' }
 Board class >> with: aNumberOfSlots [
 
-	self checkIsMoreThanThree: aNumberOfSlots.
-	
-	^ self new initializeWith: aNumberOfSlots.
-]
-
-{ #category : #helpers }
-Board >> boardLength [
-	^NumberOfSlots .
+	aNumberOfSlots > 0 ifFalse: [ 
+		Error signal:
+			'Board cannot be created with a number of slots lower than 1' ].
+	^ self new initializeWith: aNumberOfSlots
 ]
 
 { #category : #initialization }
-Board >> initializeWith: aNumberOfSlots [ 
-	NumberOfSlots := aNumberOfSlots.
+Board >> initializeWith: aNumberOfSlots [
+
+	numberOfSlots := aNumberOfSlots
 ]
 
-{ #category : #testing }
+{ #category : #validation }
 Board >> isValid [
-	^(NumberOfSlots > 3).
+
+	^ numberOfSlots > 0
 ]
 
-{ #category : #testing }
-Board >> isValid: aMinimunNumberOfSlots [ 
-	^(NumberOfSlots > aMinimunNumberOfSlots  ).
+{ #category : #'accessing - attributes' }
+Board >> lenght [
+
+	^ numberOfSlots
 ]

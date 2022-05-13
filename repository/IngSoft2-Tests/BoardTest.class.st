@@ -4,46 +4,39 @@ Class {
 	#category : #'IngSoft2-Tests'
 }
 
-{ #category : #asserting }
+{ #category : #tests }
 BoardTest >> should: errorBlock raise: errorClass withMessage: expectedErrorMessage [
 
-	| errorWasRaised errorMessage |
+	|errorWasRaised errorMessage|
 	errorBlock
-		on: errorClass
-		do: [ :error | 
-			errorWasRaised := true.
-			errorMessage := error messageText ].
-
-	self assert: errorWasRaised.
-	self assert: errorMessage equals: expectedErrorMessage
+	on: errorClass 
+	do: [ :error |
+		errorWasRaised := true.
+		errorMessage := error messageText ].
 ]
 
-{ #category : #test }
-BoardTest >> testBoardReturnHowManySlotsItHasIsValid [
+{ #category : #asserting }
+BoardTest >> testABoardHasMoreThanOneSlot [
+
 	| aBoard |
-	aBoard := (Board with: 70).
-	self assert: ((aBoard boardLength) isNumber ).
+	aBoard := Board with: 1.
+	self assert: aBoard isValid
 ]
 
-{ #category : #test }
-BoardTest >> testCreateBoardWithAtLeastMinimunAmountOfSlotsIsValid [
+{ #category : #tests }
+BoardTest >> testBoardLenghtReturnsNumberOfSlots [
+
 	| aBoard |
-	aBoard := (Board with: 7).
-	self assert: (aBoard isValid: 4).
+	aBoard := Board with: 700.
+	self assert: aBoard lenght equals: 700
 ]
 
-{ #category : #test }
-BoardTest >> testCreateBoardWithAtLeastThreeSlotsIsValid [
-	| aBoard |
-	aBoard := (Board with: 7).
-	self assert: (aBoard isValid).
-]
+{ #category : #asserting }
+BoardTest >> testCannotCreateABoardWithInvalidNumberOfSlots [
 
-{ #category : #test }
-BoardTest >> testCreateBoardWithLessThanThreeSlotsIsInvalid [
-
-	self
-		should: [ Board with: 1 ]
-		raise: Error
-		withMessage: 'Minimun length should be more than three'
+	| aBoard error errorMessage |
+	aBoard := [ Board with: -5 ].
+	error := Error.
+	errorMessage := 'Board cannot be created with a number of slots lower than one'.
+	self should: aBoard raise: error withMessage: errorMessage
 ]
