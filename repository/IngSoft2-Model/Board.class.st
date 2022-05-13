@@ -24,7 +24,7 @@ Board class >> with: aNumberOfSlots [
 { #category : #initialization }
 Board >> initializeWith: aNumberOfSlots [
 
-	| numberOfSpeedUps numberOfWormholes numberOfMoonwalks numberOfHyperJumps numberOfAtomicBombs |
+	| numberOfSpeedUps numberOfWormholes numberOfMoonwalks numberOfHyperJumps numberOfAtomicBombs effectsPositions i randomSlot|
 	numberOfSlots := aNumberOfSlots.
 	numberOfSpeedUps := (numberOfSlots * 0.2)integerPart.
 	numberOfWormholes := (numberOfSlots * 0.2)integerPart.
@@ -33,15 +33,43 @@ Board >> initializeWith: aNumberOfSlots [
 	numberOfAtomicBombs := (numberOfSlots * 0.02)integerPart.
 	"Aca crea el layout con todos los slots en 'no effect' "
 	layout := Dictionary new.
+	i := 0.
+	effectsPositions := Array new: numberOfSpeedUps.
+	[ i < numberOfSpeedUps] whileTrue: [
+		randomSlot := numberOfSlots atRandom. 
+		(effectsPositions includes: randomSlot ) ifFalse: [ 
+			effectsPositions at: (i+1) put: randomSlot.
+			i := i+1.
+			 ].
+	 ].
+	layout at: 'speedUps' put: effectsPositions.
+	
+	i := 0.
+	effectsPositions := Array new: numberOfWormholes.
+	[ i < numberOfWormholes] whileTrue: [
+		randomSlot := numberOfSlots atRandom. 
+		((effectsPositions includes: randomSlot) | (layout at: 'speedUps') includes: randomSlot ) ifFalse: [ 
+			effectsPositions at: (i+1) put: randomSlot.
+			i := i+1.
+			 ].
+	 ].
+	layout at: 'wormholes' put: effectsPositions.
+	
+	i := 0.
+	effectsPositions := Array new: numberOfMoonwalks.
+	[ i < numberOfMoonwalks] whileTrue: [
+		randomSlot := numberOfSlots atRandom. 
+		((effectsPositions includes: randomSlot) | ((layout at: 'speedUps') includes: randomSlot) | ((layout at: 'wormholes') includes: randomSlot) ) ifFalse: [ 
+			effectsPositions at: (i+1) put: randomSlot.
+			i := i+1.
+			 ].
+	 ].
+	layout at: 'moonWalks' put: effectsPositions.
+
+
 	1 to: numberOfSlots do: [ :slotNumber |
 		layout at: slotNumber put: 'noEffect'].
 	"Ahora asigno randomly segun la proporcion dada"
-	(numberOfSpeedUps > 0) whileTrue: [ 
-		layout at: numberOfSlots atRandom put: 'speedUp'].
-	(numberOfWormholes  > 0) whileTrue: [ 
-		layout at: numberOfSlots atRandom put: 'wormHole'].
-	(numberOfMoonwalks  > 0) whileTrue: [ 
-		layout at: numberOfSlots atRandom put: 'moonWalk'].
 	(numberOfHyperJumps  > 0) whileTrue: [ 
 		layout at: numberOfSlots atRandom put: 'hyperJumps'].
 	(numberOfAtomicBombs  > 0) whileTrue: [ 
