@@ -12,15 +12,17 @@ Class {
 }
 
 { #category : #instanceCreation }
-GameMaster class >> createGameWithDice:  anArrayOfDiceSides withBoard: aNumberOfSlots withAmountOfplayers: anAmountOfSpaceships [ 
+GameMaster class >> createGameWithDice: anArrayOfDiceSides withBoard: aNumberOfSlots andAmountOfLaps: aNumberOfLaps withAmountOfplayers: anAmountOfSpaceships [
+
 	^ self new
-		  initializeWithDice:  anArrayOfDiceSides
-		  withBoard: aNumberOfSlots 
-		  withAmountOfSpaceships: anAmountOfSpaceships 
+		  initializeWithDice: anArrayOfDiceSides
+		  withBoard: aNumberOfSlots
+		  andAmountOfLaps: aNumberOfLaps 
+		  withAmountOfSpaceships: anAmountOfSpaceships
 ]
 
 { #category : #initialization }
-GameMaster >> initializeWithDice: anArrayOfDieSides withBoard: aNumberOfSlots withAmountOfSpaceships: anAmountOfSpaceships [
+GameMaster >> initializeWithDice: anArrayOfDieSides withBoard: aNumberOfSlots andAmountOfLaps: aNumberOfLaps withAmountOfSpaceships: anAmountOfSpaceships [
 
 	| aCollectionOfDice aDie index aBoard aDiceCup |
 	index := 1.
@@ -31,7 +33,7 @@ GameMaster >> initializeWithDice: anArrayOfDieSides withBoard: aNumberOfSlots wi
 		index := index + 1 ].
 	aBoard := Board with: aNumberOfSlots.
 	aDiceCup := DiceCup with: aCollectionOfDice.
-	currentGame := Game withDice: aDiceCup withBoard: aBoard withAmountOfSpaceships: anAmountOfSpaceships.
+	currentGame := Game withDice: aDiceCup withBoard: aBoard andAmountOfLaps: aNumberOfLaps withAmountOfSpaceships: anAmountOfSpaceships.
 	
 ]
 
