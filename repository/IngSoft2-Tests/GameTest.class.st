@@ -104,6 +104,22 @@ GameTest >> testAGameCannotBeCreatedWithoutDice [
 ]
 
 { #category : #tests }
+GameTest >> testAGameCannotBeCreatedWithoutNumberOfLaps [
+
+	| aGame error errorMessage aDie |
+	aDie := Die with: 9.
+	aGame := [ 
+	         Game
+		         withDice: aDie
+		         withBoard: 50
+		         andAmountOfLaps: nil
+		         withAmountOfSpaceships: 2 ].
+	error := Error.
+	errorMessage := 'A game cannot be created without a valid amount of laps.'.
+	self should: aGame raise: error withMessage: errorMessage
+]
+
+{ #category : #tests }
 GameTest >> testAGameCannotBeCreatedWithoutSpaceShips [
 
 	| aGame error errorMessage aDie aBoard |

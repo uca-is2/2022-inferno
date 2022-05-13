@@ -40,3 +40,12 @@ BoardTest >> testCannotCreateABoardWithInvalidNumberOfSlots [
 	errorMessage := 'Board cannot be created with a number of slots lower than one'.
 	self should: aBoard raise: error withMessage: errorMessage
 ]
+
+{ #category : #asserting }
+BoardTest >> testInitializingABoardCreatesTheBoardWithPowerUps [
+
+	| aBoard |
+	aBoard := Board with: 100.
+	
+	self assert:( aBoard layout isKindOf: Dictionary)
+]

@@ -27,6 +27,9 @@ Game class >> withDice: aDice withBoard: aBoard andAmountOfLaps: aNumberOfLaps w
 
 	(aBoard isKindOf: Board) ifFalse: [ 
 		Error signal: 'A game cannot be created without a board.' ].
+	
+	(aNumberOfLaps isInteger) ifFalse: [ 
+		Error signal: 'A game cannot be created without a valid amount of laps.' ].
 
 	^ self new
 		  initializeWithDice: aDice

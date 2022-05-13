@@ -29,8 +29,8 @@ GameMasterTest >> testGameMasterCanCreateAGameWithAnArrayOfNumberOfSidesOfADieOf
 	anArrayOfDieSides at: 4 put: 7.
 	aGameMaster := GameMaster
 		               createGameWithDice: anArrayOfDieSides
-		               withBoard: 57
-		               andAmountOfLaps: nil
+		               withBoard: 50
+		               andAmountOfLaps:3
 		               withAmountOfplayers: 4
 ]
 
