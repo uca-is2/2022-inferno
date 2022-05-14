@@ -38,24 +38,85 @@ Game class >> withDice: aDice withBoard: aBoard andAmountOfLaps: aNumberOfLaps w
 		  withAmountOfSpaceships: aNumberOfSpaceships
 ]
 
+{ #category : #effects }
+Game >> applyHyperJump [
+	| i |
+	1 to: (spaceshipsPositions size) do: [  
+		spaceshipsPositions at: i at: 1 put:1.
+		]
+]
+
+{ #category : #effects }
+Game >> applySpeedUp [
+|lapBeforeEffect positionBeforeEffect|
+
+lapBeforeEffect := spaceshipsPositions at: currentSpaceshipID at:2.
+positionBeforeEffect := spaceshipsPositions at: currentSpaceshipID at:1.
+
+	
+(positionBeforeEffect  + 4 >= board lenght)
+		ifTrue: [ 
+			(lapBeforeEffect + 1 >= numberOfLaps) 
+				ifTrue: [ 
+					spaceshipsPositions at: currentSpaceshipID at: 2 put: numberOfLaps.
+					spaceshipsPositions at: currentSpaceshipID at: 1 put: board lenght.
+					 ]
+				ifFalse: [ 
+					spaceshipsPositions at: currentSpaceshipID at: 2 put: (lapBeforeEffect +1). 
+					spaceshipsPositions at: currentSpaceshipID at: 1 put: (positionBeforeEffect  + 4 - board lenght).
+					 ].
+			 ]
+			ifFalse: [ 
+				spaceshipsPositions at: currentSpaceshipID at: 1 put: positionBeforeEffect  + 4.
+			]
+	
+]
+
+{ #category : #effects }
+Game >> applyWormhole [
+|lapBeforeEffect positionBeforeEffect|
+
+lapBeforeEffect := spaceshipsPositions at: currentSpaceshipID at: 2.
+positionBeforeEffect := spaceshipsPositions at: currentSpaceshipID at:1.
+
+	
+(lapBeforeEffect = 0)
+		ifTrue: [ 
+			(positionBeforeEffect  - 4 < 1) 
+				ifTrue: [ 
+					spaceshipsPositions at: currentSpaceshipID at: 1 put: 1.
+					 ]
+				ifFalse: [ 
+					spaceshipsPositions at: currentSpaceshipID at: 1 put: (positionBeforeEffect  - 4).
+					 ].
+			 ]
+			ifFalse: [
+				(positionBeforeEffect - 4 < 1)
+				ifTrue: [  
+				spaceshipsPositions at: currentSpaceshipID  at: 2 put: lapBeforeEffect -1.
+				spaceshipsPositions at: currentSpaceshipID at: 1 put: positionBeforeEffect + board lenght - 4.
+			]
+		]
+]
+
 { #category : #playing }
 Game >> checkEffect [
 	|effectOfSlot|
 	effectOfSlot := board effectAt: (spaceshipsPositions at: currentSpaceshipID at:1).
 	(effectOfSlot = 'speedUps') ifTrue: [ 
-		self applySpeedUp: currentSpaceshipID.
+		self applySpeedUp.
 		 ].
 	(effectOfSlot = 'wormholes') ifTrue: [ 
-		self applyWormhole: currentSpaceshipID.
+		self applyWormhole.
 		 ].
 	(effectOfSlot = 'moonWalks') ifTrue: [ 
-		self applyMoonWalk: currentSpaceshipID.
+		self applyMoonWalk.
 		 ].
 	(effectOfSlot = 'hyperJumps') ifTrue: [ 
-		self applyHyperJump: currentSpaceshipID.
+		self applyHyperJump.
 		 ].
 	(effectOfSlot = 'atomicBombs') ifTrue: [ 
-		self applyAtomicBomb: currentSpaceshipID.
+		self applyAtomicBomb.
 		 ].
 ]
 
