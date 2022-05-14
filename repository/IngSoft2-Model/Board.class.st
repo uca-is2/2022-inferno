@@ -67,13 +67,35 @@ Board >> initializeWith: aNumberOfSlots [
 	layout at: 'moonWalks' put: effectsPositions.
 
 
+	i := 0.
+	effectsPositions := Array new: numberOfHyperJumps.
+	[ i < numberOfHyperJumps] whileTrue: [
+		randomSlot := numberOfSlots atRandom. 
+		((effectsPositions includes: randomSlot) | ((layout at: 'speedUps') includes: randomSlot) | ((layout at: 'wormholes') includes: randomSlot) |((layout at: 'moonWalks') includes: randomSlot)) ifFalse: [ 
+			effectsPositions at: (i+1) put: randomSlot.
+			i := i+1.
+			].
+	 ].
+	layout at: 'hyperJumps' put: effectsPositions.
+
+i := 0.
+        effectsPositions := Array new: numberOfAtomicBombs.
+        [ i < numberOfAtomicBombs] whileTrue: [
+            randomSlot := numberOfSlots atRandom. 
+            ((effectsPositions includes: randomSlot) | ((layout at: 'speedUps') includes: randomSlot) | ((layout at: 'wormholes') includes: randomSlot) | ((layout at: 'moonWalks') includes: randomSlot) | ((layout at: 'hyperJumps') includes: randomSlot)) ifFalse: [ 
+                effectsPositions at: (i+1) put: randomSlot.
+                i := i+1.
+                ].
+        ].
+        layout at: 'atomicBombs' put: effectsPositions.
+
+
+
+
+
 	1 to: numberOfSlots do: [ :slotNumber |
 		layout at: slotNumber put: 'noEffect'].
 	"Ahora asigno randomly segun la proporcion dada"
-	(numberOfHyperJumps  > 0) whileTrue: [ 
-		layout at: numberOfSlots atRandom put: 'hyperJumps'].
-	(numberOfAtomicBombs  > 0) whileTrue: [ 
-		layout at: numberOfSlots atRandom put: 'atomicBomb'].
 ]
 
 { #category : #validation }
