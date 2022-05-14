@@ -39,11 +39,47 @@ Game class >> withDice: aDice withBoard: aBoard andAmountOfLaps: aNumberOfLaps w
 ]
 
 { #category : #effects }
-Game >> applyHyperJump [
-	| i |
-	1 to: (spaceshipsPositions size) do: [  
-		spaceshipsPositions at: i at: 1 put:1.
+Game >> applyAtomicBomb [
+	1 to: (spaceshipsPositions size) do: [:spaceshipIterator |  
+		spaceshipsPositions at: spaceshipIterator at: 1 put:1.
 		]
+]
+
+{ #category : #effects }
+Game >> applyMoonWalk [
+
+	| lapBeforeEffect positionBeforeEffect nOfMoonwalkSlot |
+	nOfMoonwalkSlot := board effectAt:
+		                   (((spaceshipsPositions at: currentSpaceshipID) 
+			                     at: 1) at: 2).
+	"toma el N de ese casillero moonwalk en especifico"
+	1 to: spaceshipsPositions size do: [ :spaceshipIterator | 
+		(spaceshipsPositions at: spaceshipIterator = currentSpaceshipID) 
+			ifFalse: [ 
+				lapBeforeEffect := spaceshipsPositions at: spaceshipIterator at: 2.
+				positionBeforeEffect := spaceshipsPositions
+					                        at: spaceshipIterator
+					                        at: 1.
+				lapBeforeEffect = 0
+					ifTrue: [ 
+						positionBeforeEffect - nOfMoonwalkSlot < 1
+							ifTrue: [ 
+							spaceshipsPositions at: spaceshipIterator at: 1 put: 1 ]
+							ifFalse: [ 
+								spaceshipsPositions
+									at: spaceshipIterator
+									at: 1
+									put: positionBeforeEffect - nOfMoonwalkSlot ] ]
+					ifFalse: [ 
+						positionBeforeEffect - nOfMoonwalkSlot < 1 ifTrue: [ 
+							spaceshipsPositions
+								at: spaceshipIterator
+								at: 2
+								put: lapBeforeEffect - 1.
+							spaceshipsPositions
+								at: spaceshipIterator
+								at: 1
+								put: positionBeforeEffect + board lenght - nOfMoonwalkSlot ] ] ] ]
 ]
 
 { #category : #effects }
@@ -102,7 +138,7 @@ positionBeforeEffect := spaceshipsPositions at: currentSpaceshipID at:1.
 { #category : #playing }
 Game >> checkEffect [
 	|effectOfSlot|
-	effectOfSlot := board effectAt: (spaceshipsPositions at: currentSpaceshipID at:1).
+	effectOfSlot := board effectAt: (spaceshipsPositions at: currentSpaceshipID at: 1).
 	(effectOfSlot = 'speedUps') ifTrue: [ 
 		self applySpeedUp.
 		 ].

@@ -21,6 +21,12 @@ Board class >> with: aNumberOfSlots [
 	^ self new initializeWith: aNumberOfSlots
 ]
 
+{ #category : #'instance creation' }
+Board class >> withCustomLayout: aLayout andNumberOfSlots: aNumberOfSlots [
+
+	^ self new initializeWithCustomLayout: aLayout and: aNumberOfSlots.
+]
+
 { #category : #accessing }
 Board >> effectAt: slotPosition [ 
 	((layout at: 'speedUps') includes: slotPosition) ifTrue: [ ^ 'speedUps'].
@@ -75,7 +81,8 @@ Board >> initializeWith: aNumberOfSlots [
 			i := i+1.
 			 ].
 	 ].
-	layout at: 'moonWalks' put: effectsPositions.
+	layout at: 'moonWalks' at: 1 put: effectsPositions.
+	layout at: 'moonWalks' at: 2 put: ((numberOfSlots/10) asInteger) atRandom.  
 
 
 	i := 0.
@@ -107,6 +114,12 @@ Board >> initializeWith: aNumberOfSlots [
                 ].
 		].
 		layout at: 'noEffect' put: effectsPositions.
+]
+
+{ #category : #'class initialization' }
+Board >> initializeWithCustomLayout: aCustomLayout and: aNumberOfSlots [
+	layout := aCustomLayout .
+	numberOfSlots := aNumberOfSlots.
 ]
 
 { #category : #validation }

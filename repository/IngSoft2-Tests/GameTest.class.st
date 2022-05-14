@@ -135,3 +135,64 @@ GameTest >> testAGameCannotBeCreatedWithoutSpaceShips [
 	errorMessage := 'A game cannot be created with a number of spaceships lower than two.'.
 	self should: aGame raise: error withMessage: errorMessage
 ]
+
+{ #category : #tests }
+GameTest >> testAGameWithACustomLayoutToTestCanBeCreated [
+	| aDice aBoard aGame aCustomLayout slotsOfNoEffect slotsOfSpeedUp |
+	aCustomLayout := Dictionary new.
+	slotsOfNoEffect := Array new: 6.
+	
+	slotsOfNoEffect at: 1 put: 1.
+	slotsOfNoEffect at: 2 put: 2.
+	slotsOfNoEffect at: 3 put: 3.
+	slotsOfNoEffect at: 4 put: 4.
+	slotsOfNoEffect at: 5 put: 5.
+	slotsOfNoEffect at: 6 put: 6.
+	
+	slotsOfSpeedUp := Array new: 1.
+	slotsOfSpeedUp at: 1 put: 7.
+	aCustomLayout at: 'noEffect' put: slotsOfNoEffect.
+	aCustomLayout at: 'speedUp' put: slotsOfSpeedUp.
+	
+	aDice := LoadedDie with: 6 loadedWith: 6.
+	aBoard := Board withCustomLayout: aCustomLayout andNumberOfSlots: 7.
+	aGame := Game
+		         withDice: aDice
+		         withBoard: aBoard
+		         andAmountOfLaps: 3
+		         withAmountOfSpaceships: 2.
+	self assert: aGame isNotNil
+]
+
+{ #category : #tests }
+GameTest >> testSpeedUpWorksAsExpected [
+	| aDice aBoard aGame aCustomLayout slotsOfNoEffect slotsOfSpeedUp noPowerUps |
+	aCustomLayout := Dictionary new.
+	slotsOfNoEffect := Array new: 5.
+	
+	slotsOfNoEffect at: 1 put: 1.
+	slotsOfNoEffect at: 2 put: 3.
+	slotsOfNoEffect at: 3 put: 4.
+	slotsOfNoEffect at: 4 put: 5.
+	slotsOfNoEffect at: 5 put: 6.
+	
+	slotsOfSpeedUp := Array new: 1.
+	slotsOfSpeedUp at: 1 put: 2.
+	noPowerUps := Array new: 1.
+	aCustomLayout at: 'noEffect' put: slotsOfNoEffect.
+	aCustomLayout at: 'speedUps' put: slotsOfSpeedUp.
+	aCustomLayout at: 'wormholes' put: noPowerUps.
+	aCustomLayout at: 'moonWalks' put: noPowerUps.
+	aCustomLayout at: 'hyperJumps' put: noPowerUps.
+	aCustomLayout at: 'atomicBombs' put: noPowerUps.
+	
+	aDice := LoadedDie with: 6 loadedWith: 2.
+	aBoard := Board withCustomLayout: aCustomLayout andNumberOfSlots: 6.
+	aGame := Game
+		         withDice: aDice
+		         withBoard: aBoard
+		         andAmountOfLaps: 1
+		         withAmountOfSpaceships: 2.
+	aGame playNextTurn.
+	self assert: (aGame hasGameFinished)
+]
