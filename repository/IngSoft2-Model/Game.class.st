@@ -38,6 +38,27 @@ Game class >> withDice: aDice withBoard: aBoard andAmountOfLaps: aNumberOfLaps w
 		  withAmountOfSpaceships: aNumberOfSpaceships
 ]
 
+{ #category : #playing }
+Game >> checkEffect [
+	|effectOfSlot|
+	effectOfSlot := board effectAt: (spaceshipsPositions at: currentSpaceshipID at:1).
+	(effectOfSlot = 'speedUps') ifTrue: [ 
+		self applySpeedUp: currentSpaceshipID.
+		 ].
+	(effectOfSlot = 'wormholes') ifTrue: [ 
+		self applyWormhole: currentSpaceshipID.
+		 ].
+	(effectOfSlot = 'moonWalks') ifTrue: [ 
+		self applyMoonWalk: currentSpaceshipID.
+		 ].
+	(effectOfSlot = 'hyperJumps') ifTrue: [ 
+		self applyHyperJump: currentSpaceshipID.
+		 ].
+	(effectOfSlot = 'atomicBombs') ifTrue: [ 
+		self applyAtomicBomb: currentSpaceshipID.
+		 ].
+]
+
 { #category : #accessing }
 Game >> hasGameFinished [
 	^ isGameFinished.
@@ -75,10 +96,14 @@ Game >> move: aSpaceshipID [
 				ifFalse: [ 
 					spaceshipsPositions at: currentSpaceshipID at: 2 put: (lapBeforeRoll+1). 
 					spaceshipsPositions at: currentSpaceshipID at: 1 put: (positionBeforeRoll + rollNumber - board lenght).
+					self checkEffect.
 					 ].
 			 ]
 		ifFalse: [ 
-			spaceshipsPositions at: currentSpaceshipID at: 1 put: positionBeforeRoll + rollNumber ]
+			spaceshipsPositions at: currentSpaceshipID at: 1 put: positionBeforeRoll + rollNumber.
+			self checkEffect.
+			]
+	
 ]
 
 { #category : #iteration }

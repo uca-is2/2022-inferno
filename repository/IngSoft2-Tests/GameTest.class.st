@@ -24,7 +24,7 @@ GameTest >> testAGameCanBeCreated [
 	aGame := Game
 		         withDice: aDice
 		         withBoard: aBoard
-		         andAmountOfLaps: nil
+		         andAmountOfLaps: 3
 		         withAmountOfSpaceships: 2.
 	self assert: aGame isNotNil
 ]
