@@ -17,9 +17,9 @@ Class {
 { #category : #'instance creation' }
 Board class >> with: aNumberOfSlots andNumberOfParsecs: amountOfParsecs [
 
-	((aNumberOfSlots > 0) | (amountOfParsecs > 0)) ifFalse: [ 
+	((aNumberOfSlots > 0) & (amountOfParsecs > 9)) ifFalse: [ 
 		Error signal:
-			'Board cannot be created with a number of slots or parsecs lower than 1' ].
+			'Board cannot be created with a number of slots lower than 1 or Parsecs lower than 9' ].
 	^ self new initializeWith: aNumberOfSlots andNumberOfParsecs: amountOfParsecs
 ]
 
