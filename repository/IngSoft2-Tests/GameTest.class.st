@@ -20,7 +20,7 @@ GameTest >> testAGameCanBeCreated [
 
 	| aDice aBoard aGame |
 	aDice := Die with: 6.
-	aBoard := Board with: 70.
+	aBoard := Board with: 70 andNumberOfParsecs: 30.
 	aGame := Game
 		         withDice: aDice
 		         withBoard: aBoard
@@ -39,7 +39,7 @@ GameTest >> testAGameCanBePlayedByIndividualTurns [
 	aCollection at: 1 put: aDie1.
 	aCollection at: 2 put: aDie2.
 	aDiceCup := DiceCup with: aCollection.
-	aBoard := Board with: 50.
+	aBoard := Board with: 50 andNumberOfParsecs: 300.
 	aGame := Game
 		         withDice: aDiceCup
 		         withBoard: aBoard
@@ -61,7 +61,7 @@ GameTest >> testAGameCanBeStartedAndPlayedToTheEnd [
 	aCollection at: 2 put: aDie2.
 	aCollection at: 3 put: aDie3.
 	aDiceCup := DiceCup with: aCollection.
-	aBoard := Board with: 50.
+	aBoard := Board with: 50 andNumberOfParsecs: 304.
 	aGame := Game
 		         withDice: aDiceCup
 		         withBoard: aBoard

@@ -14,7 +14,7 @@ GameMasterTest >> testGameMasterCanCreateAGame [
 	anArrayOfDieSides := Array new: 2.
 	anArrayOfDieSides at: 1 put: 6.
 	anArrayOfDieSides at: 2 put: 6.
-	aGameMaster := GameMaster createGameWithDice: anArrayOfDieSides withBoard: 57 andAmountOfLaps: 3 withAmountOfplayers: 4.
+	aGameMaster := GameMaster createGameWithDice: anArrayOfDieSides withBoard: 57 andNumberOfParsecs: 23 andAmountOfLaps: 3 withAmountOfSpaceships: 4.
 	
 ]
 
@@ -30,8 +30,9 @@ GameMasterTest >> testGameMasterCanCreateAGameWithAnArrayOfNumberOfSidesOfADieOf
 	aGameMaster := GameMaster
 		               createGameWithDice: anArrayOfDieSides
 		               withBoard: 50
+							andNumberOfParsecs: 567
 		               andAmountOfLaps:3
-		               withAmountOfplayers: 4
+		               withAmountOfSpaceships: 4
 ]
 
 { #category : #tests }
@@ -46,8 +47,9 @@ GameMasterTest >> testGameMasterCanPlayItsGameTilTheEnd [
 	aGameMaster := GameMaster
 		               createGameWithDice: anArrayOfDieSides
 		               withBoard: 50
+							andNumberOfParsecs: 9696
 		               andAmountOfLaps: 2
-		               withAmountOfplayers: 4.
+		               withAmountOfSpaceships: 4.
 	aGameMaster playEntireGame.
 	aGameMaster showFinalPositions
 ]

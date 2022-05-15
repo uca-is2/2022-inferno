@@ -46,15 +46,38 @@ Game >> applyAtomicBomb [
 ]
 
 { #category : #effects }
+Game >> applyHyperJump [
+	
+	|lapBeforeEffect positionBeforeEffect slotsForThisHyperJump |
+	slotsForThisHyperJump := board hyperJumpDistanceInSlots.
+	lapBeforeEffect := spaceshipsPositions at: currentSpaceshipID at:2.
+	positionBeforeEffect := spaceshipsPositions at: currentSpaceshipID at:1.
+	
+	(positionBeforeEffect  + slotsForThisHyperJump >= board lenght)
+		ifTrue: [ 
+			(lapBeforeEffect + 1 >= numberOfLaps) 
+				ifTrue: [ 
+					spaceshipsPositions at: currentSpaceshipID at: 2 put: numberOfLaps.
+					spaceshipsPositions at: currentSpaceshipID at: 1 put: board lenght.
+					 ]
+				ifFalse: [ 
+					spaceshipsPositions at: currentSpaceshipID at: 2 put: (lapBeforeEffect +1). 
+					spaceshipsPositions at: currentSpaceshipID at: 1 put: (positionBeforeEffect  + slotsForThisHyperJump - board lenght).
+					 ].
+			 ]
+			ifFalse: [ 
+				spaceshipsPositions at: currentSpaceshipID at: 1 put: positionBeforeEffect  + slotsForThisHyperJump.
+			]
+	
+]
+
+{ #category : #effects }
 Game >> applyMoonWalk [
 
 	| lapBeforeEffect positionBeforeEffect nOfMoonwalkSlot |
-	nOfMoonwalkSlot := board effectAt:
-		                   (((spaceshipsPositions at: currentSpaceshipID) 
-			                     at: 1) at: 2).
-	"toma el N de ese casillero moonwalk en especifico"
+	nOfMoonwalkSlot := board slotsForMoonwalk: ((spaceshipsPositions at: currentSpaceshipID) at: 1).
 	1 to: spaceshipsPositions size do: [ :spaceshipIterator | 
-		(spaceshipsPositions at: spaceshipIterator = currentSpaceshipID) 
+		(spaceshipIterator = currentSpaceshipID) 
 			ifFalse: [ 
 				lapBeforeEffect := spaceshipsPositions at: spaceshipIterator at: 2.
 				positionBeforeEffect := spaceshipsPositions
@@ -79,7 +102,13 @@ Game >> applyMoonWalk [
 							spaceshipsPositions
 								at: spaceshipIterator
 								at: 1
-								put: positionBeforeEffect + board lenght - nOfMoonwalkSlot ] ] ] ]
+								put: positionBeforeEffect + board lenght - nOfMoonwalkSlot ] 
+							ifFalse: [ 
+								spaceshipsPositions
+									at: spaceshipIterator
+									at: 1
+									put: positionBeforeEffect - nOfMoonwalkSlot ]
+							] ] ]
 ]
 
 { #category : #effects }
