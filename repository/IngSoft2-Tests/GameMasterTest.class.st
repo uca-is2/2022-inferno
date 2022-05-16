@@ -74,3 +74,24 @@ GameMasterTest >> testGameMasterCanPlayItsGameTilTheEndOneTurnAtTheTime [
 		].
 	self assert: aGameMaster isGameFinished.
 ]
+
+{ #category : #tests }
+GameMasterTest >> testGameMasterCheckPositionsIsValid [
+
+	| aGameMaster anArrayOfDieSides |
+	anArrayOfDieSides := Array new: 4.
+	anArrayOfDieSides at: 1 put: 6.
+	anArrayOfDieSides at: 2 put: 6.
+	anArrayOfDieSides at: 3 put: 6.
+	anArrayOfDieSides at: 4 put: 7.
+	aGameMaster := GameMaster
+		               createGameWithDice: anArrayOfDieSides
+		               withBoard: 50
+							andNumberOfParsecs: 900
+		               andAmountOfLaps: 2
+		               withAmountOfSpaceships: 4.
+	1 to: 9 do: [ :turn|
+		aGameMaster playNextTurn 
+		 ].
+	self assert: (aGameMaster spacehipsPositions) isNotNil 
+]

@@ -57,3 +57,8 @@ GameMaster >> playNextTurn [
 GameMaster >> showFinalPositions [
 	^ finalPositions
 ]
+
+{ #category : #'as yet unclassified' }
+GameMaster >> spacehipsPositions [
+	^ currentGame spaceshipPositioning.
+]

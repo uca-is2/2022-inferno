@@ -256,6 +256,11 @@ Game >> spaceshipMovesToSlot: spaceshipNewPosition andLap: spaceshipNewLap [
 	spaceshipsPositions at: currentSpaceshipID at: 2 put: spaceshipNewLap
 ]
 
+{ #category : #'as yet unclassified' }
+Game >> spaceshipPositioning [
+	^spaceshipsPositions copy.
+]
+
 { #category : #movement }
 Game >> speshipMovesToTheEnd [
 
