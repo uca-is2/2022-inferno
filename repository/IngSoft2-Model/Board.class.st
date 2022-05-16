@@ -30,13 +30,25 @@ Board class >> withCustomLayout: aLayout andNumberOfSlots: aNumberOfSlots [
 ]
 
 { #category : #accessing }
-Board >> effectAt: slotPosition [ 
-	((layout at: 'speedUps') includes: slotPosition) ifTrue: [ ^ 'speedUps'].
-	((layout at: 'wormholes') includes: slotPosition) ifTrue: [ ^ 'wormholes'].
-	((layout at: 'moonWalks') includes: slotPosition) ifTrue: [ ^ 'moonWalks'].
-	((layout at: 'hyperJumps') includes: slotPosition) ifTrue: [ ^ 'hyperJumps'].
-	((layout at: 'atomicBombs') includes: slotPosition) ifTrue: [ ^ 'atomicBombs'].
-	^'noEffect'.
+Board >> amountOfSlotsToMoveInMoonwalk: positionOfMoonwalk [
+
+	^ (layout at: 'moonWalks' at: 2) at: positionOfMoonwalk
+]
+
+{ #category : #accessing }
+Board >> effectAt: slotPosition [
+
+	((layout at: 'speedUps') includes: slotPosition) ifTrue: [ 
+		^ 'speedUps' ].
+	((layout at: 'wormholes') includes: slotPosition) ifTrue: [ 
+		^ 'wormholes' ].
+	((layout at: 'moonWalks') includes: slotPosition) ifTrue: [ 
+		^ 'moonWalks' ].
+	((layout at: 'hyperJumps') includes: slotPosition) ifTrue: [ 
+		^ 'hyperJumps' ].
+	((layout at: 'atomicBombs') includes: slotPosition) ifTrue: [ 
+		^ 'atomicBombs' ].
+	^ 'noEffect'
 ]
 
 { #category : #accessing }
@@ -51,94 +63,90 @@ Board >> hyperJumpDistanceInSlots [
 { #category : #initialization }
 Board >> initializeWith: aNumberOfSlots andNumberOfParsecs: amountOfParsecs [
 
-	| numberOfSpeedUps numberOfWormholes numberOfMoonwalks numberOfHyperJumps numberOfAtomicBombs effectsPositions i randomSlot minValueHyperJump maxValueHyperJump moonWalkValues moonwalksPositionsAndValues |
+	| numberOfSpeedUps numberOfWormholes numberOfMoonwalks numberOfHyperJumps numberOfAtomicBombs effectsPositions slotsWithThisEffect randomSlot minValueHyperJump maxValueHyperJump moonWalkValues moonwalksPositionsAndValues |
 	numberOfSlots := aNumberOfSlots.
 	numberOfParsecs := amountOfParsecs.
-	numberOfSpeedUps := (numberOfSlots * 0.2)asInteger.
-	numberOfWormholes := (numberOfSlots * 0.2)asInteger.
-	numberOfMoonwalks := (numberOfSlots * 0.1)asInteger.
-	numberOfHyperJumps := (numberOfSlots * 0.08)asInteger.
-	numberOfAtomicBombs := (numberOfSlots * 0.02)asInteger.
-
+	numberOfSpeedUps := self percentageOfSlots: 0.2.
+	numberOfWormholes := self percentageOfSlots: 0.2.
+	numberOfMoonwalks := self percentageOfSlots: 0.1.
+	numberOfHyperJumps := self percentageOfSlots: 0.08.
+	numberOfAtomicBombs := self percentageOfSlots: 0.02.
 	layout := Dictionary new.
-	i := 0.
-	
+	slotsWithThisEffect := 0.
 	effectsPositions := Array new: numberOfSpeedUps.
-	[ i < numberOfSpeedUps] whileTrue: [
-		randomSlot := numberOfSlots atRandom. 
-		(effectsPositions includes: randomSlot ) ifFalse: [ 
-			effectsPositions at: (i+1) put: randomSlot.
-			i := i+1.
-			 ].
-	 ].
+	[ slotsWithThisEffect < numberOfSpeedUps ] whileTrue: [ 
+		randomSlot := numberOfSlots atRandom.
+		(effectsPositions includes: randomSlot) ifFalse: [ 
+			effectsPositions at: slotsWithThisEffect + 1 put: randomSlot.
+			slotsWithThisEffect := slotsWithThisEffect + 1 ] ].
 	layout at: 'speedUps' put: effectsPositions.
-	
-	i := 0.
+
+	slotsWithThisEffect := 0.
 	effectsPositions := Array new: numberOfWormholes.
-	[ i < numberOfWormholes] whileTrue: [
-		randomSlot := numberOfSlots atRandom. 
-		((effectsPositions includes: randomSlot) | ((layout at: 'speedUps') includes: randomSlot )) ifFalse: [ 
-			effectsPositions at: (i+1) put: randomSlot.
-			i := i+1.
-			 ].
-	 ].
+	[ slotsWithThisEffect < numberOfWormholes ] whileTrue: [ 
+		randomSlot := numberOfSlots atRandom.
+		(effectsPositions includes: randomSlot)
+		| (self slotAlreadyHasEffect: randomSlot) ifFalse: [ 
+			effectsPositions at: slotsWithThisEffect + 1 put: randomSlot.
+			slotsWithThisEffect := slotsWithThisEffect + 1 ] ].
 	layout at: 'wormholes' put: effectsPositions.
-	
-	i := 0.
+
+	slotsWithThisEffect := 0.
 	effectsPositions := Array new: numberOfMoonwalks.
 	moonWalkValues := Array new: numberOfMoonwalks.
-	[ i < numberOfMoonwalks] whileTrue: [
-		randomSlot := numberOfSlots atRandom. 
-		((effectsPositions includes: randomSlot) | ((layout at: 'speedUps') includes: randomSlot) | ((layout at: 'wormholes') includes: randomSlot) ) ifFalse: [ 
-			effectsPositions at: (i+1) put: randomSlot.
-			moonWalkValues at: (i+1) put: ((numberOfSlots/10) asInteger) atRandom.
-			i := i+1.
-			 ].
-	 ].
-	moonwalksPositionsAndValues := Array new:2.
+	[ slotsWithThisEffect < numberOfMoonwalks ] whileTrue: [ 
+		randomSlot := numberOfSlots atRandom.
+		(effectsPositions includes: randomSlot)
+		| (self slotAlreadyHasEffect: randomSlot) ifFalse: [ 
+			effectsPositions at: slotsWithThisEffect + 1 put: randomSlot.
+			moonWalkValues
+				at: slotsWithThisEffect + 1
+				put: (numberOfSlots / 10) asInteger atRandom.
+			slotsWithThisEffect := slotsWithThisEffect + 1 ] ].
+	moonwalksPositionsAndValues := Array new: 2.
 	moonwalksPositionsAndValues at: 1 put: effectsPositions.
 	moonwalksPositionsAndValues at: 2 put: moonWalkValues.
-	layout at: 'moonWalks'  put: moonwalksPositionsAndValues.  
+	layout at: 'moonWalks' put: moonwalksPositionsAndValues.
 
-	i := 0.
+	slotsWithThisEffect := 0.
 	effectsPositions := Array new: numberOfHyperJumps.
-	[ i < numberOfHyperJumps] whileTrue: [
-		randomSlot := numberOfSlots atRandom. 
-		((effectsPositions includes: randomSlot) | ((layout at: 'speedUps') includes: randomSlot) | ((layout at: 'wormholes') includes: randomSlot) |((layout at: 'moonWalks' at:1) includes: randomSlot)) ifFalse: [ 
-			effectsPositions at: (i+1) put: randomSlot.
-			i := i+1.
-			].
-	 ].
+	[ slotsWithThisEffect < numberOfHyperJumps ] whileTrue: [ 
+		randomSlot := numberOfSlots atRandom.
+		(effectsPositions includes: randomSlot)
+		| (self slotAlreadyHasEffect: randomSlot) ifFalse: [ 
+			effectsPositions at: slotsWithThisEffect + 1 put: randomSlot.
+			slotsWithThisEffect := slotsWithThisEffect + 1 ] ].
 	layout at: 'hyperJumps' put: effectsPositions.
 
-	i := 0.
-   effectsPositions := Array new: numberOfAtomicBombs.
-   [ i < numberOfAtomicBombs] whileTrue: [
-            randomSlot := numberOfSlots atRandom. 
-            ((effectsPositions includes: randomSlot) | ((layout at: 'speedUps') includes: randomSlot) | ((layout at: 'wormholes') includes: randomSlot) | ((layout at: 'moonWalks' at:1) includes: randomSlot) | ((layout at: 'hyperJumps') includes: randomSlot)) ifFalse: [ 
-                effectsPositions at: (i+1) put: randomSlot.
-                i := i+1.
-                ].
-        ].
-      layout at: 'atomicBombs' put: effectsPositions.
-	
-		effectsPositions := Array new: (numberOfSlots - numberOfSpeedUps - numberOfWormholes - numberOfMoonwalks - numberOfHyperJumps - numberOfAtomicBombs).
-		1 to: numberOfSlots do: [ :slotNumber |
-		(((layout at: 'atomicBombs') includes: slotNumber ) | ((layout at: 'speedUps') includes: slotNumber ) | ((layout at: 'wormholes') includes: slotNumber) | ((layout at: 'moonWalks' at:1) includes: slotNumber ) | ((layout at: 'hyperJumps') includes: slotNumber )) ifFalse: [ 
-                effectsPositions at: (i+1) put: slotNumber .
-                ].
-		].
-		layout at: 'noEffect' put: effectsPositions.
-		
-		numberOfParsecs := amountOfParsecs.
-		hyperJumpValues := OrderedCollection new: 10.
-		minValueHyperJump := 0.
-		maxValueHyperJump := (amountOfParsecs - 10).
-		1 to: 10 do: [ :z |
-			hyperJumpValues addFirst: ((minValueHyperJump to: maxValueHyperJump) atRandom).
-			minValueHyperJump := hyperJumpValues first.
-			maxValueHyperJump := (maxValueHyperJump + 1)
-			 ]
+	slotsWithThisEffect := 0.
+	effectsPositions := Array new: numberOfAtomicBombs.
+	[ slotsWithThisEffect < numberOfAtomicBombs ] whileTrue: [ 
+		randomSlot := numberOfSlots atRandom.
+		((effectsPositions includes: randomSlot) | self 
+			 slotAlreadyHasEffect: randomSlot) ifFalse: [ 
+			effectsPositions at: slotsWithThisEffect + 1 put: randomSlot.
+			slotsWithThisEffect := slotsWithThisEffect + 1 ] ].
+	layout at: 'atomicBombs' put: effectsPositions.
+
+	effectsPositions := Array new:
+		                    numberOfSlots - numberOfSpeedUps
+		                    - numberOfWormholes - numberOfMoonwalks
+		                    - numberOfHyperJumps - numberOfAtomicBombs.
+	slotsWithThisEffect := 0.
+	1 to: numberOfSlots do: [ :slotNumber | 
+		(self slotAlreadyHasEffect: randomSlot) ifFalse: [ 
+			effectsPositions at: slotsWithThisEffect + 1 put: slotNumber.
+			slotsWithThisEffect := slotsWithThisEffect + 1 ] ].
+	layout at: 'noEffect' put: effectsPositions.
+
+	numberOfParsecs := amountOfParsecs.
+	hyperJumpValues := OrderedCollection new: 10.
+	minValueHyperJump := 0.
+	maxValueHyperJump := amountOfParsecs - 10.
+	1 to: 10 do: [ :z | 
+		hyperJumpValues addFirst:
+			(minValueHyperJump to: maxValueHyperJump + z) atRandom.
+		minValueHyperJump := hyperJumpValues first ]
 ]
 
 { #category : #'class initialization' }
@@ -166,10 +174,30 @@ Board >> lenght [
 ]
 
 { #category : #accessing }
+Board >> moonwalkSlotActivated: spaceshipPosition [
+
+	^ (layout at: 'moonWalks' at: 1) indexOf: spaceshipPosition
+]
+
+{ #category : #initialize }
+Board >> percentageOfSlots: percentage [ 
+	^ (numberOfSlots * percentage)asInteger
+]
+
+{ #category : #'as yet unclassified' }
+Board >> slotAlreadyHasEffect: slot [ 
+	| slotHasEffect |
+	slotHasEffect := false.
+	(((layout  at: 'speedUps' ifAbsent: [ #[] ]) includes:slot) | ((layout  at: 'wormholes' ifAbsent: [ #[] ]) includes:slot) | ((layout  at: 'moonWalks' at:1 ifAbsent: [ #[] ]) includes:slot) | ((layout  at: 'hyperJumps' ifAbsent: [ #[] ]) includes:slot) | ((layout  at: 'atomicBombs' ifAbsent: [ #[] ]) includes:slot) ) ifTrue: [ 
+		slotHasEffect := true
+		 ].
+	^ slotHasEffect.
+]
+
+{ #category : #accessing }
 Board >> slotsForMoonwalk: spaceshipPosition [
 
-| positionOfMoonwalk slotsToMoveInMoonwalk |
-positionOfMoonwalk := (layout at: 'moonWalks' at: 1) indexOf: spaceshipPosition.
-slotsToMoveInMoonwalk := (layout at: 'moonWalks' at: 2) at: positionOfMoonwalk.
-^ slotsToMoveInMoonwalk.
+	| positionOfMoonwalk |
+	positionOfMoonwalk := self moonwalkSlotActivated: spaceshipPosition.
+	^ self amountOfSlotsToMoveInMoonwalk: positionOfMoonwalk.
 ]

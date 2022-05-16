@@ -47,35 +47,32 @@ Game >> applyAtomicBomb [
 
 { #category : #effects }
 Game >> applyHyperJump [
-	
-	|lapBeforeEffect positionBeforeEffect slotsForThisHyperJump |
+
+	| lapBeforeEffect positionBeforeEffect slotsForThisHyperJump |
 	slotsForThisHyperJump := board hyperJumpDistanceInSlots.
-	lapBeforeEffect := spaceshipsPositions at: currentSpaceshipID at:2.
-	positionBeforeEffect := spaceshipsPositions at: currentSpaceshipID at:1.
-	
-	(positionBeforeEffect  + slotsForThisHyperJump >= board lenght)
+	lapBeforeEffect := self currentSpaceshipLap.
+	positionBeforeEffect := self currentSpaceshipPosition.
+	(self
+		 isLapFinishedIf: positionBeforeEffect
+		 moves: slotsForThisHyperJump)
 		ifTrue: [ 
-			(lapBeforeEffect + 1 >= numberOfLaps) 
-				ifTrue: [ 
-					spaceshipsPositions at: currentSpaceshipID at: 2 put: numberOfLaps.
-					spaceshipsPositions at: currentSpaceshipID at: 1 put: board lenght.
-					 ]
+			lapBeforeEffect + 1 >= numberOfLaps
+				ifTrue: [ self speshipMovesToTheEnd ]
 				ifFalse: [ 
-					spaceshipsPositions at: currentSpaceshipID at: 2 put: (lapBeforeEffect +1). 
-					spaceshipsPositions at: currentSpaceshipID at: 1 put: (positionBeforeEffect  + slotsForThisHyperJump - board lenght).
-					 ].
-			 ]
-			ifFalse: [ 
-				spaceshipsPositions at: currentSpaceshipID at: 1 put: positionBeforeEffect  + slotsForThisHyperJump.
-			]
-	
+					self
+						spaceshipMovesToSlot:
+						positionBeforeEffect + slotsForThisHyperJump - board lenght
+						andLap: lapBeforeEffect + 1 ] ]
+		ifFalse: [ 
+			self spaceshipMovesToSlot:
+				positionBeforeEffect + slotsForThisHyperJump ]
 ]
 
 { #category : #effects }
 Game >> applyMoonWalk [
 
 	| lapBeforeEffect positionBeforeEffect nOfMoonwalkSlot |
-	nOfMoonwalkSlot := board slotsForMoonwalk: ((spaceshipsPositions at: currentSpaceshipID) at: 1).
+	nOfMoonwalkSlot := board slotsForMoonwalk: (self currentSpaceshipPosition).
 	1 to: spaceshipsPositions size do: [ :spaceshipIterator | 
 		(spaceshipIterator = currentSpaceshipID) 
 			ifFalse: [ 
@@ -113,76 +110,59 @@ Game >> applyMoonWalk [
 
 { #category : #effects }
 Game >> applySpeedUp [
-|lapBeforeEffect positionBeforeEffect|
 
-lapBeforeEffect := spaceshipsPositions at: currentSpaceshipID at:2.
-positionBeforeEffect := spaceshipsPositions at: currentSpaceshipID at:1.
-
-	
-(positionBeforeEffect  + 4 >= board lenght)
+	| lapBeforeEffect positionBeforeEffect |
+	lapBeforeEffect := self currentSpaceshipLap.
+	positionBeforeEffect := self currentSpaceshipPosition.
+	(self isLapFinishedIf: positionBeforeEffect moves: 4)
 		ifTrue: [ 
-			(lapBeforeEffect + 1 >= numberOfLaps) 
-				ifTrue: [ 
-					spaceshipsPositions at: currentSpaceshipID at: 2 put: numberOfLaps.
-					spaceshipsPositions at: currentSpaceshipID at: 1 put: board lenght.
-					 ]
+			lapBeforeEffect + 1 >= numberOfLaps
+				ifTrue: [ self speshipMovesToTheEnd ]
 				ifFalse: [ 
-					spaceshipsPositions at: currentSpaceshipID at: 2 put: (lapBeforeEffect +1). 
-					spaceshipsPositions at: currentSpaceshipID at: 1 put: (positionBeforeEffect  + 4 - board lenght).
-					 ].
-			 ]
-			ifFalse: [ 
-				spaceshipsPositions at: currentSpaceshipID at: 1 put: positionBeforeEffect  + 4.
-			]
-	
+					self
+						spaceshipMovesToSlot: positionBeforeEffect + 4 - board lenght
+						andLap: lapBeforeEffect + 1 ] ]
+		ifFalse: [ self spaceshipMovesToSlot: positionBeforeEffect + 4 ]
 ]
 
 { #category : #effects }
 Game >> applyWormhole [
-|lapBeforeEffect positionBeforeEffect|
 
-lapBeforeEffect := spaceshipsPositions at: currentSpaceshipID at: 2.
-positionBeforeEffect := spaceshipsPositions at: currentSpaceshipID at:1.
-
-	
-(lapBeforeEffect = 0)
+	| lapBeforeEffect positionBeforeEffect |
+	lapBeforeEffect := self currentSpaceshipLap.
+	positionBeforeEffect := self currentSpaceshipPosition.
+	lapBeforeEffect = 0
 		ifTrue: [ 
-			(positionBeforeEffect  - 4 < 1) 
-				ifTrue: [ 
-					spaceshipsPositions at: currentSpaceshipID at: 1 put: 1.
-					 ]
-				ifFalse: [ 
-					spaceshipsPositions at: currentSpaceshipID at: 1 put: (positionBeforeEffect  - 4).
-					 ].
-			 ]
-			ifFalse: [
-				(positionBeforeEffect - 4 < 1)
-				ifTrue: [  
-				spaceshipsPositions at: currentSpaceshipID  at: 2 put: lapBeforeEffect -1.
-				spaceshipsPositions at: currentSpaceshipID at: 1 put: positionBeforeEffect + board lenght - 4.
-			]
-		]
+			positionBeforeEffect - 4 < 1
+				ifTrue: [ self spaceshipMovesToSlot: 1 ]
+				ifFalse: [ self spaceshipMovesToSlot: positionBeforeEffect - 4 ] ]
+		ifFalse: [ 
+			positionBeforeEffect - 4 < 1 ifTrue: [ 
+				self
+					spaceshipMovesToSlot: positionBeforeEffect + board lenght - 4
+					andLap: lapBeforeEffect - 1 ] ]
 ]
 
 { #category : #playing }
 Game >> checkEffect [
-	|effectOfSlot|
-	effectOfSlot := board effectAt: (spaceshipsPositions at: currentSpaceshipID at: 1).
-	(effectOfSlot = 'speedUps') ifTrue: [ 
-		self applySpeedUp.
-		 ].
-	(effectOfSlot = 'wormholes') ifTrue: [ 
-		self applyWormhole.
-		 ].
-	(effectOfSlot = 'moonWalks') ifTrue: [ 
-		self applyMoonWalk.
-		 ].
-	(effectOfSlot = 'hyperJumps') ifTrue: [ 
-		self applyHyperJump.
-		 ].
-	(effectOfSlot = 'atomicBombs') ifTrue: [ 
-		self applyAtomicBomb.
-		 ].
+
+	| effectOfSlot |
+	effectOfSlot := board effectAt: self currentSpaceshipPosition.
+	effectOfSlot = 'speedUps' ifTrue: [ self applySpeedUp ].
+	effectOfSlot = 'wormholes' ifTrue: [ self applyWormhole ].
+	effectOfSlot = 'moonWalks' ifTrue: [ self applyMoonWalk ].
+	effectOfSlot = 'hyperJumps' ifTrue: [ self applyHyperJump ].
+	effectOfSlot = 'atomicBombs' ifTrue: [ self applyAtomicBomb ]
+]
+
+{ #category : #accessing }
+Game >> currentSpaceshipLap [
+	^ spaceshipsPositions at: currentSpaceshipID at: 2
+]
+
+{ #category : #accessing }
+Game >> currentSpaceshipPosition [
+	^ spaceshipsPositions at: currentSpaceshipID  at: 1
 ]
 
 { #category : #accessing }
@@ -206,49 +186,79 @@ Game >> initializeWithDice: aDice withBoard: aBoard andAmountOfLaps: aNumberOfLa
 ]
 
 { #category : #movement }
+Game >> isLapFinishedIf: positionBeforeRoll moves: rollNumber [
+
+	^ positionBeforeRoll + rollNumber >= board lenght
+]
+
+{ #category : #movement }
 Game >> move: aSpaceshipID [
 
 	| positionBeforeRoll lapBeforeRoll rollNumber |
-	positionBeforeRoll := spaceshipsPositions at: currentSpaceshipID at:1.
-	lapBeforeRoll := spaceshipsPositions at: currentSpaceshipID at:2.
+	positionBeforeRoll := self currentSpaceshipPosition.
+	lapBeforeRoll := self currentSpaceshipLap.
 	rollNumber := dice roll.
-	positionBeforeRoll + rollNumber >= board lenght
+	(self isLapFinishedIf: positionBeforeRoll moves: rollNumber)
 		ifTrue: [ 
-			(lapBeforeRoll + 1 >= numberOfLaps) 
-				ifTrue: [ 
-					spaceshipsPositions at: currentSpaceshipID at: 2 put: numberOfLaps.
-					spaceshipsPositions at: currentSpaceshipID at: 1 put: board lenght.
-					 ]
+			lapBeforeRoll + 1 >= numberOfLaps
+				ifTrue: [ self speshipMovesToTheEnd ]
 				ifFalse: [ 
-					spaceshipsPositions at: currentSpaceshipID at: 2 put: (lapBeforeRoll+1). 
-					spaceshipsPositions at: currentSpaceshipID at: 1 put: (positionBeforeRoll + rollNumber - board lenght).
-					self checkEffect.
-					 ].
-			 ]
+					self spaceshipMovesToSlot: (positionBeforeRoll + rollNumber - board lenght) andLap:(lapBeforeRoll + 1).
+					self checkEffect ] ]
 		ifFalse: [ 
-			spaceshipsPositions at: currentSpaceshipID at: 1 put: positionBeforeRoll + rollNumber.
-			self checkEffect.
-			]
-	
+			self spaceshipMovesToSlot: ( positionBeforeRoll + rollNumber).
+			self checkEffect ]
 ]
 
 { #category : #iteration }
 Game >> nextSpaceshipInLine [
-   currentSpaceshipID := currentSpaceshipID  + 1.
-   (currentSpaceshipID > spaceshipsPositions  size) ifTrue: [ currentSpaceshipID :=1 ].
+
+	currentSpaceshipID := currentSpaceshipID + 1.
+	currentSpaceshipID > spaceshipsPositions size ifTrue: [ 
+		currentSpaceshipID := 1 ]
 ]
 
 { #category : #playing }
 Game >> playEntireGame [
-	[isGameFinished] whileFalse: [ self playNextTurn ].
-	^spaceshipsPositions.
+
+	[ isGameFinished ] whileFalse: [ self playNextTurn ].
+	^ spaceshipsPositions
 ]
 
 { #category : #playingByTurns }
 Game >> playNextTurn [
-	(isGameFinished) ifTrue: [ Error signal: 'Game is finished! You cannot keep playing this game.'].
-	(isGameFinished) ifFalse: [ self move: currentSpaceshipID ].
-	((spaceshipsPositions at: currentSpaceshipID at: 1 ) >= board lenght) & ((spaceshipsPositions at: currentSpaceshipID at: 2 ) >= numberOfLaps)  ifTrue: [ 
+
+	isGameFinished ifTrue: [ 
+		Error signal: 'Game is finished! You cannot keep playing this game.' ].
+	isGameFinished ifFalse: [ self move: currentSpaceshipID ].
+	self currentSpaceshipPosition >= board lenght
+	& (self currentSpaceshipLap >= numberOfLaps) ifTrue: [ 
 		isGameFinished := true ].
-	self nextSpaceshipInLine.
+	self nextSpaceshipInLine
+]
+
+{ #category : #playing }
+Game >> spaceshipMovesToSlot: spaceshipNewPosition [
+
+	spaceshipsPositions
+		at: currentSpaceshipID
+		at: 1
+		put: spaceshipNewPosition
+]
+
+{ #category : #playing }
+Game >> spaceshipMovesToSlot: spaceshipNewPosition andLap: spaceshipNewLap [
+
+	spaceshipsPositions
+		at: currentSpaceshipID
+		at: 1
+		put: spaceshipNewPosition.
+	spaceshipsPositions at: currentSpaceshipID at: 2 put: spaceshipNewLap
+]
+
+{ #category : #movement }
+Game >> speshipMovesToTheEnd [
+
+	spaceshipsPositions at: currentSpaceshipID at: 2 put: numberOfLaps.
+	spaceshipsPositions at: currentSpaceshipID at: 1 put: board lenght
 ]
