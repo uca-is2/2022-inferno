@@ -38,9 +38,19 @@ GameMaster >> initializeWithDice: anArrayOfDieSides withBoard: aNumberOfSlots an
 	
 ]
 
+{ #category : #testing }
+GameMaster >> isGameFinished [
+	^currentGame hasGameFinished.
+]
+
 { #category : #playing }
 GameMaster >> playEntireGame [
 	finalPositions := currentGame playEntireGame.
+]
+
+{ #category : #playingByTurns }
+GameMaster >> playNextTurn [
+	currentGame playNextTurn.
 ]
 
 { #category : #showing }

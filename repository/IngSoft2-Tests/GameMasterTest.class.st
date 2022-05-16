@@ -53,3 +53,24 @@ GameMasterTest >> testGameMasterCanPlayItsGameTilTheEnd [
 	aGameMaster playEntireGame.
 	aGameMaster showFinalPositions
 ]
+
+{ #category : #tests }
+GameMasterTest >> testGameMasterCanPlayItsGameTilTheEndOneTurnAtTheTime [
+
+	| aGameMaster anArrayOfDieSides |
+	anArrayOfDieSides := Array new: 4.
+	anArrayOfDieSides at: 1 put: 6.
+	anArrayOfDieSides at: 2 put: 6.
+	anArrayOfDieSides at: 3 put: 6.
+	anArrayOfDieSides at: 4 put: 7.
+	aGameMaster := GameMaster
+		               createGameWithDice: anArrayOfDieSides
+		               withBoard: 50
+							andNumberOfParsecs: 900
+		               andAmountOfLaps: 2
+		               withAmountOfSpaceships: 4.
+	[aGameMaster isGameFinished] whileFalse: [
+		aGameMaster playNextTurn 
+		].
+	self assert: aGameMaster isGameFinished.
+]
