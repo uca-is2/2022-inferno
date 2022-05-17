@@ -211,6 +211,53 @@ GameTest >> testAtomicBombWorksAsExpected [
 ]
 
 { #category : #tests }
+GameTest >> testGettingFromAPowerUpToAnotherDoesNotTriggerTheSecondOne [
+| aDice aBoard aGame aCustomLayout slotsOfNoEffect slotsOfSpeedUp noPowerUps slotsOfAtomicBomb expectedPositions expectedSlotAndLapOne expectedSlotAndLapTwo|
+	aCustomLayout := Dictionary new.
+	slotsOfNoEffect := Array new: 5.
+	
+	slotsOfNoEffect at: 1 put: 1.
+	slotsOfNoEffect at: 2 put: 3.
+	slotsOfNoEffect at: 3 put: 4.
+	slotsOfNoEffect at: 4 put: 5.
+	slotsOfNoEffect at: 5 put: 7.
+	slotsOfSpeedUp := Array new: 1.
+	slotsOfSpeedUp at: 1 put: 2.
+	slotsOfAtomicBomb := Array new:1.
+	slotsOfAtomicBomb at: 1 put: 6.
+	noPowerUps := Array new: 1.
+	aCustomLayout at: 'noEffect' put: slotsOfNoEffect.
+	aCustomLayout at: 'speedUps' put: slotsOfSpeedUp.
+	aCustomLayout at: 'wormholes' put: noPowerUps .
+	aCustomLayout at: 'moonWalks' put: noPowerUps.
+	aCustomLayout at: 'hyperJumps' put: noPowerUps.
+	aCustomLayout at: 'atomicBombs' put: slotsOfAtomicBomb.
+	
+	expectedPositions := Dictionary new.
+	expectedSlotAndLapOne := Array new: 2.
+	expectedSlotAndLapTwo := Array new: 2.
+	
+	expectedSlotAndLapOne at: 1 put: 6.
+	expectedSlotAndLapOne at: 2 put: 0.
+
+	expectedSlotAndLapTwo at: 1 put: 0.
+	expectedSlotAndLapTwo at: 2 put: 0.
+	
+	expectedPositions at: 1 put: expectedSlotAndLapOne.
+	expectedPositions at: 2 put: expectedSlotAndLapTwo.
+	
+	aDice := LoadedDie with: 6 loadedWith: 2.
+	aBoard := Board withCustomLayout: aCustomLayout andNumberOfSlots: 7.
+	aGame := Game
+		         withDice: aDice
+		         withBoard: aBoard
+		         andAmountOfLaps: 1
+		         withAmountOfSpaceships: 2.
+	aGame playNextTurn.
+	self assert: aGame spaceshipPositioning equals: expectedPositions.
+]
+
+{ #category : #tests }
 GameTest >> testMoonwalkWorksAsExpected [
 	| aDice aBoard aGame aCustomLayout slotsOfNoEffect slotsOfMoonwalk expectedPositions noPowerUps singleMoonwalkSlot expectedSlotAndLapOne expectedSlotAndLapTwo |
 	aCustomLayout := Dictionary new.
@@ -261,7 +308,7 @@ GameTest >> testMoonwalkWorksAsExpected [
 
 { #category : #tests }
 GameTest >> testSpeedUpWorksAsExpected [
-	| aDice aBoard aGame aCustomLayout slotsOfNoEffect slotsOfSpeedUp noPowerUps |
+	| aDice aBoard aGame aCustomLayout slotsOfNoEffect slotsOfSpeedUp noPowerUps slotsOfAtomicBomb|
 	aCustomLayout := Dictionary new.
 	slotsOfNoEffect := Array new: 5.
 	
@@ -272,13 +319,15 @@ GameTest >> testSpeedUpWorksAsExpected [
 	slotsOfNoEffect at: 5 put: 6.
 	slotsOfSpeedUp := Array new: 1.
 	slotsOfSpeedUp at: 1 put: 2.
+	slotsOfAtomicBomb := Array new:1.
+	slotsOfAtomicBomb at: 1 put: 8.
 	noPowerUps := Array new: 1.
 	aCustomLayout at: 'noEffect' put: slotsOfNoEffect.
 	aCustomLayout at: 'speedUps' put: slotsOfSpeedUp.
-	aCustomLayout at: 'wormholes' put: noPowerUps.
+	aCustomLayout at: 'wormholes' put: noPowerUps .
 	aCustomLayout at: 'moonWalks' put: noPowerUps.
 	aCustomLayout at: 'hyperJumps' put: noPowerUps.
-	aCustomLayout at: 'atomicBombs' put: noPowerUps.
+	aCustomLayout at: 'atomicBombs' put: slotsOfAtomicBomb.
 	
 	aDice := LoadedDie with: 6 loadedWith: 2.
 	aBoard := Board withCustomLayout: aCustomLayout andNumberOfSlots: 6.
