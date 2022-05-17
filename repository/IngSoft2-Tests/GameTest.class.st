@@ -124,7 +124,7 @@ GameTest >> testAGameCannotBeCreatedWithoutSpaceShips [
 
 	| aGame error errorMessage aDie aBoard |
 	aDie := Die with: 9.
-	aBoard := [ Board with: 70 ].
+	aBoard := Board with:70 andNumberOfParsecs: 15.
 	aGame := [ 
 	         Game
 		         withDice: aDie
@@ -165,6 +165,101 @@ GameTest >> testAGameWithACustomLayoutToTestCanBeCreated [
 ]
 
 { #category : #tests }
+GameTest >> testAtomicBombWorksAsExpected [
+	| aDice aBoard aGame aCustomLayout slotsOfNoEffect slotsOfAtomicBombs noPowerUps expectedPositions expectedSlotAndLapOne expectedSlotAndLapTwo |
+	aCustomLayout := Dictionary new.
+	slotsOfNoEffect := Array new: 5.
+	
+	slotsOfNoEffect at: 1 put: 1.
+	slotsOfNoEffect at: 2 put: 3.
+	slotsOfNoEffect at: 3 put: 4.
+	slotsOfNoEffect at: 4 put: 5.
+	slotsOfNoEffect at: 5 put: 6.
+	slotsOfAtomicBombs := Array new: 1.
+	slotsOfAtomicBombs at: 1 put: 6.
+	noPowerUps := Array new: 1.
+	aCustomLayout at: 'noEffect' put: slotsOfNoEffect.
+	aCustomLayout at: 'wormholes' put: noPowerUps.
+	aCustomLayout at: 'speedUps' put: noPowerUps.
+	aCustomLayout at: 'moonWalks' put: noPowerUps.
+	aCustomLayout at: 'hyperJumps' put: noPowerUps.
+	aCustomLayout at: 'atomicBombs' put: slotsOfAtomicBombs.
+	
+	
+	expectedPositions := Dictionary new.
+	expectedSlotAndLapOne := Array new: 2.
+	expectedSlotAndLapTwo := Array new: 2.
+	
+	expectedSlotAndLapOne at: 1 put: 0.
+	expectedSlotAndLapOne at: 2 put: 0.
+
+	expectedSlotAndLapTwo at: 1 put: 0.
+	expectedSlotAndLapTwo at: 2 put: 0.
+	
+	expectedPositions at: 1 put: expectedSlotAndLapOne.
+	expectedPositions at: 2 put: expectedSlotAndLapTwo.
+	
+	aDice := LoadedDie with: 6 loadedWith: 6.
+	aBoard := Board withCustomLayout: aCustomLayout andNumberOfSlots: 8.
+	aGame := Game
+		         withDice: aDice
+		         withBoard: aBoard
+		         andAmountOfLaps: 1
+		         withAmountOfSpaceships: 2.
+	aGame playNextTurn.
+	self assert: aGame spaceshipPositioning equals: expectedPositions.
+]
+
+{ #category : #tests }
+GameTest >> testMoonwalkWorksAsExpected [
+	| aDice aBoard aGame aCustomLayout slotsOfNoEffect slotsOfMoonwalk expectedPositions noPowerUps singleMoonwalkSlot expectedSlotAndLapOne expectedSlotAndLapTwo |
+	aCustomLayout := Dictionary new.
+	slotsOfNoEffect := Array new: 5.
+	
+	slotsOfNoEffect at: 1 put: 1.
+	slotsOfNoEffect at: 2 put: 3.
+	slotsOfNoEffect at: 3 put: 4.
+	slotsOfNoEffect at: 4 put: 5.
+	slotsOfNoEffect at: 5 put: 6.
+	noPowerUps := Array new: 1.
+	aCustomLayout at: 'wormholes' put: noPowerUps.
+	aCustomLayout at: 'speedUps' put: noPowerUps.
+	aCustomLayout at: 'hyperJumps' put: noPowerUps.
+	aCustomLayout at: 'atomicBombs' put: noPowerUps.
+	
+	singleMoonwalkSlot := Array new: 2.
+	singleMoonwalkSlot at: 1 put: 2.
+	singleMoonwalkSlot at: 2 put: 1.
+	
+	slotsOfMoonwalk := Array new: 1.
+	slotsOfMoonwalk at: 1 put: singleMoonwalkSlot.
+	aCustomLayout at: 'noEffect' put: slotsOfNoEffect.
+	aCustomLayout at: 'moonWalks' put: slotsOfMoonwalk.
+	expectedPositions := Dictionary new.
+	expectedSlotAndLapOne := Array new: 2.
+	expectedSlotAndLapTwo := Array new: 2.
+	
+	expectedSlotAndLapOne at: 1 put: 2.
+	expectedSlotAndLapOne at: 2 put: 0.
+	
+	expectedSlotAndLapTwo at: 1 put: 0.
+	expectedSlotAndLapTwo at: 2 put: 0.
+	
+	expectedPositions at: 1 put: expectedSlotAndLapOne.
+	expectedPositions at: 2 put: expectedSlotAndLapTwo.
+	
+	aDice := LoadedDie with: 6 loadedWith: 2.
+	aBoard := Board withCustomLayout: aCustomLayout andNumberOfSlots: 6.
+	aGame := Game
+		         withDice: aDice
+		         withBoard: aBoard
+		         andAmountOfLaps: 1
+		         withAmountOfSpaceships: 2.
+	aGame playNextTurn.
+	self assert: aGame spaceshipPositioning equals: expectedPositions
+]
+
+{ #category : #tests }
 GameTest >> testSpeedUpWorksAsExpected [
 	| aDice aBoard aGame aCustomLayout slotsOfNoEffect slotsOfSpeedUp noPowerUps |
 	aCustomLayout := Dictionary new.
@@ -175,7 +270,6 @@ GameTest >> testSpeedUpWorksAsExpected [
 	slotsOfNoEffect at: 3 put: 4.
 	slotsOfNoEffect at: 4 put: 5.
 	slotsOfNoEffect at: 5 put: 6.
-	
 	slotsOfSpeedUp := Array new: 1.
 	slotsOfSpeedUp at: 1 put: 2.
 	noPowerUps := Array new: 1.
@@ -195,4 +289,50 @@ GameTest >> testSpeedUpWorksAsExpected [
 		         withAmountOfSpaceships: 2.
 	aGame playNextTurn.
 	self assert: (aGame hasGameFinished)
+]
+
+{ #category : #tests }
+GameTest >> testWormholesWorksAsExpected [
+	| aDice aBoard aGame aCustomLayout slotsOfNoEffect slotsOfWormholes noPowerUps expectedPositions expectedSlotAndLapOne expectedSlotAndLapTwo |
+	aCustomLayout := Dictionary new.
+	slotsOfNoEffect := Array new: 5.
+	
+	slotsOfNoEffect at: 1 put: 1.
+	slotsOfNoEffect at: 2 put: 3.
+	slotsOfNoEffect at: 3 put: 4.
+	slotsOfNoEffect at: 4 put: 5.
+	slotsOfNoEffect at: 5 put: 6.
+	slotsOfWormholes := Array new: 1.
+	slotsOfWormholes at: 1 put: 6.
+	noPowerUps := Array new: 1.
+	aCustomLayout at: 'noEffect' put: slotsOfNoEffect.
+	aCustomLayout at: 'wormholes' put: slotsOfWormholes.
+	aCustomLayout at: 'speedUps' put: noPowerUps.
+	aCustomLayout at: 'moonWalks' put: noPowerUps.
+	aCustomLayout at: 'hyperJumps' put: noPowerUps.
+	aCustomLayout at: 'atomicBombs' put: noPowerUps.
+	
+	
+	expectedPositions := Dictionary new.
+	expectedSlotAndLapOne := Array new: 2.
+	expectedSlotAndLapTwo := Array new: 2.
+	
+	expectedSlotAndLapOne at: 1 put: 2.
+	expectedSlotAndLapOne at: 2 put: 0.
+
+	expectedSlotAndLapTwo at: 1 put: 0.
+	expectedSlotAndLapTwo at: 2 put: 0.
+	
+	expectedPositions at: 1 put: expectedSlotAndLapOne.
+	expectedPositions at: 2 put: expectedSlotAndLapTwo.
+	
+	aDice := LoadedDie with: 6 loadedWith: 6.
+	aBoard := Board withCustomLayout: aCustomLayout andNumberOfSlots: 8.
+	aGame := Game
+		         withDice: aDice
+		         withBoard: aBoard
+		         andAmountOfLaps: 1
+		         withAmountOfSpaceships: 2.
+	aGame playNextTurn.
+	self assert: aGame spaceshipPositioning equals: expectedPositions.
 ]

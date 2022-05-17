@@ -184,7 +184,7 @@ Board >> percentageOfSlots: percentage [
 	^ (numberOfSlots * percentage)asInteger
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'accessing - attributes' }
 Board >> slotAlreadyHasEffect: slot [ 
 	| slotHasEffect |
 	slotHasEffect := false.

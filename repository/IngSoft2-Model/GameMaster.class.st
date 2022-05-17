@@ -58,7 +58,7 @@ GameMaster >> showFinalPositions [
 	^ finalPositions
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #showing }
 GameMaster >> spacehipsPositions [
 	^ currentGame spaceshipPositioning.
 ]

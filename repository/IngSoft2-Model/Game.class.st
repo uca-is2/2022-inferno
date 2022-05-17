@@ -41,7 +41,7 @@ Game class >> withDice: aDice withBoard: aBoard andAmountOfLaps: aNumberOfLaps w
 { #category : #effects }
 Game >> applyAtomicBomb [
 	1 to: (spaceshipsPositions size) do: [:spaceshipIterator |  
-		spaceshipsPositions at: spaceshipIterator at: 1 put:1.
+		spaceshipsPositions at: spaceshipIterator at: 1 put:0.
 		]
 ]
 
@@ -256,7 +256,7 @@ Game >> spaceshipMovesToSlot: spaceshipNewPosition andLap: spaceshipNewLap [
 	spaceshipsPositions at: currentSpaceshipID at: 2 put: spaceshipNewLap
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 Game >> spaceshipPositioning [
 	^spaceshipsPositions copy.
 ]
