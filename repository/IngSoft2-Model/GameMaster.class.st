@@ -12,15 +12,18 @@ Class {
 }
 
 { #category : #instanceCreation }
-GameMaster class >> createGameWithDice:  anArrayOfDiceSides withBoard: aNumberOfSlots withAmountOfplayers: anAmountOfSpaceships [ 
+GameMaster class >> createGameWithDice: anArrayOfDiceSides withBoard: aNumberOfSlots andNumberOfParsecs: amountOfParsecs andAmountOfLaps: aNumberOfLaps withAmountOfSpaceships: anAmountOfSpaceships [
+
 	^ self new
-		  initializeWithDice:  anArrayOfDiceSides
-		  withBoard: aNumberOfSlots 
-		  withAmountOfSpaceships: anAmountOfSpaceships 
+		  initializeWithDice: anArrayOfDiceSides
+		  withBoard: aNumberOfSlots
+		  andNumberOfParsecs: amountOfParsecs
+		  andAmountOfLaps: aNumberOfLaps 
+		  withAmountOfSpaceships: anAmountOfSpaceships
 ]
 
 { #category : #initialization }
-GameMaster >> initializeWithDice: anArrayOfDieSides withBoard: aNumberOfSlots withAmountOfSpaceships: anAmountOfSpaceships [
+GameMaster >> initializeWithDice: anArrayOfDieSides withBoard: aNumberOfSlots andNumberOfParsecs: amountOfParsecs andAmountOfLaps: aNumberOfLaps withAmountOfSpaceships: anAmountOfSpaceships [
 
 	| aCollectionOfDice aDie index aBoard aDiceCup |
 	index := 1.
@@ -29,10 +32,15 @@ GameMaster >> initializeWithDice: anArrayOfDieSides withBoard: aNumberOfSlots wi
 		aDie := Die with: aNumberOfDieSides.
 		aCollectionOfDice at: index put: aDie.
 		index := index + 1 ].
-	aBoard := Board with: aNumberOfSlots.
+	aBoard := Board with: aNumberOfSlots andNumberOfParsecs: amountOfParsecs.
 	aDiceCup := DiceCup with: aCollectionOfDice.
-	currentGame := Game withDice: aDiceCup withBoard: aBoard withAmountOfSpaceships: anAmountOfSpaceships.
+	currentGame := Game withDice: aDiceCup withBoard: aBoard andAmountOfLaps: aNumberOfLaps withAmountOfSpaceships: anAmountOfSpaceships.
 	
+]
+
+{ #category : #testing }
+GameMaster >> isGameFinished [
+	^currentGame hasGameFinished.
 ]
 
 { #category : #playing }
@@ -40,7 +48,17 @@ GameMaster >> playEntireGame [
 	finalPositions := currentGame playEntireGame.
 ]
 
+{ #category : #playingByTurns }
+GameMaster >> playNextTurn [
+	currentGame playNextTurn.
+]
+
 { #category : #showing }
 GameMaster >> showFinalPositions [
 	^ finalPositions
+]
+
+{ #category : #showing }
+GameMaster >> spacehipsPositions [
+	^ currentGame spaceshipPositioning.
 ]
