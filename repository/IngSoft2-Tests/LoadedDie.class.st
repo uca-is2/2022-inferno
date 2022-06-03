@@ -3,11 +3,12 @@ I represent a Loaded Die, a specific type of Die.
 "
 Class {
 	#name : #LoadedDie,
-	#superclass : #Die,
+	#superclass : #Object,
 	#instVars : [
+		'numberOfSides',
 		'loadedSide'
 	],
-	#category : #'IngSoft2-Model'
+	#category : #'IngSoft2-Tests'
 }
 
 { #category : #initialization }

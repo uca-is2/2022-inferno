@@ -16,7 +16,15 @@ DieTest >> should: errorBlock raise: errorClass withMessage: expectedErrorMessag
 ]
 
 { #category : #testsDie }
-DieTest >> testADieCannotHaveANegativeSide [
+DieTest >> test01ADieHasMoreThanTwoSides [
+	
+	| aDie |
+	aDie := Die with: 3.
+	self assert: (aDie isValid).
+]
+
+{ #category : #testsDie }
+DieTest >> test02ADieCannotHaveANegativeSide [
 	
 	| aDie error errorMessage|
 	aDie := [Die with: -5].
@@ -26,32 +34,14 @@ DieTest >> testADieCannotHaveANegativeSide [
 ]
 
 { #category : #testsDie }
-DieTest >> testADieHasMoreThanTwoSides [
-	
-	| aDie |
-	aDie := Die with: 3.
-	self assert: (aDie isValid).
-]
-
-{ #category : #testsLoadedDie }
-DieTest >> testALoadedDieHasALoadedSideAndDieIsValid [
-
-	| aDie |
-	aDie:= LoadedDie with: 5 loadedWith:3.
-	self assert: aDie isValid.
-]
-
-{ #category : #testsLoadedDie }
-DieTest >> testALoadedDieIsRolledAndReturnsLoadedSide [
-	
-	| aLoadedSide aDie |
-	aLoadedSide:=3.
-	aDie:= LoadedDie with: 6 loadedWith: aLoadedSide.
-	self assert: aDie roll equals: aLoadedSide.
+DieTest >> test03DieRollDoesReturnAnInteger [
+	|aDie|
+	aDie:= Die with: 6.
+	self assert: (aDie roll isInteger).
 ]
 
 { #category : #testsDie }
-DieTest >> testDieIsRolledAndReturnsANumberBetweenOneAndNumberOfSides [
+DieTest >> test04DieIsRolledAndReturnsANumberBetweenOneAndNumberOfSides [
 	| aNumberOfSides aDie aResult |
 	aNumberOfSides:=7.
 	aDie:= Die with: aNumberOfSides.
@@ -59,9 +49,19 @@ DieTest >> testDieIsRolledAndReturnsANumberBetweenOneAndNumberOfSides [
 	self assert: (aResult between: 1 and: aNumberOfSides).
 ]
 
-{ #category : #testsDie }
-DieTest >> testDieRollDoesReturnAnInteger [
-	|aDie|
-	aDie:= Die with: 6.
-	self assert: (aDie roll isInteger).
+{ #category : #testsLoadedDie }
+DieTest >> test05ALoadedDieHasALoadedSideAndDieIsValid [
+
+	| aDie |
+	aDie:= LoadedDie with: 5 loadedWith:3.
+	self assert: aDie isValid.
+]
+
+{ #category : #testsLoadedDie }
+DieTest >> test06ALoadedDieIsRolledAndReturnsLoadedSide [
+	
+	| aLoadedSide aDie |
+	aLoadedSide:=3.
+	aDie:= LoadedDie with: 6 loadedWith: aLoadedSide.
+	self assert: aDie roll equals: aLoadedSide.
 ]

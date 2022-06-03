@@ -15,53 +15,56 @@ BoardTest >> should: errorBlock raise: errorClass withMessage: expectedErrorMess
 		errorMessage := error messageText ].
 ]
 
-{ #category : #asserting }
-BoardTest >> testABoardHasMoreThanOneSlotAndNinePaesecsIsValid [
-
-	| aBoard |
-	aBoard := Board with: 1 andNumberOfParsecs: 10.
-	self assert: aBoard isValid
-]
-
-{ #category : #asserting }
-BoardTest >> testCannotCreateABoardWithInvalidNumberOfSlots [
+{ #category : #tests }
+BoardTest >> test01BoardCannotBeCreatedWithANumberOfSpotsLowerThanOne [
 
 	| aBoard error errorMessage |
-	aBoard := [ Board with: -5 andNumberOfParsecs: 100].
+	aBoard := [ Board with: -6 withALenghtOf: 1].
 	error := Error.
-	errorMessage := 'Board cannot be created with a number of slots lower than 1 or Parsecs lower than 9'.
+	errorMessage := 'Board cannot be created with a number of spots lower than one'.
 	self should: aBoard raise: error withMessage: errorMessage
+	
+
 ]
 
-{ #category : #asserting }
-BoardTest >> testCannotCreateABoardWithLessThan9Parsecs [
+{ #category : #tests }
+BoardTest >> test02BoardCannotBeCreatedWithALenghtInParsecsLowerThanTheAmountOfSpots [
 
 	| aBoard error errorMessage |
-	aBoard := [ Board with: 6 andNumberOfParsecs: 1].
+	aBoard := [ Board with: 6 withALenghtOf: 1].
 	error := Error.
-	errorMessage := 'Board cannot be created with a number of slots lower than 1 or Parsecs lower than 9'.
+	errorMessage := 'Board cannot be created with a number of parsecs lower than the amount of spots'.
 	self should: aBoard raise: error withMessage: errorMessage
+	
+
 ]
 
-{ #category : #asserting }
-BoardTest >> testInitializingABoardCreatesTheBoardWithEffects [
+{ #category : #tests }
+BoardTest >> test03ABoardCanReturnItsLenghtInParsecs [
+
+	| aBoard anAmountOfParsecs |
+	anAmountOfParsecs := 100.
+	aBoard := Board with: 10 withALenghtOf: anAmountOfParsecs.
+	self assert: aBoard lenghtInParsecs equals: anAmountOfParsecs. 
+	
+
+]
+
+{ #category : #tests }
+BoardTest >> test04CreatedBoardHasALayoutThatIsAnArrayOfSpots [
 
 	| aBoard |
-	aBoard := Board with: 100 andNumberOfParsecs: 7343.
+	aBoard := Board with: 10 withALenghtOf: 100.
+	self assert: (aBoard layout isKindOf: Array).
 	
-	self assert:( aBoard layout isKindOf: Dictionary)
+
 ]
 
-{ #category : #asserting }
-BoardTest >> testPercentageOfSlotsPerEffectsInBoardIsValid [
-	| aBoard amountOfSpeedups amountOfWormholes amountOfMoonWalks amountOfHyperJumps amountOfAtomicBombs numberOfSlots |
-	aBoard := Board with: 100 andNumberOfParsecs: 7343.
-	amountOfSpeedups := (aBoard layout at: 'speedUps') size.
-	amountOfWormholes := (aBoard layout at: 'wormholes') size.
-	amountOfMoonWalks := (aBoard layout at: 'moonWalks' at: 1) size.
-	amountOfHyperJumps := (aBoard layout at: 'hyperJumps') size.
-	amountOfAtomicBombs := (aBoard layout at: 'atomicBombs') size.
+{ #category : #tests }
+BoardTest >> test05ABoardCanBeFilledWithEffectsInItsCorrectProportion [
+
+	| aBoard |
+	aBoard := Board with: 10 withALenghtOf: 100.
 	
-	numberOfSlots := aBoard lenght. 
-	self assert:( (amountOfSpeedups = (numberOfSlots * 0.2)asInteger) & (amountOfWormholes = (numberOfSlots * 0.2)asInteger) & (amountOfMoonWalks = (numberOfSlots * 0.1)asInteger) & (amountOfHyperJumps = (numberOfSlots * 0.08)asInteger) & (amountOfAtomicBombs = (numberOfSlots * 0.02)asInteger))
+
 ]
