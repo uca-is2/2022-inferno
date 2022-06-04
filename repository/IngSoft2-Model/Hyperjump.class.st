@@ -1,8 +1,8 @@
 "
-i represent a type of effect: speedup
+i represent a type of effect: hyperjump
 "
 Class {
-	#name : #SpeedUp,
+	#name : #Hyperjump,
 	#superclass : #Effect,
 	#category : #'IngSoft2-Model'
 }

@@ -61,7 +61,19 @@ BoardTest >> test04CreatedBoardHasALayoutThatIsAnArrayOfSpots [
 ]
 
 { #category : #tests }
-BoardTest >> test05ABoardCanBeFilledWithEffectsInItsCorrectProportion [
+BoardTest >> test05ABoardCanReturnItsLenghtInSpots [
+
+	| aBoard aNumberOfSpots |
+	aNumberOfSpots := 10.
+	aBoard := Board with: aNumberOfSpots withALenghtOf: 100.
+	self assert: aBoard length equals: aNumberOfSpots.
+	
+	
+
+]
+
+{ #category : #tests }
+BoardTest >> test06ABoardCanBeFilledWithEffectsInItsCorrectProportion [
 
 	| aBoard |
 	aBoard := Board with: 10 withALenghtOf: 100.

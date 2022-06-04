@@ -11,10 +11,8 @@ Class {
 }
 
 { #category : #initialization }
-Spot class >> create [
-	| noEffect |
-	noEffect := NoEffect new.
-	^ self new initializeWith: noEffect.
+Spot class >> createWith: anEffect [
+	^ self new initializeWith: anEffect.
 	
 ]
 
@@ -25,9 +23,9 @@ Spot >> effectAtSpot [
 ]
 
 { #category : #initialization }
-Spot >> initializeWith: aNoEffect [ 
+Spot >> initializeWith: anEffect [ 
 	
-	effect := aNoEffect.
+	effect := anEffect.
 ]
 
 { #category : #setters }

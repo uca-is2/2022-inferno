@@ -1,8 +1,8 @@
 "
-i represent a type of effect: speedup
+i represent a type of effect: moonwalk
 "
 Class {
-	#name : #SpeedUp,
+	#name : #Moonwalk,
 	#superclass : #Effect,
 	#category : #'IngSoft2-Model'
 }

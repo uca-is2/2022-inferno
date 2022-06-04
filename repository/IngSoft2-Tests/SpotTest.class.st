@@ -5,19 +5,10 @@ Class {
 }
 
 { #category : #tests }
-SpotTest >> test01SpotCanBeCreatedAndHasNoEffectAsDefault [
-
-	| aSpot |
-	aSpot := Spot create.
-	self assert: (aSpot effectAtSpot isKindOf: NoEffect).
-]
-
-{ #category : #tests }
-SpotTest >> test02SpotCanBeLoadedWithANotNullEffect [
+SpotTest >> test01SpotCanBeCreatedAndLoadedWithAnEffect [
 
 	| aSpot aSpeedUp|
 	aSpeedUp := SpeedUp new.
-	aSpot := Spot create.
-	aSpot loadEffect: aSpeedUp.
+	aSpot := Spot createWith: aSpeedUp.
 	self assert: (aSpot effectAtSpot isKindOf: SpeedUp).
 ]

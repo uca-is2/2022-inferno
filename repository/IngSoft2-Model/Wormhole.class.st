@@ -1,8 +1,8 @@
 "
-i represent a type of effect: speedup
+i represent a type of effect: wormhole
 "
 Class {
-	#name : #SpeedUp,
+	#name : #Wormhole,
 	#superclass : #Effect,
 	#category : #'IngSoft2-Model'
 }
