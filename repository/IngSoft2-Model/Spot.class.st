@@ -27,10 +27,3 @@ Spot >> initializeWith: anEffect [
 	
 	effect := anEffect.
 ]
-
-{ #category : #setters }
-Spot >> loadEffect: anEffect [
-
-	effect := anEffect 
-	
-]

@@ -27,7 +27,7 @@ Board >> effectLoader: arrayOfEffects with: aNumberOfSpots [
 	spotsWithThisEffect := 0.
 	arrayOfUsedSpots := OrderedCollection new: aNumberOfSpots.
 	arrayOfSpots := Array new: aNumberOfSpots.
-	1 to: 6 do: [:effect|  
+	1 to: (arrayOfEffects size) do: [:effect|  
 		[((arrayOfEffects at: effect) size) > spotsWithThisEffect ]whileTrue: [ 
 			randomSlot := aNumberOfSpots atRandom. 
 			(arrayOfUsedSpots includes: randomSlot )ifFalse: [  
@@ -37,6 +37,7 @@ Board >> effectLoader: arrayOfEffects with: aNumberOfSpots [
 		].
 		spotsWithThisEffect := 0.
 	]. 	 
+	(arrayOfSpots includes: nil)ifTrue: [ arrayOfSpots := self llenaLosNils: arrayOfSpots ofSize: (arrayOfEffects size)].
 	^ arrayOfSpots 
 ]
 
@@ -74,11 +75,20 @@ Board >> length [
 ]
 
 { #category : #initialization }
+Board >> llenaLosNils: anArrayOfSpots ofSize: anAmountOfEffects [
+
+	1 to: anAmountOfEffects do: [ :each | 
+		(anArrayOfSpots at: each)ifNil: [ 
+			anArrayOfSpots at: each put: (Spot createWith: NoEffect new) ] ].
+	^ anArrayOfSpots.
+]
+
+{ #category : #initialization }
 Board >> loadAtomicBomb: aNumberOfSpots [
 	| numberOfAtomicBomb arrayOfAtomicBomb |
 	numberOfAtomicBomb := (aNumberOfSpots  * 0.02)asInteger.
 	arrayOfAtomicBomb := Array new: numberOfAtomicBomb.
-	arrayOfAtomicBomb := arrayOfAtomicBomb collect: [:each| AtomicBomb new.].
+	arrayOfAtomicBomb := arrayOfAtomicBomb collect: [:each| Spot createWith: AtomicBomb new.].
 	^ arrayOfAtomicBomb 
 ]
 
@@ -106,7 +116,7 @@ Board >> loadHyperjump: aNumberOfSpots [
 	| numberOfHyperjump arrayOfHyperJump |
 	numberOfHyperjump := (aNumberOfSpots  * 0.08)asInteger.
 	arrayOfHyperJump := Array new: numberOfHyperjump.
-	arrayOfHyperJump := arrayOfHyperJump collect: [:each| Hyperjump new.].
+	arrayOfHyperJump := arrayOfHyperJump collect: [:each| Spot createWith: Hyperjump new.].
 	^ arrayOfHyperJump 	
 ]
 
@@ -115,7 +125,7 @@ Board >> loadMoonwalk: aNumberOfSpots [
 	| numberOfMoonwalk arrayOfMoonwalk |
 	numberOfMoonwalk := (aNumberOfSpots  * 0.1)asInteger.
 	arrayOfMoonwalk := Array new: numberOfMoonwalk.
-	arrayOfMoonwalk := arrayOfMoonwalk collect: [:each| Moonwalk new.].
+	arrayOfMoonwalk := arrayOfMoonwalk collect: [:each| Spot createWith: Moonwalk new.].
 	^ arrayOfMoonwalk 
 ]
 
@@ -124,7 +134,7 @@ Board >> loadNoEffect: aNumberOfSpots [
 	| numberOfNoEffect arrayOfNoEffect |
 	numberOfNoEffect := (aNumberOfSpots  * 0.4)asInteger.
 	arrayOfNoEffect := Array new: numberOfNoEffect.
-	arrayOfNoEffect := arrayOfNoEffect collect: [:each| NoEffect new.].
+	arrayOfNoEffect := arrayOfNoEffect collect: [:each| Spot createWith: NoEffect new.].
 	^ arrayOfNoEffect 
 ]
 
@@ -134,7 +144,7 @@ Board >> loadSpeedUps: aNumberOfSpots [
 	| numberOfSpeedUps arrayOfSpeedUp |
 	numberOfSpeedUps := (aNumberOfSpots  * 0.2)asInteger.
 	arrayOfSpeedUp := Array new: numberOfSpeedUps.
-	arrayOfSpeedUp := arrayOfSpeedUp collect: [:each| SpeedUp new.].
+	arrayOfSpeedUp := arrayOfSpeedUp collect: [:each| Spot createWith: SpeedUp new.].
 	^ arrayOfSpeedUp 
 ]
 
@@ -144,6 +154,6 @@ Board >> loadWormhole: aNumberOfSpots [
 	| numberOfWormholes arrayOfWormholes |
 	numberOfWormholes := (aNumberOfSpots  * 0.2)asInteger.
 	arrayOfWormholes := Array new: numberOfWormholes.
-	arrayOfWormholes := arrayOfWormholes collect: [:each| Wormhole new.].
+	arrayOfWormholes := arrayOfWormholes collect: [:each| Spot createWith: Wormhole new.].
 	^ arrayOfWormholes 
 ]

@@ -73,10 +73,11 @@ BoardTest >> test05ABoardCanReturnItsLenghtInSpots [
 ]
 
 { #category : #tests }
-BoardTest >> test06ABoardCanBeFilledWithEffectsInItsCorrectProportion [
+BoardTest >> test06ABoardIsCreatedAndEffectsAredDistributed [
 
 	| aBoard |
 	aBoard := Board with: 10 withALenghtOf: 100.
+	self assert: ((((aBoard layout) at:5)effectAtSpot) isKindOf: Effect).
 	
 
 ]
