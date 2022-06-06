@@ -28,6 +28,11 @@ Zathura class >> playedWith: aDice over: aBoard around: anAmountOfLaps by: anAmo
 	
 ]
 
+{ #category : #accessing }
+Zathura >> hasGameFinished [
+	^ gameIsFinished.
+]
+
 { #category : #initialization }
 Zathura >> initializeGameWith: aDice playedOver: aBoard around: anAmountOfLaps by: anAmountOfSpaceships [ 
 	
@@ -37,4 +42,44 @@ Zathura >> initializeGameWith: aDice playedOver: aBoard around: anAmountOfLaps b
 	laps := anAmountOfLaps.
 	gameIsFinished := false.
 	
+]
+
+{ #category : #moving }
+Zathura >> isLapFinishedIf: positionBeforeRoll moves: rollNumber [
+
+	^ positionBeforeRoll + rollNumber >= (board length).
+]
+
+{ #category : #moving }
+Zathura >> move: aSpaceshipID [
+
+	| positionBeforeRoll lapBeforeRoll rollNumber |
+	positionBeforeRoll := spaceshipsPositions  currentSpaceshipPosition.
+	lapBeforeRoll := spaceshipsPositions currentSpaceshipLap.
+	rollNumber := dice roll.
+	(self isLapFinishedIf: positionBeforeRoll moves: rollNumber)
+		ifTrue: [ 
+			lapBeforeRoll + 1 >= laps
+				ifTrue: [ self spaceshipMovesToTheEnd ]
+				ifFalse: [ 
+					spaceshipsPositions moveCurrentTo: (positionBeforeRoll + rollNumber - board length) andLap:(lapBeforeRoll + 1).
+					"self checkEffect" ] ]
+		ifFalse: [ 
+			spaceshipsPositions moveCurrentTo:  ( positionBeforeRoll + rollNumber).
+			"self checkEffect" ]
+]
+
+{ #category : #playing }
+Zathura >> playNextTurn [
+		gameIsFinished ifTrue: [ 
+		Error signal: 'Game is finished! You cannot keep playing this game.' ].
+	self move: (spaceshipsPositions currentSpaceshipId).
+	(spaceshipsPositions currentSpaceshipPosition >= board length) & (spaceshipsPositions currentSpaceshipLap >= laps) ifTrue: [ 
+		gameIsFinished := true ].
+	spaceshipsPositions nextSpaceshipInLine
+]
+
+{ #category : #moving }
+Zathura >> spaceshipMovesToTheEnd [
+	spaceshipsPositions moveCurrentTo: board length andLap: laps.
 ]
