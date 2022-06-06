@@ -6,3 +6,7 @@ Class {
 	#superclass : #Object,
 	#category : #'IngSoft2-Model'
 }
+
+{ #category : #applying }
+Effect >> applyTo: aGamePositions [ 
+]

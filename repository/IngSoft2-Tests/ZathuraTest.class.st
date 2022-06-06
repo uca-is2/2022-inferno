@@ -69,3 +69,20 @@ ZathuraTest >> test04ZathuraGameCanBePlayedByIndividualTurnsUntilFinished [
 	self assert: aGame hasGameFinished
 
 ]
+
+{ #category : #tests }
+ZathuraTest >> test05ZathuraGameCanBePlayedUntilFinished [
+
+	| aDie1 aDie2 aBoard aGame aCollection aDiceCup |
+	aDie1 := Die with: 6.
+	aDie2 := Die with: 6.
+	aCollection := Array new: 2.
+	aCollection at: 1 put: aDie1.
+	aCollection at: 2 put: aDie2.
+	aDiceCup := DiceCup with: aCollection.
+	aBoard := Board with: 50 withALenghtOf: 300.
+	aGame := Zathura playedWith: aDiceCup over: aBoard around: 2 by: 3.
+	aGame playEntireGame.
+	self assert: aGame hasGameFinished
+
+]

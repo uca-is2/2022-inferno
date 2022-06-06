@@ -44,8 +44,8 @@ GamePositions >> initializeWith: anAmountOfSpaceships [
 	spaceshipsPositions := Dictionary new. 
 	1 to: anAmountOfSpaceships do: [ :spaceshipID | 
 	spaceshipsPositions at: spaceshipID put: (Array new: 2).
-	spaceshipsPositions at: spaceshipID at: 1 put: 0.
-	spaceshipsPositions at: spaceshipID at: 2 put: 0.].
+	spaceshipsPositions at: spaceshipID at: 1 put: 1.
+	spaceshipsPositions at: spaceshipID at: 2 put: 1.].
 	currentSpaceshipID := 1.
 ]
 

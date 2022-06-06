@@ -28,6 +28,12 @@ Zathura class >> playedWith: aDice over: aBoard around: anAmountOfLaps by: anAmo
 	
 ]
 
+{ #category : #effects }
+Zathura >> applyEffect [
+	| effectOfSlot |
+	effectOfSlot := ((board layout at: (spaceshipsPositions currentSpaceshipPosition)) effectAtSpot) applyTo: spaceshipsPositions.
+]
+
 { #category : #accessing }
 Zathura >> hasGameFinished [
 	^ gameIsFinished.
@@ -63,10 +69,16 @@ Zathura >> move: aSpaceshipID [
 				ifTrue: [ self spaceshipMovesToTheEnd ]
 				ifFalse: [ 
 					spaceshipsPositions moveCurrentTo: (positionBeforeRoll + rollNumber - board length) andLap:(lapBeforeRoll + 1).
-					"self checkEffect" ] ]
+					self applyEffect ] ]
 		ifFalse: [ 
 			spaceshipsPositions moveCurrentTo:  ( positionBeforeRoll + rollNumber).
-			"self checkEffect" ]
+			self applyEffect ]
+]
+
+{ #category : #playing }
+Zathura >> playEntireGame [
+	[ gameIsFinished  ] whileFalse: [ self playNextTurn ].
+	^ spaceshipsPositions.
 ]
 
 { #category : #playing }
