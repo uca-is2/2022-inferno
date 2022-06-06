@@ -81,3 +81,17 @@ BoardTest >> test06ABoardIsCreatedAndEffectsAredDistributed [
 	
 
 ]
+
+{ #category : #tests }
+BoardTest >> test07ABoardIsCreatedAndAllElementsOfArrayAreSpots [
+
+	| aBoard flag |
+	flag := true.
+	aBoard := Board with: 100 withALenghtOf: 1000. 
+	1 to: 100 do:  [ :each| (((aBoard layout) at: each) isKindOf: Spot)ifFalse: [ flag := false 
+			]
+		].
+	self assert: (flag).
+	
+
+]
