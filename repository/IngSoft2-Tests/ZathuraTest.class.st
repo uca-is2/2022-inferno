@@ -25,6 +25,19 @@ ZathuraTest >> test01ZathuraGameCanBeStarted [
 ]
 
 { #category : #tests }
+ZathuraTest >> test02ZathuraGameCannotBeCreatedWithANumberOfSpaceshipsLowerThanTwo [
+
+	| aDice aGame error errorMessage |
+	error := Error.
+	errorMessage := 'A game cannot be created with a number of spaceships lower than two.'.
+	aDice := Die with: 6.
+	aGame := [Zathura playedWith: aDice over: 100 by: 2 around: -1.].
+	self should: aGame raise: error withMessage: errorMessage
+
+
+]
+
+{ #category : #tests }
 ZathuraTest >> test03ZathuraGameCanBePlayedByIndividualTurnsUntilFinished [
 
 	| aDie1 aDie2 aGame aCollection aDiceCup aBoard |
