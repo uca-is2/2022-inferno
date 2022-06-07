@@ -6,22 +6,21 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'spaceshipsPositions',
-		'currentSpaceshipID'
-	],
-	#classInstVars : [
-		'spaceshipsPositions',
-		'currentSpaceshipID'
+		'currentSpaceshipID',
+		'amountOfLaps'
 	],
 	#category : #'IngSoft2-Model'
 }
 
 { #category : #initialization }
-GamePositions class >> with: anAmountOfSpaceships [
-
+GamePositions class >> with: anAmountOfSpaceships around: laps [
 	anAmountOfSpaceships  > 1 ifFalse: [ 
 		Error signal:
 			'GamePositions cannot be created with a number of spaceships lower than 2' ].
-	^ self new initializeWith: anAmountOfSpaceships.
+	laps > 1 ifFalse: [ 
+		Error signal:
+			'GamePositions cannot be created with a number of laps lower than 0' ].
+	^ self new initializeWith: anAmountOfSpaceships around: laps.
 ]
 
 { #category : #accessing }
@@ -40,13 +39,19 @@ GamePositions >> currentSpaceshipPosition [
 ]
 
 { #category : #initialization }
-GamePositions >> initializeWith: anAmountOfSpaceships [
+GamePositions >> initializeWith: anAmountOfSpaceships around: laps [
 	spaceshipsPositions := Dictionary new. 
 	1 to: anAmountOfSpaceships do: [ :spaceshipID | 
 	spaceshipsPositions at: spaceshipID put: (Array new: 2).
 	spaceshipsPositions at: spaceshipID at: 1 put: 1.
 	spaceshipsPositions at: spaceshipID at: 2 put: 0.].
 	currentSpaceshipID := 1.
+	amountOfLaps := laps
+]
+
+{ #category : #getters }
+GamePositions >> laps [
+	^ amountOfLaps .
 ]
 
 { #category : #moving }

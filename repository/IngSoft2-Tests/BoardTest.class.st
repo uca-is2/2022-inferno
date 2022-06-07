@@ -19,7 +19,7 @@ BoardTest >> should: errorBlock raise: errorClass withMessage: expectedErrorMess
 BoardTest >> test01BoardCannotBeCreatedWithANumberOfSpotsLowerThanOne [
 
 	| aBoard error errorMessage |
-	aBoard := [ Board with: -6 withALenghtOf: 1 playedBy: 2].
+	aBoard := [ Board with: -6 withALengthOf: 1].
 	error := Error.
 	errorMessage := 'Board cannot be created with a number of spots lower than one'.
 	self should: aBoard raise: error withMessage: errorMessage
@@ -31,7 +31,7 @@ BoardTest >> test01BoardCannotBeCreatedWithANumberOfSpotsLowerThanOne [
 BoardTest >> test02BoardCannotBeCreatedWithALenghtInParsecsLowerThanTheAmountOfSpots [
 
 	| aBoard error errorMessage |
-	aBoard := [ Board with: -6 withALenghtOf: 1 playedBy: 2].
+	aBoard := [ Board with: -6 withALengthOf: 1].
 	error := Error.
 	errorMessage := 'Board cannot be created with a number of parsecs lower than the amount of spots'.
 	self should: aBoard raise: error withMessage: errorMessage
@@ -44,7 +44,7 @@ BoardTest >> test03ABoardCanReturnItsLenghtInParsecs [
 
 	| aBoard anAmountOfParsecs |
 	anAmountOfParsecs := 100.
-	aBoard := Board with: 100 withALenghtOf: 100 playedBy: 2.
+	aBoard := Board with: 100 withALengthOf: 100  .
 	self assert: aBoard lenghtInParsecs equals: anAmountOfParsecs. 
 	
 
@@ -54,7 +54,7 @@ BoardTest >> test03ABoardCanReturnItsLenghtInParsecs [
 BoardTest >> test04CreatedBoardHasALayoutThatIsAnArrayOfSpots [
 
 	| aBoard |
-	aBoard := Board with: 100 withALenghtOf:100 playedBy: 2.
+	aBoard := Board with: 100 withALengthOf:100 .
 	self assert: (aBoard layout isKindOf: Array).
 	
 
@@ -65,7 +65,7 @@ BoardTest >> test05ABoardCanReturnItsLenghtInSpots [
 
 	| aBoard aNumberOfSpots |
 	aNumberOfSpots := 10.
-	aBoard := Board with: aNumberOfSpots withALenghtOf: 100 playedBy: 2.
+	aBoard := Board with: aNumberOfSpots withALengthOf: 100.
 	self assert: aBoard length equals: aNumberOfSpots.
 	
 	
@@ -76,7 +76,7 @@ BoardTest >> test05ABoardCanReturnItsLenghtInSpots [
 BoardTest >> test06ABoardIsCreatedAndEffectsAredDistributed [
 
 	| aBoard |
-	aBoard := Board with: 10 withALenghtOf: 100 playedBy: 2.
+	aBoard := Board with: 10 withALengthOf: 100.
 	self assert: ((((aBoard layout) at:5)effectAtSpot) isKindOf: Effect).
 	
 
@@ -87,7 +87,7 @@ BoardTest >> test07ABoardIsCreatedAndAllElementsOfArrayAreSpots [
 
 	| aBoard flag |
 	flag := true.
-	aBoard := Board with: 100 withALenghtOf: 1000 playedBy: 2. 
+	aBoard := Board with: 100 withALengthOf: 1000 . 
 	1 to: 100 do:  [ :each| (((aBoard layout) at: each) isKindOf: Spot)ifFalse: [ flag := false 
 			]
 		].

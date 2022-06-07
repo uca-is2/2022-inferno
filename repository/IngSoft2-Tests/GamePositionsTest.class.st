@@ -19,7 +19,7 @@ GamePositionsTest >> should: errorBlock raise: errorClass withMessage: expectedE
 GamePositionsTest >> test01GamePositionsInstanceCanBeCreated [
 
 	| spaceshipsPositions |
-	spaceshipsPositions := GamePositions with: 2.
+	spaceshipsPositions := GamePositions with: 2 around: 3.
 	self assert: spaceshipsPositions isNotNil.
 ]
 
@@ -29,7 +29,7 @@ GamePositionsTest >> test02GamePositionsInstanceCannotBeCreatedWithLessThanTwoSp
 	| spaceshipsPositions error errorMessage |
 	error := Error.
 	errorMessage := 'GamePositions cannot be created with a number of spaceships lower than 2'.
-	spaceshipsPositions := [GamePositions with: 1].
+	spaceshipsPositions := [GamePositions with: 1 around: 3].
 	self should: spaceshipsPositions raise: error withMessage: errorMessage
 ]
 
@@ -38,7 +38,7 @@ GamePositionsTest >> test03GamePositionsInstanceCanReturnCurrentSpaceship [
 
 	| spaceshipsPositions curr |
 	
-	spaceshipsPositions := GamePositions with: 4.
+	spaceshipsPositions := GamePositions with: 4 around: 3.
 	curr := spaceshipsPositions currentSpaceshipId.
 	self assert: curr equals: 1.
 ]
@@ -48,7 +48,7 @@ GamePositionsTest >> test04GamePositionsCurrentSpaceshipIdCanBeMovedOntoTheNextS
 
 	| spaceshipsPositions |
 	
-	spaceshipsPositions := GamePositions with: 4.
+	spaceshipsPositions := GamePositions with: 4 around: 3.
 	spaceshipsPositions nextSpaceshipInLine.
 	self assert: spaceshipsPositions currentSpaceshipId equals: 2.
 ]
@@ -58,7 +58,7 @@ GamePositionsTest >> test05GamePositionsCurrentSpaceshipIdMovesOntoFirstSpaceshi
 
 	| spaceshipsPositions |
 	
-	spaceshipsPositions := GamePositions with: 3.
+	spaceshipsPositions := GamePositions with: 3 around: 3.
 	spaceshipsPositions nextSpaceshipInLine.
 	spaceshipsPositions nextSpaceshipInLine.
 	spaceshipsPositions nextSpaceshipInLine.
@@ -70,7 +70,7 @@ GamePositionsTest >> test05GamePositionsReturnsCurrentSpaceshipPosition [
 
 	| spaceshipsPositions testPos |
 	
-	spaceshipsPositions := GamePositions with: 3.
+	spaceshipsPositions := GamePositions with: 3 around: 3.
 	spaceshipsPositions nextSpaceshipInLine.
 	testPos := spaceshipsPositions currentSpaceshipPosition .
 	self assert: testPos equals: 1.
@@ -81,7 +81,7 @@ GamePositionsTest >> test06GamePositionsReturnsCurrentSpaceshipLap [
 
 	| spaceshipsPositions testLap |
 	
-	spaceshipsPositions := GamePositions with: 3.
+	spaceshipsPositions := GamePositions with: 3 around: 3.
 	spaceshipsPositions nextSpaceshipInLine.
 	testLap := spaceshipsPositions currentSpaceshipLap.
 	self assert: testLap equals: 0.
@@ -92,7 +92,7 @@ GamePositionsTest >> test07GamePositionInstanceCanMoveCurrentSpaceship [
 	
 	| spaceshipsPositions testPos |
 	
-	spaceshipsPositions := GamePositions with: 3.
+	spaceshipsPositions := GamePositions with: 3 around: 3.
 	spaceshipsPositions nextSpaceshipInLine.
 	spaceshipsPositions moveCurrentTo: 3.
 	testPos := spaceshipsPositions currentSpaceshipPosition .
@@ -104,9 +104,17 @@ GamePositionsTest >> test08GamePositionInstanceCanMoveCurrentSpaceshipWithLap [
 	
 	| spaceshipsPositions testLap |
 	
-	spaceshipsPositions := GamePositions with: 3.
+	spaceshipsPositions := GamePositions with: 3 around: 3.
 	spaceshipsPositions nextSpaceshipInLine.
 	spaceshipsPositions moveCurrentTo: 3 andLap: 2.
 	testLap := spaceshipsPositions currentSpaceshipLap  .
 	self assert: testLap equals: 2.
+]
+
+{ #category : #tests }
+GamePositionsTest >> test09GamePositionsCanReturnAmountOfLaps [
+
+	| spaceshipsPositions |
+	spaceshipsPositions := GamePositions with: 3 around: 3.
+	self assert: spaceshipsPositions laps equals: 3.
 ]

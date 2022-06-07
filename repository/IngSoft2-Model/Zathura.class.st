@@ -15,23 +15,20 @@ Class {
 }
 
 { #category : #initialization }
-Zathura class >> playedWith: aDice over: anAmountOfSlots withALengthOf: anAmountOfParsecs around: anAmountOfLaps by: anAmountOfSpaceships [
+Zathura class >> playedWith: aDice over: aBoard by: anAmountOfSpaceships around: anAmountOfLaps [
 
 	anAmountOfSpaceships > 1 ifFalse: [ 
 		Error signal:
 			'A game cannot be created with a number of spaceships lower than two.' ].
-		
-	(anAmountOfLaps > 1) ifFalse: [ 
-		Error signal: 'A game cannot be created without a valid amount of laps.' ].
 	
-	^ self new initializeGameWith: aDice playedOver: anAmountOfSlots withALengthOf: anAmountOfParsecs around: anAmountOfLaps by: anAmountOfSpaceships 
+	^ self new initializeGameWith: aDice over: aBoard by: anAmountOfSpaceships around: anAmountOfLaps.
 	
 ]
 
 { #category : #effects }
 Zathura >> applyEffect [
 	| effectOfSlot |
-	effectOfSlot := ((board layout at: (spaceshipsPositions currentSpaceshipPosition)) effectAtSpot) applyTo: spaceshipsPositions.
+	effectOfSlot := ((board layout at: (spaceshipsPositions currentSpaceshipPosition)) effectAtSpot) applyTo: spaceshipsPositions limitedBy: (board length).
 ]
 
 { #category : #accessing }
@@ -40,12 +37,11 @@ Zathura >> hasGameFinished [
 ]
 
 { #category : #initialization }
-Zathura >> initializeGameWith: aDice playedOver: anAmountOfSlots withALengthOf: anAmountOfParsecs around: anAmountOfLaps by: anAmountOfSpaceships [ 
+Zathura >> initializeGameWith: aDice over: aBoard  by: anAmountOfSpaceships around: anAmountOfLaps [
 	
 	dice := aDice .
-	board := Board with: anAmountOfSlots withALenghtOf: anAmountOfParsecs playedBy: anAmountOfSpaceships.
-	spaceshipsPositions := board gamePositions.
-	laps := anAmountOfLaps.
+	board := aBoard.
+	spaceshipsPositions := GamePositions with: anAmountOfSpaceships around: anAmountOfLaps.
 	gameIsFinished := false.
 	
 ]
@@ -65,7 +61,7 @@ Zathura >> move: aSpaceshipID [
 	rollNumber := dice roll.
 	(self isLapFinishedIf: positionBeforeRoll moves: rollNumber)
 		ifTrue: [ 
-			lapBeforeRoll + 1 >= laps
+			lapBeforeRoll + 1 >= spaceshipsPositions laps
 				ifTrue: [ self spaceshipMovesToTheEnd ]
 				ifFalse: [ 
 					spaceshipsPositions moveCurrentTo: (positionBeforeRoll + rollNumber - board length) andLap:(lapBeforeRoll + 1).
@@ -86,12 +82,12 @@ Zathura >> playNextTurn [
 		gameIsFinished ifTrue: [ 
 		Error signal: 'Game is finished! You cannot keep playing this game.' ].
 	self move: (spaceshipsPositions currentSpaceshipId).
-	(spaceshipsPositions currentSpaceshipPosition >= board length) & (spaceshipsPositions currentSpaceshipLap >= laps) ifTrue: [ 
+	(spaceshipsPositions currentSpaceshipPosition >= board length) & (spaceshipsPositions currentSpaceshipLap >= spaceshipsPositions laps) ifTrue: [ 
 		gameIsFinished := true ].
 	spaceshipsPositions nextSpaceshipInLine
 ]
 
 { #category : #moving }
 Zathura >> spaceshipMovesToTheEnd [
-	spaceshipsPositions moveCurrentTo: board length andLap: laps.
+	spaceshipsPositions moveCurrentTo: board length andLap: spaceshipsPositions laps.
 ]
