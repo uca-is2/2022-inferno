@@ -15,7 +15,7 @@ Class {
 }
 
 { #category : #initialization }
-Zathura class >> playedWith: aDice over: aBoard around: anAmountOfLaps by: anAmountOfSpaceships [
+Zathura class >> playedWith: aDice over: anAmountOfSlots withALengthOf: anAmountOfParsecs around: anAmountOfLaps by: anAmountOfSpaceships [
 
 	anAmountOfSpaceships > 1 ifFalse: [ 
 		Error signal:
@@ -24,7 +24,7 @@ Zathura class >> playedWith: aDice over: aBoard around: anAmountOfLaps by: anAmo
 	(anAmountOfLaps > 1) ifFalse: [ 
 		Error signal: 'A game cannot be created without a valid amount of laps.' ].
 	
-	^ self new initializeGameWith: aDice playedOver: aBoard around: anAmountOfLaps by: anAmountOfSpaceships.
+	^ self new initializeGameWith: aDice playedOver: anAmountOfSlots withALengthOf: anAmountOfParsecs around: anAmountOfLaps by: anAmountOfSpaceships 
 	
 ]
 
@@ -40,11 +40,11 @@ Zathura >> hasGameFinished [
 ]
 
 { #category : #initialization }
-Zathura >> initializeGameWith: aDice playedOver: aBoard around: anAmountOfLaps by: anAmountOfSpaceships [ 
+Zathura >> initializeGameWith: aDice playedOver: anAmountOfSlots withALengthOf: anAmountOfParsecs around: anAmountOfLaps by: anAmountOfSpaceships [ 
 	
-	spaceshipsPositions := GamePositions with: anAmountOfSpaceships.
 	dice := aDice .
-	board := aBoard.
+	board := Board with: anAmountOfSlots withALenghtOf: anAmountOfParsecs playedBy: anAmountOfSpaceships.
+	spaceshipsPositions := board gamePositions.
 	laps := anAmountOfLaps.
 	gameIsFinished := false.
 	

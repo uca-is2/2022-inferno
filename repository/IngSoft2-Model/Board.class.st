@@ -7,17 +7,25 @@ Class {
 	#instVars : [
 		'layout',
 		'parsecs',
-		'numberOfSpots'
+		'numberOfSpots',
+		'gamePositions'
 	],
 	#category : #'IngSoft2-Model'
 }
 
 { #category : #initialization }
-Board class >> with: aNumberOfSpots withALenghtOf: anAmountOfParsecs [ 
-	((aNumberOfSpots > 0)) ifFalse: [ 
+Board class >> with: aNumberOfSpots withALenghtOf: anAmountOfParsecs playedBy: anAmountOfSpaceships [
+	(aNumberOfSpots > 0) ifFalse: [ 
 		Error signal:
 			'Board cannot be created with a number of slots lower than 1 ' ].
-	^ self new initializeWith: aNumberOfSpots andNumberOfParsecs: anAmountOfParsecs 
+	(anAmountOfSpaceships  > 1) ifFalse: [ 
+		Error signal:
+			'Board cannot be created with a number of spaceships lower than 2 ' ].
+	(anAmountOfParsecs >= aNumberOfSpots) ifFalse:[ 
+		Error signal:
+			'Board cannot be created with a number of parsecs lower than the amount of spots' ].
+	
+	^ self new initializeWith: aNumberOfSpots andNumberOfParsecs: anAmountOfParsecs playedBy: anAmountOfSpaceships.
 ]
 
 { #category : #initialization }
@@ -49,13 +57,19 @@ Board >> fillWithEffects: aNumberOfSpots [
 	^ arrayOfSpots
 ]
 
+{ #category : #getters }
+Board >> gamePositions [
+	^ gamePositions
+]
+
 { #category : #initialization }
-Board >> initializeWith: aNumberOfSpots andNumberOfParsecs: aLenghtInParsecs [
+Board >> initializeWith: aNumberOfSpots andNumberOfParsecs: aLenghtInParsecs playedBy: anAmountOfSpaceships [
 
 	layout := Array new: aNumberOfSpots.
 	layout := self fillWithEffects: aNumberOfSpots.	
 	parsecs := aLenghtInParsecs.
 	numberOfSpots := aNumberOfSpots.
+	gamePositions := GamePositions with: anAmountOfSpaceships.
 	
 ]
 

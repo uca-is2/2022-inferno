@@ -73,7 +73,7 @@ GamePositionsTest >> test05GamePositionsReturnsCurrentSpaceshipPosition [
 	spaceshipsPositions := GamePositions with: 3.
 	spaceshipsPositions nextSpaceshipInLine.
 	testPos := spaceshipsPositions currentSpaceshipPosition .
-	self assert: testPos equals: 0.
+	self assert: testPos equals: 1.
 ]
 
 { #category : #tests }
