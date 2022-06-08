@@ -31,6 +31,14 @@ Board class >> assertValidAmountOfSpaceship: aCollectionOfSpaceships [
 ]
 
 { #category : #'class initialization' }
+Board class >> assertValidAmountOfSpots: anAmountOfSpots [
+
+	(anAmountOfSpots isEmpty) ifFalse: [ 
+		Error signal:
+			'Board cannot be created with a number of spots lower than 2' ]
+]
+
+{ #category : #'class initialization' }
 Board class >> assertValidLengthInParsecs: anAmountOfParsecs [
 
 	anAmountOfParsecs > 0 ifFalse: [ 
