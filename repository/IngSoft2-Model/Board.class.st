@@ -1,161 +1,98 @@
 "
-i represent a board that contains a series of spots.
+i represent a board where a game can be played
 "
 Class {
 	#name : #Board,
 	#superclass : #Object,
 	#instVars : [
 		'layout',
-		'parsecs',
-		'numberOfSpots'
+		'lengthInParsecs',
+		'laps',
+		'length',
+		'spaceshipsPositions'
 	],
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #initialization }
-Board class >> with: aNumberOfSpots withALengthOf: anAmountOfParsecs [ 
-	(aNumberOfSpots > 0) ifFalse: [ 
+{ #category : #'class initialization' }
+Board class >> assertValidAmountOfLaps: anAmountOfLaps [
+
+	anAmountOfLaps > 0 ifFalse: [ 
 		Error signal:
-			'Board cannot be created with a number of slots lower than 1 ' ].
-	(anAmountOfParsecs >= aNumberOfSpots) ifFalse:[ 
+			'Board cannot be created with a number of laps lower than 0.' ]
+]
+
+{ #category : #'class initialization' }
+Board class >> assertValidAmountOfSpaceship: aCollectionOfSpaceships [
+
+	aCollectionOfSpaceships size > 1 ifFalse: [ 
 		Error signal:
-			'Board cannot be created with a number of parsecs lower than the amount of spots' ].
-	
-	^ self new initializeWith: aNumberOfSpots andNumberOfParsecs: anAmountOfParsecs. 
+			'Board cannot be created with a number of spaceships lower than 2' ]
+]
+
+{ #category : #'class initialization' }
+Board class >> assertValidLengthInParsecs: anAmountOfParsecs [
+
+	anAmountOfParsecs > 0 ifFalse: [ 
+		Error signal:
+			'Board cannot be created with a number of spots lower than 0' ]
+]
+
+{ #category : #'class initialization' }
+Board class >> with: anAmountOfSpots withALenghtOf: anAmountOfParsecs around: anAmountOfLaps playedBy: aCollectionOfSpaceships [
+
+	self assertValidAmountOfSpots: anAmountOfSpots.
+	self assertValidLengthInParsecs: anAmountOfParsecs.
+	self assertValidAmountOfLaps: anAmountOfLaps.
+	self assertValidAmountOfSpaceship: aCollectionOfSpaceships.
+	^ self new
+		  initializeWith: anAmountOfSpots
+		  withALengthOf: anAmountOfParsecs
+		  around: anAmountOfLaps
+		  playedBy: aCollectionOfSpaceships
+]
+
+{ #category : #validation }
+Board >> assertValidLap: aLapNumber [
+	((aLapNumber < laps)and:(aLapNumber >= 0))ifFalse: [ 
+		Error signal:
+			'Cannot move a spaceship to an invalid lap number.' ]
+]
+
+{ #category : #validation }
+Board >> assertValidSpot: aSpotNumber [ 
+	((aSpotNumber < length) and:(aSpotNumber > 0))ifFalse: [ 
+		Error signal:
+			'Cannot move a spaceship to an invalid spot number' ]
 ]
 
 { #category : #initialization }
-Board >> effectLoader: arrayOfEffects with: aNumberOfSpots [ 
+Board >> initializeWith: aCollectionOfSpots withALengthOf: anAmountOfParsecs around: anAmountOfLaps playedBy: aCollectionOfSpaceships [ 
 
-	| arrayOfUsedSpots spotsWithThisEffect randomSlot arrayOfSpots |
-	spotsWithThisEffect := 0.
-	arrayOfUsedSpots := OrderedCollection new: aNumberOfSpots.
-	arrayOfSpots := Array new: aNumberOfSpots.
-	1 to: (arrayOfEffects size) do: [:effect|  
-		[((arrayOfEffects at: effect) size) > spotsWithThisEffect ]whileTrue: [ 
-			randomSlot := aNumberOfSpots atRandom. 
-			(arrayOfUsedSpots includes: randomSlot )ifFalse: [  
-			arrayOfUsedSpots addLast: randomSlot.
-			arrayOfSpots at: randomSlot put: ((arrayOfEffects at: effect) at: spotsWithThisEffect+1).
-			spotsWithThisEffect := spotsWithThisEffect+1 ].
-		].
-		spotsWithThisEffect := 0.
-	]. 	 
-	(arrayOfSpots includes: nil)ifTrue: [ arrayOfSpots := self llenaLosNils: arrayOfSpots ofSize: (arrayOfEffects size)].
-	^ arrayOfSpots 
+	| amountOfSpaceships |
+	layout := aCollectionOfSpots.
+	lengthInParsecs := anAmountOfParsecs.
+	laps := anAmountOfLaps.
+	length := aCollectionOfSpots size.
+	amountOfSpaceships := aCollectionOfSpaceships size.
+	spaceshipsPositions := Dictionary new: amountOfSpaceships.
+	1 to: amountOfSpaceships do: [: spaceship |  
+	spaceshipsPositions at: (aCollectionOfSpaceships at: spaceship) put: (Position atLap: 0 andSpot: 1).].  
 ]
 
-{ #category : #initialization }
-Board >> fillWithEffects: aNumberOfSpots [
-	| arrayOfSpots |
-	arrayOfSpots := Array new: aNumberOfSpots.
-	arrayOfSpots := self loadEffects: aNumberOfSpots.
-	^ arrayOfSpots
+{ #category : #validation }
+Board >> isValid [
+	^ length > 0.
 ]
 
-{ #category : #initialization }
-Board >> initializeWith: aNumberOfSpots andNumberOfParsecs: aLenghtInParsecs [ 
-	layout := Array new: aNumberOfSpots.
-	layout := self fillWithEffects: aNumberOfSpots.	
-	parsecs := aLenghtInParsecs.
-	numberOfSpots := aNumberOfSpots.
+{ #category : #moving }
+Board >> move: aSpaceship toLap: aLapNumber andSpot: aSpotNumber [ 
+	self assertValidLap: aLapNumber.
+	self assertValidSpot: aSpotNumber.
+	spaceshipsPositions at: aSpaceship put: (Position atLap: aLapNumber andSpot: aSpotNumber).
 ]
 
 { #category : #getters }
-Board >> layout [
-	^ layout
-]
-
-{ #category : #getters }
-Board >> lenghtInParsecs [
-	^ parsecs 
-]
-
-{ #category : #getters }
-Board >> length [
-	^ numberOfSpots
-]
-
-{ #category : #initialization }
-Board >> llenaLosNils: anArrayOfSpots ofSize: anAmountOfEffects [
-
-	1 to: anAmountOfEffects do: [ :each | 
-		(anArrayOfSpots at: each)ifNil: [ 
-			anArrayOfSpots at: each put: (Spot createWith: NoEffect new) ] ].
-	^ anArrayOfSpots.
-]
-
-{ #category : #initialization }
-Board >> loadAtomicBomb: aNumberOfSpots [
-	| numberOfAtomicBomb arrayOfAtomicBomb |
-	numberOfAtomicBomb := (aNumberOfSpots  * 0.02)asInteger.
-	arrayOfAtomicBomb := Array new: numberOfAtomicBomb.
-	arrayOfAtomicBomb := arrayOfAtomicBomb collect: [:each| Spot createWith: AtomicBomb new.].
-	^ arrayOfAtomicBomb 
-]
-
-{ #category : #initialization }
-Board >> loadEffects: aNumberOfSpots [ 
-	
-	| arrayOfNoEffect arrayOfEffects arrayOfSpots arrayOfSpeedUp arrayOfMoonwalk arrayOfWormhole arrayOfAtomicBomb arrayOfHyperJump |
-	arrayOfSpots := Array new: aNumberOfSpots.
-	arrayOfSpeedUp := self loadSpeedUps: aNumberOfSpots.
-	arrayOfMoonwalk := self loadMoonwalk: aNumberOfSpots.
-	arrayOfWormhole := self loadWormhole: aNumberOfSpots.
-	arrayOfAtomicBomb := self loadAtomicBomb: aNumberOfSpots.
-	arrayOfHyperJump := self loadHyperjump: aNumberOfSpots.
-	arrayOfNoEffect := self loadNoEffect: aNumberOfSpots .
-	arrayOfEffects := [ arrayOfSpeedUp, arrayOfMoonwalk , arrayOfWormhole , arrayOfAtomicBomb , arrayOfHyperJump , arrayOfNoEffect].
-	arrayOfSpots := self effectLoader: arrayOfEffects with: aNumberOfSpots .
-	 
-	^ arrayOfSpots
-	
-]
-
-{ #category : #initialization }
-Board >> loadHyperjump: aNumberOfSpots [ 
-
-	| numberOfHyperjump arrayOfHyperJump |
-	numberOfHyperjump := (aNumberOfSpots  * 0.08)asInteger.
-	arrayOfHyperJump := Array new: numberOfHyperjump.
-	arrayOfHyperJump := arrayOfHyperJump collect: [:each| Spot createWith: Hyperjump new.].
-	^ arrayOfHyperJump 	
-]
-
-{ #category : #initialization }
-Board >> loadMoonwalk: aNumberOfSpots [ 
-	| numberOfMoonwalk arrayOfMoonwalk |
-	numberOfMoonwalk := (aNumberOfSpots  * 0.1)asInteger.
-	arrayOfMoonwalk := Array new: numberOfMoonwalk.
-	arrayOfMoonwalk := arrayOfMoonwalk collect: [:each| Spot createWith: Moonwalk new.].
-	^ arrayOfMoonwalk 
-]
-
-{ #category : #initialization }
-Board >> loadNoEffect: aNumberOfSpots [
-	| numberOfNoEffect arrayOfNoEffect |
-	numberOfNoEffect := (aNumberOfSpots  * 0.4)asInteger.
-	arrayOfNoEffect := Array new: numberOfNoEffect.
-	arrayOfNoEffect := arrayOfNoEffect collect: [:each| Spot createWith: NoEffect new.].
-	^ arrayOfNoEffect 
-]
-
-{ #category : #initialization }
-Board >> loadSpeedUps: aNumberOfSpots [
-
-	| numberOfSpeedUps arrayOfSpeedUp |
-	numberOfSpeedUps := (aNumberOfSpots  * 0.2)asInteger.
-	arrayOfSpeedUp := Array new: numberOfSpeedUps.
-	arrayOfSpeedUp := arrayOfSpeedUp collect: [:each| Spot createWith: SpeedUp new.].
-	^ arrayOfSpeedUp 
-]
-
-{ #category : #initialization }
-Board >> loadWormhole: aNumberOfSpots [ 
-
-	| numberOfWormholes arrayOfWormholes |
-	numberOfWormholes := (aNumberOfSpots  * 0.2)asInteger.
-	arrayOfWormholes := Array new: numberOfWormholes.
-	arrayOfWormholes := arrayOfWormholes collect: [:each| Spot createWith: Wormhole new.].
-	^ arrayOfWormholes 
+Board >> positionOf: aSpaceship [
+	^ spaceshipsPositions at: aSpaceship .
 ]

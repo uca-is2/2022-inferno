@@ -16,82 +16,52 @@ BoardTest >> should: errorBlock raise: errorClass withMessage: expectedErrorMess
 ]
 
 { #category : #tests }
-BoardTest >> test01BoardCannotBeCreatedWithANumberOfSpotsLowerThanOne [
+BoardTest >> test01ABoardHasAtLeastOneSpot [
+	| aBoard aCollectionOfSpaceships aCollectionOfSpots  firstSpot |
+	firstSpot := Spot createWith: NoEffect new.
+	aCollectionOfSpots := { firstSpot. }.
+	aCollectionOfSpaceships := { 'Razor Crest'. 'Millenium Falcon'. 'SC30 StarFighter' }.
+	aBoard := Board with: aCollectionOfSpots  withALenghtOf: 10 around: 3 playedBy: aCollectionOfSpaceships.
+	self assert: aBoard isValid.
+]
 
-	| aBoard error errorMessage |
-	aBoard := [ Board with: -6 withALengthOf: 1].
+{ #category : #tests }
+BoardTest >> test02ABoardCanMoveASpaceshipToDesiredPosition [
+	| aBoard aCollectionOfSpaceships aCollectionOfSpots  firstSpot secondSpot |
+	firstSpot := Spot createWith: NoEffect new.
+	secondSpot := Spot createWith: NoEffect new.
+	aCollectionOfSpots := { firstSpot. secondSpot.}.
+	aCollectionOfSpaceships := { 'Razor Crest'. 'Millenium Falcon'. 'SC30 StarFighter' }.
+	aBoard := Board with: aCollectionOfSpots  withALenghtOf: 10 around: 3 playedBy: aCollectionOfSpaceships.
+	aBoard move: 'SC30 StarFighter' toLap: 2 andSpot: 2.
+	self assert: (aBoard positionOf: 'SC30 StarFighter') lapNumber equals: 2 .
+	self assert: (aBoard positionOf: 'SC30 StarFighter') spotNumber equals: 2.
+]
+
+{ #category : #tests }
+BoardTest >> test03ABoardCannotMoveASpaceshipToInvalidLap [
+	| aBoard aCollectionOfSpaceships aCollectionOfSpots firstSpot secondSpot error errorMessage invalidMove |
+	firstSpot := Spot createWith: NoEffect new.
+	secondSpot := Spot createWith: NoEffect new.
 	error := Error.
-	errorMessage := 'Board cannot be created with a number of spots lower than one'.
-	self should: aBoard raise: error withMessage: errorMessage
-	
-
+	errorMessage := 'Cannot move a spaceship to invalid lap.'.
+	aCollectionOfSpots := { firstSpot. secondSpot.}.
+	aCollectionOfSpaceships := { 'Razor Crest'. 'Millenium Falcon'. 'SC30 StarFighter' }.
+	aBoard := Board with: aCollectionOfSpots  withALenghtOf: 10 around: 3 playedBy: aCollectionOfSpaceships.
+	invalidMove := [aBoard move: 'SC30 StarFighter' toLap: 2 andSpot: 3].
+	self should: invalidMove raise: error withMessage: errorMessage. 
 ]
 
 { #category : #tests }
-BoardTest >> test02BoardCannotBeCreatedWithALenghtInParsecsLowerThanTheAmountOfSpots [
-
-	| aBoard error errorMessage |
-	aBoard := [ Board with: -6 withALengthOf: 1].
+BoardTest >> test04ABoardCannotMoveASpaceshipToInvalidPosition [
+	| aBoard aCollectionOfSpaceships aCollectionOfSpots firstSpot secondSpot error errorMessage invalidMove |
+	firstSpot := Spot createWith: NoEffect new.
+	secondSpot := Spot createWith: NoEffect new.
 	error := Error.
-	errorMessage := 'Board cannot be created with a number of parsecs lower than the amount of spots'.
-	self should: aBoard raise: error withMessage: errorMessage
-	
-
-]
-
-{ #category : #tests }
-BoardTest >> test03ABoardCanReturnItsLenghtInParsecs [
-
-	| aBoard anAmountOfParsecs |
-	anAmountOfParsecs := 100.
-	aBoard := Board with: 100 withALengthOf: 100  .
-	self assert: aBoard lenghtInParsecs equals: anAmountOfParsecs. 
-	
-
-]
-
-{ #category : #tests }
-BoardTest >> test04CreatedBoardHasALayoutThatIsAnArrayOfSpots [
-
-	| aBoard |
-	aBoard := Board with: 100 withALengthOf:100 .
-	self assert: (aBoard layout isKindOf: Array).
-	
-
-]
-
-{ #category : #tests }
-BoardTest >> test05ABoardCanReturnItsLenghtInSpots [
-
-	| aBoard aNumberOfSpots |
-	aNumberOfSpots := 10.
-	aBoard := Board with: aNumberOfSpots withALengthOf: 100.
-	self assert: aBoard length equals: aNumberOfSpots.
-	
-	
-
-]
-
-{ #category : #tests }
-BoardTest >> test06ABoardIsCreatedAndEffectsAredDistributed [
-
-	| aBoard |
-	aBoard := Board with: 10 withALengthOf: 100.
-	self assert: ((((aBoard layout) at:5)effectAtSpot) isKindOf: Effect).
-	
-
-]
-
-{ #category : #tests }
-BoardTest >> test07ABoardIsCreatedAndAllElementsOfArrayAreSpots [
-
-	| aBoard flag |
-	flag := true.
-	aBoard := Board with: 100 withALengthOf: 1000 . 
-	1 to: 100 do:  [ :each| (((aBoard layout) at: each) isKindOf: Spot)ifFalse: [ flag := false 
-			]
-		].
-	self assert: (flag).
-	
-
+	errorMessage := 'Cannot move a spaceship to an invalid position.'.
+	aCollectionOfSpots := { firstSpot. secondSpot.}.
+	aCollectionOfSpaceships := { 'Razor Crest'. 'Millenium Falcon'. 'SC30 StarFighter' }.
+	aBoard := Board with: aCollectionOfSpots  withALenghtOf: 10 around: 3 playedBy: aCollectionOfSpaceships.
+	invalidMove := [aBoard move: 'SC30 StarFighter' toLap: 1 andSpot: -1].
+	self should: invalidMove raise: error withMessage: errorMessage. 
 ]

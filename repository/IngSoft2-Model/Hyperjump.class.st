@@ -3,6 +3,6 @@ i represent a type of effect: hyperjump
 "
 Class {
 	#name : #Hyperjump,
-	#superclass : #Effect,
+	#superclass : #Object,
 	#category : #'IngSoft2-Model'
 }

@@ -3,7 +3,7 @@ i represent a type of effect: wormhole
 "
 Class {
 	#name : #Wormhole,
-	#superclass : #Effect,
+	#superclass : #Object,
 	#category : #'IngSoft2-Model'
 }
 

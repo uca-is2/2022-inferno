@@ -11,11 +11,17 @@ Class {
 }
 
 { #category : #initialization }
-Die class >> with: aNumberOfSides [
+Die class >> assertValid: aNumberOfSides [
 
 	aNumberOfSides > 2 ifFalse: [ 
 		Error signal:
-			'Die cannot be created with a number of sides lower than 3' ].
+			'Die cannot be created with a number of sides lower than 3' ]
+]
+
+{ #category : #initialization }
+Die class >> with: aNumberOfSides [
+
+	self assertValid: aNumberOfSides.
 	^ self new initializeWith: aNumberOfSides
 ]
 
