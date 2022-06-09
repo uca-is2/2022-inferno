@@ -66,6 +66,25 @@ EffectFiller >> assertValid: aCollectionOfMoonwalkNumbers withAmount: amountOfMo
 			'Number of Moonwalks numbers must be equal to the amount of moonwalks needed.' ]
 ]
 
+{ #category : #effectLoading }
+EffectFiller >> effectLoader: arrayOfEffects with: anAmountOfSpots [ 
+	| arrayOfUsedSpots spotsWithThisEffect randomSlot arrayOfSpots |
+	spotsWithThisEffect := 0.
+	arrayOfUsedSpots := OrderedCollection new: anAmountOfSpots.
+	arrayOfSpots := Array new: anAmountOfSpots.
+	1 to: (arrayOfEffects size) do: [:effect|  
+		[((arrayOfEffects at: effect) size) > spotsWithThisEffect ]whileTrue: [ 
+			randomSlot := anAmountOfSpots atRandom. 
+			(arrayOfUsedSpots includes: randomSlot )ifFalse: [  
+			arrayOfUsedSpots addLast: randomSlot.
+			arrayOfSpots at: randomSlot put: ((arrayOfEffects at: effect) at: spotsWithThisEffect+1).
+			spotsWithThisEffect := spotsWithThisEffect+1 ].
+		].
+		spotsWithThisEffect := 0.
+	]. 	 
+	^ arrayOfSpots 
+]
+
 { #category : #effectFilling }
 EffectFiller >> fillWithEffects: aNumberOfSpots with: aCollectionOfJumpArrays and: aCollectionOfMoonwalkNumbers [
 	
