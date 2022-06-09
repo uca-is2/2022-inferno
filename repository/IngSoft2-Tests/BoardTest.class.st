@@ -65,3 +65,39 @@ BoardTest >> test04ABoardCannotMoveASpaceshipToInvalidPosition [
 	invalidMove := [aBoard move: 'SC30 StarFighter' toLap: 1 andSpot: -1].
 	self should: invalidMove raise: error withMessage: errorMessage. 
 ]
+
+{ #category : #tests }
+BoardTest >> test05ABoardCanReturnItsLenghtInSpots [ 
+	| aBoard aCollectionOfSpaceships aCollectionOfSpots  firstSpot secondSpot |
+	firstSpot := Spot createWith: NoEffect new.
+	secondSpot := Spot createWith: NoEffect new.
+	aCollectionOfSpots := { firstSpot. secondSpot.}.
+	aCollectionOfSpaceships := { 'Razor Crest'. 'Millenium Falcon'. 'SC30 StarFighter' }.
+	aBoard := Board with: aCollectionOfSpots  withALenghtOf: 10 around: 3 playedBy: aCollectionOfSpaceships.
+	aBoard move: 'SC30 StarFighter' toLap: 2 andSpot: 2.
+	self assert: (aBoard lengthInSpots) equals: 2 .
+]
+
+{ #category : #tests }
+BoardTest >> test06ABoardCanReturnItsLenghtInParsecs [
+	| aBoard aCollectionOfSpaceships aCollectionOfSpots  firstSpot secondSpot |
+	firstSpot := Spot createWith: NoEffect new.
+	secondSpot := Spot createWith: NoEffect new.
+	aCollectionOfSpots := { firstSpot. secondSpot.}.
+	aCollectionOfSpaceships := { 'Razor Crest'. 'Millenium Falcon'. 'SC30 StarFighter' }.
+	aBoard := Board with: aCollectionOfSpots  withALenghtOf: 10 around: 3 playedBy: aCollectionOfSpaceships.
+	aBoard move: 'SC30 StarFighter' toLap: 2 andSpot: 2.
+	self assert: (aBoard lengthInParsecs) equals: 10 .
+]
+
+{ #category : #tests }
+BoardTest >> test07ABoardCanReturnItsAmountOfLapsToBePlayed [
+	| aBoard aCollectionOfSpaceships aCollectionOfSpots  firstSpot secondSpot |
+	firstSpot := Spot createWith: NoEffect new.
+	secondSpot := Spot createWith: NoEffect new.
+	aCollectionOfSpots := { firstSpot. secondSpot.}.
+	aCollectionOfSpaceships := { 'Razor Crest'. 'Millenium Falcon'. 'SC30 StarFighter' }.
+	aBoard := Board with: aCollectionOfSpots  withALenghtOf: 10 around: 3 playedBy: aCollectionOfSpaceships.
+	aBoard move: 'SC30 StarFighter' toLap: 2 andSpot: 2.
+	self assert: (aBoard amountOfLaps) equals: 3 .
+]

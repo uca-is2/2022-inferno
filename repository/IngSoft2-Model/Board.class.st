@@ -33,7 +33,7 @@ Board class >> assertValidAmountOfSpaceship: aCollectionOfSpaceships [
 { #category : #'class initialization' }
 Board class >> assertValidAmountOfSpots: anAmountOfSpots [
 
-	(anAmountOfSpots isEmpty) ifFalse: [ 
+	(anAmountOfSpots isEmpty) ifTrue: [ 
 		Error signal:
 			'Board cannot be created with a number of spots lower than 2' ]
 ]
@@ -60,6 +60,11 @@ Board class >> with: anAmountOfSpots withALenghtOf: anAmountOfParsecs around: an
 		  playedBy: aCollectionOfSpaceships
 ]
 
+{ #category : #getters }
+Board >> amountOfLaps [
+	^laps.
+]
+
 { #category : #validation }
 Board >> assertValidLap: aLapNumber [
 	((aLapNumber < laps)and:(aLapNumber >= 0))ifFalse: [ 
@@ -69,7 +74,7 @@ Board >> assertValidLap: aLapNumber [
 
 { #category : #validation }
 Board >> assertValidSpot: aSpotNumber [ 
-	((aSpotNumber < length) and:(aSpotNumber > 0))ifFalse: [ 
+	((aSpotNumber <= length) and: (aSpotNumber > 0))ifFalse: [ 
 		Error signal:
 			'Cannot move a spaceship to an invalid spot number' ]
 ]
@@ -91,6 +96,16 @@ Board >> initializeWith: aCollectionOfSpots withALengthOf: anAmountOfParsecs aro
 { #category : #validation }
 Board >> isValid [
 	^ length > 0.
+]
+
+{ #category : #getters }
+Board >> lengthInParsecs [
+	^ lengthInParsecs
+]
+
+{ #category : #getters }
+Board >> lengthInSpots [
+	^length.
 ]
 
 { #category : #moving }
