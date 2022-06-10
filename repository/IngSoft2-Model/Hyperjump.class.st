@@ -20,7 +20,15 @@ Hyperjump class >> createWith: aJumpsArray [
 		^self new initializeWith: aJumpsArray.
 ]
 
+{ #category : #applying }
+Hyperjump >> applyTo: aBoard by: aSpaceship [ 
+	self shouldBeImplemented.
+]
+
 { #category : #initialization }
 Hyperjump >> initializeWith: aJumpsArray [ 
-	jumpsArray := aJumpsArray.
+	| sortedArray reversedArray |
+	sortedArray := aJumpsArray sorted.
+	reversedArray := sortedArray reversed.
+	jumpsArray := aJumpsArray .
 ]

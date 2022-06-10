@@ -8,16 +8,21 @@ Class {
 }
 
 { #category : #applying }
-Wormhole >> applyTo: aGamePositions limitedBy: length [ 
-	| lapBeforeEffect positionBeforeEffect |
-	lapBeforeEffect := aGamePositions currentSpaceshipLap.
-	positionBeforeEffect := aGamePositions currentSpaceshipPosition.
-	(lapBeforeEffect = 0)ifTrue: [ 
-			positionBeforeEffect - 4 < 1
-				ifTrue: [ aGamePositions moveCurrentTo: 1 ]
-				ifFalse: [ aGamePositions moveCurrentTo: positionBeforeEffect - 4 ] ]
+Wormhole >> applyTo: aBoard by: aSpaceship [ 
+	| positionBeforeWormhole lapBeforeWormhole spotBeforeWormhole wormholeNumber |
+	positionBeforeWormhole := aBoard positionOf: aSpaceship.
+	lapBeforeWormhole := positionBeforeWormhole lapNumber.
+	spotBeforeWormhole := positionBeforeWormhole spotNumber .
+	wormholeNumber := 4.
+	(lapBeforeWormhole = 0)
+		ifTrue: [ 
+			((spotBeforeWormhole - wormholeNumber )< 1)
+				ifTrue: [ aBoard move: aSpaceship toLap: 0 andSpot: 1. ]
+				ifFalse: [ aBoard move: aSpaceship toLap: 0 andSpot: (spotBeforeWormhole- wormholeNumber )] ]
 		ifFalse: [ 
-			positionBeforeEffect - 4 < 1 ifTrue: [ 
-				aGamePositions moveCurrentTo:  positionBeforeEffect + length - 4
-					andLap: lapBeforeEffect - 1 ] ]
+			((spotBeforeWormhole - wormholeNumber) < 1) ifTrue: [ 
+				aBoard
+					move:aSpaceship toLap: (lapBeforeWormhole - 1) andSpot: (spotBeforeWormhole + (aBoard lengthInSpots) - wormholeNumber)
+					 ] ].
+		^ (aBoard spaceshipPositions).
 ]

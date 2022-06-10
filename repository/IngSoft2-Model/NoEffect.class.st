@@ -6,3 +6,8 @@ Class {
 	#superclass : #Object,
 	#category : #'IngSoft2-Model'
 }
+
+{ #category : #applying }
+NoEffect >> applyTo: aBoard by: aSpaceship [ 
+	^ (aBoard spaceshipPositions).
+]

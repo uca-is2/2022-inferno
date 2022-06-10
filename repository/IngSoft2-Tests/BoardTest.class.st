@@ -21,7 +21,7 @@ BoardTest >> test01ABoardHasAtLeastOneSpot [
 	firstSpot := Spot createWith: NoEffect new.
 	aCollectionOfSpots := { firstSpot. }.
 	aCollectionOfSpaceships := { 'Razor Crest'. 'Millenium Falcon'. 'SC30 StarFighter' }.
-	aBoard := Board with: aCollectionOfSpots  withALenghtOf: 10 around: 3 playedBy: aCollectionOfSpaceships.
+	aBoard := Board with: aCollectionOfSpots  withALengthOf: 10 around: 3 playedBy: aCollectionOfSpaceships.
 	self assert: aBoard isValid.
 ]
 
@@ -32,7 +32,7 @@ BoardTest >> test02ABoardCanMoveASpaceshipToDesiredPosition [
 	secondSpot := Spot createWith: NoEffect new.
 	aCollectionOfSpots := { firstSpot. secondSpot.}.
 	aCollectionOfSpaceships := { 'Razor Crest'. 'Millenium Falcon'. 'SC30 StarFighter' }.
-	aBoard := Board with: aCollectionOfSpots  withALenghtOf: 10 around: 3 playedBy: aCollectionOfSpaceships.
+	aBoard := Board with: aCollectionOfSpots  withALengthOf: 10 around: 3 playedBy: aCollectionOfSpaceships.
 	aBoard move: 'SC30 StarFighter' toLap: 2 andSpot: 2.
 	self assert: (aBoard positionOf: 'SC30 StarFighter') lapNumber equals: 2 .
 	self assert: (aBoard positionOf: 'SC30 StarFighter') spotNumber equals: 2.
@@ -47,7 +47,7 @@ BoardTest >> test03ABoardCannotMoveASpaceshipToInvalidLap [
 	errorMessage := 'Cannot move a spaceship to invalid lap.'.
 	aCollectionOfSpots := { firstSpot. secondSpot.}.
 	aCollectionOfSpaceships := { 'Razor Crest'. 'Millenium Falcon'. 'SC30 StarFighter' }.
-	aBoard := Board with: aCollectionOfSpots  withALenghtOf: 10 around: 3 playedBy: aCollectionOfSpaceships.
+	aBoard := Board with: aCollectionOfSpots  withALengthOf: 10 around: 3 playedBy: aCollectionOfSpaceships.
 	invalidMove := [aBoard move: 'SC30 StarFighter' toLap: 2 andSpot: 3].
 	self should: invalidMove raise: error withMessage: errorMessage. 
 ]
@@ -61,7 +61,7 @@ BoardTest >> test04ABoardCannotMoveASpaceshipToInvalidPosition [
 	errorMessage := 'Cannot move a spaceship to an invalid position.'.
 	aCollectionOfSpots := { firstSpot. secondSpot.}.
 	aCollectionOfSpaceships := { 'Razor Crest'. 'Millenium Falcon'. 'SC30 StarFighter' }.
-	aBoard := Board with: aCollectionOfSpots  withALenghtOf: 10 around: 3 playedBy: aCollectionOfSpaceships.
+	aBoard := Board with: aCollectionOfSpots  withALengthOf: 10 around: 3 playedBy: aCollectionOfSpaceships.
 	invalidMove := [aBoard move: 'SC30 StarFighter' toLap: 1 andSpot: -1].
 	self should: invalidMove raise: error withMessage: errorMessage. 
 ]
@@ -73,7 +73,7 @@ BoardTest >> test05ABoardCanReturnItsLenghtInSpots [
 	secondSpot := Spot createWith: NoEffect new.
 	aCollectionOfSpots := { firstSpot. secondSpot.}.
 	aCollectionOfSpaceships := { 'Razor Crest'. 'Millenium Falcon'. 'SC30 StarFighter' }.
-	aBoard := Board with: aCollectionOfSpots  withALenghtOf: 10 around: 3 playedBy: aCollectionOfSpaceships.
+	aBoard := Board with: aCollectionOfSpots  withALengthOf: 10 around: 3 playedBy: aCollectionOfSpaceships.
 	aBoard move: 'SC30 StarFighter' toLap: 2 andSpot: 2.
 	self assert: (aBoard lengthInSpots) equals: 2 .
 ]
@@ -85,7 +85,7 @@ BoardTest >> test06ABoardCanReturnItsLenghtInParsecs [
 	secondSpot := Spot createWith: NoEffect new.
 	aCollectionOfSpots := { firstSpot. secondSpot.}.
 	aCollectionOfSpaceships := { 'Razor Crest'. 'Millenium Falcon'. 'SC30 StarFighter' }.
-	aBoard := Board with: aCollectionOfSpots  withALenghtOf: 10 around: 3 playedBy: aCollectionOfSpaceships.
+	aBoard := Board with: aCollectionOfSpots  withALengthOf: 10 around: 3 playedBy: aCollectionOfSpaceships.
 	aBoard move: 'SC30 StarFighter' toLap: 2 andSpot: 2.
 	self assert: (aBoard lengthInParsecs) equals: 10 .
 ]
@@ -97,7 +97,19 @@ BoardTest >> test07ABoardCanReturnItsAmountOfLapsToBePlayed [
 	secondSpot := Spot createWith: NoEffect new.
 	aCollectionOfSpots := { firstSpot. secondSpot.}.
 	aCollectionOfSpaceships := { 'Razor Crest'. 'Millenium Falcon'. 'SC30 StarFighter' }.
-	aBoard := Board with: aCollectionOfSpots  withALenghtOf: 10 around: 3 playedBy: aCollectionOfSpaceships.
+	aBoard := Board with: aCollectionOfSpots  withALengthOf: 10 around: 3 playedBy: aCollectionOfSpaceships.
 	aBoard move: 'SC30 StarFighter' toLap: 2 andSpot: 2.
 	self assert: (aBoard amountOfLaps) equals: 3 .
+]
+
+{ #category : #tests }
+BoardTest >> test08ABoardCanReturnThePositionOfAllTheSpaceships [
+	| aBoard aCollectionOfSpaceships aCollectionOfSpots  firstSpot secondSpot |
+	firstSpot := Spot createWith: NoEffect new.
+	secondSpot := Spot createWith: NoEffect new.
+	aCollectionOfSpots := { firstSpot. secondSpot.}.
+	aCollectionOfSpaceships := { 'Razor Crest'. 'Millenium Falcon'. 'SC30 StarFighter' }.
+	aBoard := Board with: aCollectionOfSpots  withALengthOf: 10 around: 3 playedBy: aCollectionOfSpaceships.
+	aBoard move: 'SC30 StarFighter' toLap: 2 andSpot: 2.
+	self assert: (aBoard spaceshipPositions at: 'SC30 StarFighter')lapNumber equals: 2 .
 ]
