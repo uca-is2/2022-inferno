@@ -81,7 +81,7 @@ EffectsTest >> test05MoonwalkMovesEveryOtherSpaceshipNSpotsBackwards [
 	| aBoard aCollectionOfSpaceships aCollectionOfSpots  firstSpot secondSpot thirdSpot  expectedPositionOne  expectedPositionTwo expectedPositionThree |
 	firstSpot := Spot createWith: NoEffect  new.
 	secondSpot := Spot createWith: NoEffect  new.
-	thirdSpot := Spot createWith: (Moonwalk createWith: 8).
+	thirdSpot := Spot createWith: (Moonwalk createWith: 10).
 	aCollectionOfSpots := { firstSpot. secondSpot. thirdSpot.  }.
 	aCollectionOfSpaceships := { 'Razor Crest'. 'Millenium Falcon'. 'SC30 StarFighter' }.
 	aBoard := Board with: aCollectionOfSpots  withALengthOf: 10 around: 3 playedBy: aCollectionOfSpaceships.
@@ -90,7 +90,7 @@ EffectsTest >> test05MoonwalkMovesEveryOtherSpaceshipNSpotsBackwards [
 	aBoard move: 'SC30 StarFighter' toLap: 3 andSpot: 3.
 	expectedPositionOne := Position atLap: 0 andSpot: 3.
 	expectedPositionTwo := Position atLap: 0 andSpot: 1. 
-	expectedPositionThree := Position atLap: 1 andSpot: 1.  
+	expectedPositionThree := Position atLap: 0 andSpot: 2.  
 	aBoard applyEffectTriggeredBy:  'Razor Crest'.
 	self assert: (aBoard positionOf: 'Razor Crest' )lapNumber  equals: expectedPositionOne lapNumber .
 	self assert: (aBoard positionOf: 'Razor Crest' )spotNumber  equals: expectedPositionOne spotNumber .
@@ -98,4 +98,22 @@ EffectsTest >> test05MoonwalkMovesEveryOtherSpaceshipNSpotsBackwards [
 	self assert: (aBoard positionOf: 'Millenium Falcon' )spotNumber  equals: expectedPositionTwo spotNumber.
 	self assert: (aBoard positionOf: 'SC30 StarFighter' )lapNumber  equals: expectedPositionThree lapNumber .
 	self assert: (aBoard positionOf: 'SC30 StarFighter' )spotNumber  equals: expectedPositionThree spotNumber.
+]
+
+{ #category : #tests }
+EffectsTest >> test06HyperJumpMovesTriggeringSpaceshipTheAmountOfParsecsGiven [
+	| aBoard aCollectionOfSpaceships aCollectionOfSpots  firstSpot secondSpot thirdSpot  expectedPositionAfterFirstJump  arrayOfJumps  |
+	firstSpot := Spot createWith: NoEffect  new.
+	secondSpot := Spot createWith: NoEffect  new.
+	arrayOfJumps := OrderedCollection new: 3.
+	arrayOfJumps addAllFirst: {1. 2. 3}.
+	thirdSpot := Spot createWith: (Hyperjump  createWith: arrayOfJumps).
+	aCollectionOfSpots := { firstSpot. secondSpot. thirdSpot.  }.
+	aCollectionOfSpaceships := { 'Razor Crest'. 'Millenium Falcon'. 'SC30 StarFighter' }.
+	aBoard := Board with: aCollectionOfSpots  withALengthOf: 9 around: 3 playedBy: aCollectionOfSpaceships.
+	aBoard move: 'Razor Crest' toLap: 0 andSpot: 3.
+	expectedPositionAfterFirstJump := Position atLap: 1 andSpot: 1.
+	aBoard applyEffectTriggeredBy:  'Razor Crest'.
+	self assert: (aBoard positionOf: 'Razor Crest' )lapNumber  equals: expectedPositionAfterFirstJump lapNumber .
+	self assert: (aBoard positionOf: 'Razor Crest' )spotNumber  equals: expectedPositionAfterFirstJump spotNumber 
 ]

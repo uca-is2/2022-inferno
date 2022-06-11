@@ -41,25 +41,26 @@ Moonwalk >> initializeWith: aMoonwalkNumber [
 { #category : #applying }
 Moonwalk >> moonwalk: aSpaceship from: positionBeforeMoonwalk on: aBoard [
 
-	| lapBeforeMoonwalk spotBeforeMoonwalk lapsToDecrease spotsToDecrease |
+	| lapBeforeMoonwalk spotBeforeMoonwalk lengthInSpots positionInTotalSpots nextPositionInTotalSpots decreaseToSpot decreaseToLap |
 	lapBeforeMoonwalk := positionBeforeMoonwalk lapNumber.
 	spotBeforeMoonwalk := positionBeforeMoonwalk spotNumber.
-	lapBeforeMoonwalk = 0
-		ifTrue: [ 
-			spotBeforeMoonwalk - number < 1
-				ifTrue: [ aBoard move: aSpaceship toLap: 0 andSpot: 1 ]
-				ifFalse: [ 
-					aBoard
-						move: aSpaceship
-						toLap: 0
-						andSpot: spotBeforeMoonwalk - number ] ]
-		ifFalse: [ 
-			lapsToDecrease := (number / (aBoard lengthInSpots))asInteger. 
-			spotsToDecrease := number - (lapsToDecrease* aBoard lengthInSpots).
-			((lapBeforeMoonwalk - lapsToDecrease) < 1)ifTrue:[
-				aBoard move: aSpaceship toLap: 0 andSpot: 1.
-				]
-			ifFalse:[
-				aBoard move: aSpaceship toLap: (lapBeforeMoonwalk - lapsToDecrease) andSpot: (spotBeforeMoonwalk -spotsToDecrease ) ]
-			 ].
+	lengthInSpots := aBoard lengthInSpots.
+	positionInTotalSpots := ((lengthInSpots * lapBeforeMoonwalk) + spotBeforeMoonwalk).
+	nextPositionInTotalSpots := positionInTotalSpots - number.
+	decreaseToSpot := (nextPositionInTotalSpots rem: lengthInSpots).
+	decreaseToLap := (nextPositionInTotalSpots//lengthInSpots).
+	(nextPositionInTotalSpots < 1)
+	ifTrue:[
+		aBoard move: aSpaceship toLap:0 andSpot: 1]
+	ifFalse:[
+		(decreaseToSpot == 0)
+		ifTrue:[
+			aBoard move: aSpaceship toLap: decreaseToLap-1 andSpot: lengthInSpots]
+		ifFalse:[ 
+			 aBoard move: aSpaceship toLap: decreaseToLap andSpot: decreaseToSpot]
+		
+	 ]
+	 
+	
+	
 ]

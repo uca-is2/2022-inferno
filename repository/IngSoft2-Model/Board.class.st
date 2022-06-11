@@ -127,6 +127,35 @@ Board >> lengthInSpots [
 	^length.
 ]
 
+{ #category : #moving }
+Board >> move: aSpaceship fromEffectSpot: spotBeforeRoll andLap: lapBeforeRoll to: rollNumber [
+
+	| spotAfterLapping |
+	(rollNumber == 0)
+	ifTrue:[
+		self move: aSpaceship toLap: lapBeforeRoll andSpot: spotBeforeRoll.
+		]
+	ifFalse:[
+		(self isLapFinishedIf: spotBeforeRoll moves: rollNumber)
+			ifTrue: [ 
+				(lapBeforeRoll + 1 >=  laps)
+					ifTrue: [ self moveSpaceshipToFinishLine: aSpaceship ]
+					ifFalse: [ 
+						spotAfterLapping := spotBeforeRoll + rollNumber -  length .
+						self
+							move: aSpaceship
+							toLap: lapBeforeRoll + 1
+							andSpot: spotAfterLapping.
+						 ] ]
+			ifFalse: [ 
+				self
+					move: aSpaceship
+					toLap: lapBeforeRoll
+					andSpot: spotBeforeRoll + rollNumber.
+				 ]
+			]
+]
+
 { #category : #playing }
 Board >> move: aSpaceship fromSpot: spotBeforeRoll andLap: lapBeforeRoll to: rollNumber [
 
@@ -136,7 +165,7 @@ Board >> move: aSpaceship fromSpot: spotBeforeRoll andLap: lapBeforeRoll to: rol
 			(lapBeforeRoll + 1 >=  laps)
 				ifTrue: [ self moveSpaceshipToFinishLine: aSpaceship ]
 				ifFalse: [ 
-					spotAfterLapping := spotBeforeRoll + rollNumber -  length +1 .
+					spotAfterLapping := (spotBeforeRoll + rollNumber -  length) +1.
 					self
 						move: aSpaceship
 						toLap: lapBeforeRoll + 1
