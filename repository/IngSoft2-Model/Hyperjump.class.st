@@ -33,6 +33,21 @@ Hyperjump >> applyTo: aBoard by: aSpaceship [
 	^ (aBoard spaceshipPositions).
 ]
 
+{ #category : #getters }
+Hyperjump >> getJumpNumberInSpots: aBoard [
+	|  hyperJumpValues lengthInParsecs amountOfSpots parsecsPerSpot parsecsForThisJump amountOfSpotsToJump |
+	hyperJumpValues := jumpsArray.
+	parsecsForThisJump := hyperJumpValues removeFirst.
+	hyperJumpValues addLast: parsecsForThisJump .
+	
+	lengthInParsecs := aBoard lengthInParsecs.
+	amountOfSpots := aBoard lengthInSpots.
+	parsecsPerSpot := ( lengthInParsecs / amountOfSpots ).
+	amountOfSpotsToJump := (parsecsForThisJump // parsecsPerSpot ).
+	^ amountOfSpotsToJump
+	
+]
+
 { #category : #initialization }
 Hyperjump >> initializeWith: aJumpsArray [ 
 	| sortedArray reversedArray |
