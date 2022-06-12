@@ -79,3 +79,28 @@ ZathuraTest >> test01AGameOfZathuraInfernoCanBePlayedByTurnsTilFinishedWithLoade
 	[ zathura hasGameFinished ] whileFalse: [ zathura playNextTurn ].
 	self assert: zathura hasGameFinished.
 ]
+
+{ #category : #tests }
+ZathuraTest >> test02AnEffectDoesNotTriggerAnotherEffect [
+
+	| aBoard aCollectionOfSpaceships aCollectionOfSpots aDie1 aCollectionOfDice aDiceCup zathura positionOfSpaceship firstSpot secondSpot thirdSpot fourthSpot fifthSpot sixthSpot expectedPosition |
+	firstSpot := Spot createWith: NoEffect new.
+	secondSpot := Spot createWith: SpeedUp new.
+	thirdSpot := Spot createWith: NoEffect new.
+	fourthSpot := Spot createWith: NoEffect new.
+	fifthSpot := Spot createWith: NoEffect new.
+	sixthSpot := Spot createWith: SpeedUp  new.
+		
+	aCollectionOfSpots := { firstSpot. secondSpot. thirdSpot. fourthSpot. fifthSpot. sixthSpot}.
+	aCollectionOfSpaceships := { 'Razor Crest'. 'Millenium Falcon'. 'SC30 StarFighter' }.
+	aBoard := Board with: aCollectionOfSpots  withALengthOf: 10 around: 3 playedBy: aCollectionOfSpaceships.
+	aDie1 := LoadedDie with:5 loadedWith:1.
+	aCollectionOfDice := { aDie1.}.
+	aDiceCup := DiceCup with: aCollectionOfDice.
+	zathura := Zathura playWith: aDiceCup over: aBoard.
+	expectedPosition := 6.
+	zathura playNextTurn .
+	
+	positionOfSpaceship :=  zathura positionOf: 'SC30 StarFighter'.
+	self assert: (positionOfSpaceship )spotNumber equals: expectedPosition.
+]

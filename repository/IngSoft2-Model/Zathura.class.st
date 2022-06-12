@@ -71,3 +71,8 @@ Zathura >> playTurn: aSpaceship [
 		andLap: lapBeforeRoll
 		to: rollNumber
 ]
+
+{ #category : #getter }
+Zathura >> positionOf: aSpaceship [	
+	 ^board positionOf: aSpaceship.
+]
