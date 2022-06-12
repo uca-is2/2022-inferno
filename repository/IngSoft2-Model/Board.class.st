@@ -142,6 +142,9 @@ Board >> move: aSpaceship fromEffectSpot: spotBeforeRoll andLap: lapBeforeRoll t
 					ifTrue: [ self moveSpaceshipToFinishLine: aSpaceship ]
 					ifFalse: [ 
 						spotAfterLapping := spotBeforeRoll + rollNumber -  length .
+						(spotAfterLapping == 0) ifTrue: [ 
+							spotAfterLapping := length 
+							 ].
 						self
 							move: aSpaceship
 							toLap: lapBeforeRoll + 1
