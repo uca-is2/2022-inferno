@@ -76,3 +76,8 @@ Zathura >> playTurn: aSpaceship [
 Zathura >> positionOf: aSpaceship [	
 	 ^board positionOf: aSpaceship.
 ]
+
+{ #category : #getter }
+Zathura >> rankingOfSpaceships [
+	^board rankingOfSpaceships.
+]

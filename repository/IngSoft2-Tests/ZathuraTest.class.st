@@ -104,3 +104,60 @@ ZathuraTest >> test02AnEffectDoesNotTriggerAnotherEffect [
 	positionOfSpaceship :=  zathura positionOf: 'SC30 StarFighter'.
 	self assert: (positionOfSpaceship )spotNumber equals: expectedPosition.
 ]
+
+{ #category : #tests }
+ZathuraTest >> test03RankingOrdersAndAssertsCorrectPosition [
+
+	| aBoard aCollectionOfSpaceships aCollectionOfSpots aDie1 aCollectionOfDice aDiceCup zathura positionOfSpaceship firstSpot secondSpot thirdSpot fourthSpot fifthSpot sixthSpot expectedRanking |
+	firstSpot := Spot createWith: NoEffect new.
+	secondSpot := Spot createWith: SpeedUp new.
+	thirdSpot := Spot createWith: NoEffect new.
+	fourthSpot := Spot createWith: NoEffect new.
+	fifthSpot := Spot createWith: NoEffect new.
+	sixthSpot := Spot createWith: NoEffect  new.
+		
+	aCollectionOfSpots := { firstSpot. secondSpot. thirdSpot. fourthSpot. fifthSpot. sixthSpot}.
+	aCollectionOfSpaceships := { 'Razor Crest'. 'Millenium Falcon'. 'SC30 StarFighter' }.
+	aBoard := Board with: aCollectionOfSpots  withALengthOf: 10 around: 3 playedBy: aCollectionOfSpaceships.
+	aDie1 := LoadedDie with:5 loadedWith:1.
+	aCollectionOfDice := { aDie1.}.
+	aDiceCup := DiceCup with: aCollectionOfDice.
+	zathura := Zathura playWith: aDiceCup over: aBoard.
+	expectedRanking := [['SC30 StarFighter', 2,1],['Razor Crest', 1, 6],['Millenium Falcon', 1, 6]].
+	zathura playNextTurn .
+	zathura playNextTurn .
+	zathura playNextTurn .
+	zathura playNextTurn .
+	self assert: (zathura rankingOfSpaceships = expectedRanking)
+	
+	
+]
+
+{ #category : #tests }
+ZathuraTest >> test04PlayNextTurnDoesNotAllowSpaceshipToPlayWhenNotItsTurn [
+
+	| aBoard aCollectionOfSpaceships aCollectionOfSpots aDie1 aCollectionOfDice aDiceCup zathura positionOfSpaceship firstSpot secondSpot thirdSpot fourthSpot fifthSpot sixthSpot expectedPosition seventhSpot |
+	firstSpot := Spot createWith: NoEffect new.
+	secondSpot := Spot createWith: SpeedUp new.
+	thirdSpot := Spot createWith: NoEffect new.
+	fourthSpot := Spot createWith: NoEffect new.
+	fifthSpot := Spot createWith: NoEffect new.
+	sixthSpot := Spot createWith: SpeedUp  new.
+	seventhSpot := Spot createWith: NoEffect new.
+		
+	aCollectionOfSpots := { firstSpot. secondSpot. thirdSpot. fourthSpot. fifthSpot. sixthSpot. seventhSpot.}.
+	aCollectionOfSpaceships := { 'Razor Crest'. 'Millenium Falcon'. 'SC30 StarFighter' }.
+	aBoard := Board with: aCollectionOfSpots  withALengthOf: 10 around: 3 playedBy: aCollectionOfSpaceships.
+	aDie1 := LoadedDie with:5 loadedWith:3.
+	aCollectionOfDice := { aDie1.}.
+	aDiceCup := DiceCup with: aCollectionOfDice.
+	zathura := Zathura playWith: aDiceCup over: aBoard.
+	expectedPosition := 7.
+	zathura playTurn: 'Millenium Falcon' .
+	zathura playTurn: 'SC30 StarFighter' .
+	zathura playTurn: 'SC30 StarFighter' .
+	
+	positionOfSpaceship :=  zathura positionOf: 'SC30 StarFighter'.
+	"self assert: (positionOfSpaceship )spotNumber equals: expectedPosition."
+	self assert: false.
+]

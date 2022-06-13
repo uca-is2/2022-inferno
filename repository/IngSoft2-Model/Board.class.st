@@ -109,7 +109,7 @@ Board >> initializeWith: aCollectionOfSpots withALengthOf: anAmountOfParsecs aro
 { #category : #asserting }
 Board >> isLapFinishedIf: spotBeforeRoll moves: rollNumber [
 
-	^ ((spotBeforeRoll + rollNumber) >= (self lengthInSpots)).
+	^ ((spotBeforeRoll + rollNumber) > (self lengthInSpots)).
 ]
 
 { #category : #validation }
@@ -197,6 +197,11 @@ Board >> moveSpaceshipToFinishLine: aSpaceship [
 { #category : #getters }
 Board >> positionOf: aSpaceship [
 	^ spaceshipsPositions at: aSpaceship .
+]
+
+{ #category : #getter }
+Board >> rankingOfSpaceships [
+	self shouldBeImplemented.
 ]
 
 { #category : #getters }
