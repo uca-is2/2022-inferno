@@ -108,7 +108,7 @@ ZathuraTest >> test02AnEffectDoesNotTriggerAnotherEffect [
 { #category : #tests }
 ZathuraTest >> test03RankingOrdersAndAssertsCorrectPosition [
 
-	| aBoard aCollectionOfSpaceships aCollectionOfSpots aDie1 aCollectionOfDice aDiceCup zathura positionOfSpaceship firstSpot secondSpot thirdSpot fourthSpot fifthSpot sixthSpot expectedRanking |
+	| aBoard aCollectionOfSpaceships aCollectionOfSpots aDie1 aCollectionOfDice aDiceCup zathura  firstSpot secondSpot thirdSpot fourthSpot fifthSpot sixthSpot expectedRanking |
 	firstSpot := Spot createWith: NoEffect new.
 	secondSpot := Spot createWith: SpeedUp new.
 	thirdSpot := Spot createWith: NoEffect new.
@@ -128,7 +128,7 @@ ZathuraTest >> test03RankingOrdersAndAssertsCorrectPosition [
 	zathura playNextTurn .
 	zathura playNextTurn .
 	zathura playNextTurn .
-	self assert: (zathura rankingOfSpaceships = expectedRanking)
+	self assert: (zathura rankingOfSpaceships equals: expectedRanking).
 	
 	
 ]
