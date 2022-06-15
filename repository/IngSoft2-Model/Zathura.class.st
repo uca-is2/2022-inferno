@@ -25,6 +25,13 @@ Zathura >> assertGameIsFinished [
 		Error signal: 'Game is finished! You cannot keep playing this game.' ]
 ]
 
+{ #category : #playing }
+Zathura >> assertItIsThatSpaceshipsTurn: aSpaceship [
+
+	aSpaceship == turnController activeSpaceship ifFalse: [ 
+		Error signal: 'Cannot play turn if it is not that spaceship turn.' ]
+]
+
 { #category : #getters }
 Zathura >> hasGameFinished [
 	^ gameIsFinished.
@@ -53,14 +60,13 @@ Zathura >> playNextTurn [
 	self assertGameIsFinished.
 	currentSpaceship := turnController activeSpaceship.
 	self playTurn: currentSpaceship.
-	self hasItReachedTheFinishLine: currentSpaceship.
-	turnController nextSpaceshipInLine
 ]
 
 { #category : #playing }
 Zathura >> playTurn: aSpaceship [
 
 	| positionBeforeRoll lapBeforeRoll spotBeforeRoll rollNumber |
+	self assertItIsThatSpaceshipsTurn: aSpaceship.
 	positionBeforeRoll := board positionOf: aSpaceship.
 	lapBeforeRoll := positionBeforeRoll lapNumber.
 	spotBeforeRoll := positionBeforeRoll spotNumber.
@@ -69,7 +75,9 @@ Zathura >> playTurn: aSpaceship [
 		move: aSpaceship
 		fromSpot: spotBeforeRoll
 		andLap: lapBeforeRoll
-		to: rollNumber
+		to: rollNumber.
+	self hasItReachedTheFinishLine: aSpaceship.
+	turnController nextSpaceshipInLine
 ]
 
 { #category : #getter }
