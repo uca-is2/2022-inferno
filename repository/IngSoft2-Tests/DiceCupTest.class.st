@@ -5,7 +5,7 @@ Class {
 }
 
 { #category : #tests }
-DiceCupTest >> testDiceCupRollIsAnInteger [
+DiceCupTest >> test01DiceCupRollIsAnInteger [
 	| aDie1 aDie2 aDiceCup aResult aCollection aDie3 |
 	aDie1:= Die with:5.
 	aDie2:= Die with:6.
@@ -20,7 +20,7 @@ DiceCupTest >> testDiceCupRollIsAnInteger [
 ]
 
 { #category : #tests }
-DiceCupTest >> testDiceCupWithLoadedRollIsSumOfLoadedSides [
+DiceCupTest >> test02DiceCupWithLoadedRollIsSumOfLoadedSides [
 	| aDie1 aDie2 aDiceCup aResult aCollection|
 	aDie1:= LoadedDie with:5 loadedWith:4.
 	aDie2:= LoadedDie with:6 loadedWith: 6.

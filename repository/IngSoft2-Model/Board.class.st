@@ -1,203 +1,271 @@
 "
-I represent a Board of slots to be played with.
-
+i represent a board where a game can be played
 "
 Class {
 	#name : #Board,
 	#superclass : #Object,
 	#instVars : [
-		'numberOfSlots',
 		'layout',
-		'numberOfParsecs',
-		'hyperJumpValues'
+		'lengthInParsecs',
+		'laps',
+		'length',
+		'spaceshipsPositions'
 	],
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #'instance creation' }
-Board class >> with: aNumberOfSlots andNumberOfParsecs: amountOfParsecs [
+{ #category : #assertion }
+Board class >> assertValidAmountOfLaps: anAmountOfLaps [
 
-	((aNumberOfSlots > 0) & (amountOfParsecs > 9)) ifFalse: [ 
+	anAmountOfLaps > 0 ifFalse: [ 
 		Error signal:
-			'Board cannot be created with a number of slots lower than 1 or Parsecs lower than 9' ].
-	^ self new initializeWith: aNumberOfSlots andNumberOfParsecs: amountOfParsecs
+			'Board cannot be created with a number of laps lower than 0.' ]
 ]
 
-{ #category : #'instance creation' }
-Board class >> withCustomLayout: aLayout andNumberOfSlots: aNumberOfSlots [
+{ #category : #assertion }
+Board class >> assertValidAmountOfSpaceship: aCollectionOfSpaceships [
 
-	^ self new initializeWithCustomLayout: aLayout and: aNumberOfSlots.
+	aCollectionOfSpaceships size > 1 ifFalse: [ 
+		Error signal:
+			'Board cannot be created with a number of spaceships lower than 2' ]
 ]
 
-{ #category : #accessing }
-Board >> amountOfSlotsToMoveInMoonwalk: positionOfMoonwalk [
+{ #category : #assertion }
+Board class >> assertValidAmountOfSpots: anAmountOfSpots [
 
-	^ (layout at: 'moonWalks' at: 2) at: positionOfMoonwalk
+	(anAmountOfSpots isEmpty) ifTrue: [ 
+		Error signal:
+			'Board cannot be created with a number of spots lower than 1' ]
 ]
 
-{ #category : #accessing }
-Board >> effectAt: slotPosition [
+{ #category : #assertion }
+Board class >> assertValidLengthInParsecs: anAmountOfParsecs [
 
-	((layout at: 'speedUps') includes: slotPosition) ifTrue: [ 
-		^ 'speedUps' ].
-	((layout at: 'wormholes') includes: slotPosition) ifTrue: [ 
-		^ 'wormholes' ].
-	((layout at: 'moonWalks') includes: slotPosition) ifTrue: [ 
-		^ 'moonWalks' ].
-	((layout at: 'hyperJumps') includes: slotPosition) ifTrue: [ 
-		^ 'hyperJumps' ].
-	((layout at: 'atomicBombs') includes: slotPosition) ifTrue: [ 
-		^ 'atomicBombs' ].
-	^ 'noEffect'
-]
-
-{ #category : #accessing }
-Board >> hyperJumpDistanceInSlots [
-	| parsecsForThisJump slotsInThisHyperJump|
-	parsecsForThisJump := hyperJumpValues removeFirst.
-	hyperJumpValues addLast: parsecsForThisJump .
-	slotsInThisHyperJump := (parsecsForThisJump /(numberOfParsecs/numberOfSlots))asInteger.
-	^slotsInThisHyperJump.
-]
-
-{ #category : #initialization }
-Board >> initializeWith: aNumberOfSlots andNumberOfParsecs: amountOfParsecs [
-
-	| numberOfSpeedUps numberOfWormholes numberOfMoonwalks numberOfHyperJumps numberOfAtomicBombs effectsPositions slotsWithThisEffect randomSlot minValueHyperJump maxValueHyperJump moonWalkValues moonwalksPositionsAndValues |
-	numberOfSlots := aNumberOfSlots.
-	numberOfParsecs := amountOfParsecs.
-	numberOfSpeedUps := self percentageOfSlots: 0.2.
-	numberOfWormholes := self percentageOfSlots: 0.2.
-	numberOfMoonwalks := self percentageOfSlots: 0.1.
-	numberOfHyperJumps := self percentageOfSlots: 0.08.
-	numberOfAtomicBombs := self percentageOfSlots: 0.02.
-	layout := Dictionary new.
-	slotsWithThisEffect := 0.
-	effectsPositions := Array new: numberOfSpeedUps.
-	[ slotsWithThisEffect < numberOfSpeedUps ] whileTrue: [ 
-		randomSlot := numberOfSlots atRandom.
-		(effectsPositions includes: randomSlot) ifFalse: [ 
-			effectsPositions at: slotsWithThisEffect + 1 put: randomSlot.
-			slotsWithThisEffect := slotsWithThisEffect + 1 ] ].
-	layout at: 'speedUps' put: effectsPositions.
-
-	slotsWithThisEffect := 0.
-	effectsPositions := Array new: numberOfWormholes.
-	[ slotsWithThisEffect < numberOfWormholes ] whileTrue: [ 
-		randomSlot := numberOfSlots atRandom.
-		(effectsPositions includes: randomSlot)
-		| (self slotAlreadyHasEffect: randomSlot) ifFalse: [ 
-			effectsPositions at: slotsWithThisEffect + 1 put: randomSlot.
-			slotsWithThisEffect := slotsWithThisEffect + 1 ] ].
-	layout at: 'wormholes' put: effectsPositions.
-
-	slotsWithThisEffect := 0.
-	effectsPositions := Array new: numberOfMoonwalks.
-	moonWalkValues := Array new: numberOfMoonwalks.
-	[ slotsWithThisEffect < numberOfMoonwalks ] whileTrue: [ 
-		randomSlot := numberOfSlots atRandom.
-		(effectsPositions includes: randomSlot)
-		| (self slotAlreadyHasEffect: randomSlot) ifFalse: [ 
-			effectsPositions at: slotsWithThisEffect + 1 put: randomSlot.
-			moonWalkValues
-				at: slotsWithThisEffect + 1
-				put: (numberOfSlots / 10) asInteger atRandom.
-			slotsWithThisEffect := slotsWithThisEffect + 1 ] ].
-	moonwalksPositionsAndValues := Array new: 2.
-	moonwalksPositionsAndValues at: 1 put: effectsPositions.
-	moonwalksPositionsAndValues at: 2 put: moonWalkValues.
-	layout at: 'moonWalks' put: moonwalksPositionsAndValues.
-
-	slotsWithThisEffect := 0.
-	effectsPositions := Array new: numberOfHyperJumps.
-	[ slotsWithThisEffect < numberOfHyperJumps ] whileTrue: [ 
-		randomSlot := numberOfSlots atRandom.
-		(effectsPositions includes: randomSlot)
-		| (self slotAlreadyHasEffect: randomSlot) ifFalse: [ 
-			effectsPositions at: slotsWithThisEffect + 1 put: randomSlot.
-			slotsWithThisEffect := slotsWithThisEffect + 1 ] ].
-	layout at: 'hyperJumps' put: effectsPositions.
-
-	slotsWithThisEffect := 0.
-	effectsPositions := Array new: numberOfAtomicBombs.
-	[ slotsWithThisEffect < numberOfAtomicBombs ] whileTrue: [ 
-		randomSlot := numberOfSlots atRandom.
-		((effectsPositions includes: randomSlot) | self 
-			 slotAlreadyHasEffect: randomSlot) ifFalse: [ 
-			effectsPositions at: slotsWithThisEffect + 1 put: randomSlot.
-			slotsWithThisEffect := slotsWithThisEffect + 1 ] ].
-	layout at: 'atomicBombs' put: effectsPositions.
-
-	effectsPositions := Array new:
-		                    numberOfSlots - numberOfSpeedUps
-		                    - numberOfWormholes - numberOfMoonwalks
-		                    - numberOfHyperJumps - numberOfAtomicBombs.
-	slotsWithThisEffect := 0.
-	1 to: numberOfSlots do: [ :slotNumber | 
-		(self slotAlreadyHasEffect: randomSlot) ifFalse: [ 
-			effectsPositions at: slotsWithThisEffect + 1 put: slotNumber.
-			slotsWithThisEffect := slotsWithThisEffect + 1 ] ].
-	layout at: 'noEffect' put: effectsPositions.
-
-	numberOfParsecs := amountOfParsecs.
-	hyperJumpValues := OrderedCollection new: 10.
-	minValueHyperJump := 0.
-	maxValueHyperJump := amountOfParsecs - 10.
-	1 to: 10 do: [ :z | 
-		hyperJumpValues addFirst:
-			(minValueHyperJump to: maxValueHyperJump + z) atRandom.
-		minValueHyperJump := hyperJumpValues first ]
+	anAmountOfParsecs > 0 ifFalse: [ 
+		Error signal:
+			'Board cannot be created with a number of spots lower than 0' ]
 ]
 
 { #category : #'class initialization' }
-Board >> initializeWithCustomLayout: aCustomLayout and: aNumberOfSlots [
-	layout := aCustomLayout .
-	numberOfSlots := aNumberOfSlots.
+Board class >> with: aCollectionOfSpots withALengthOf: anAmountOfParsecs around: anAmountOfLaps playedBy: aCollectionOfSpaceships [
+
+	self assertValidAmountOfSpots: aCollectionOfSpots.
+	self assertValidLengthInParsecs: anAmountOfParsecs.
+	self assertValidAmountOfLaps: anAmountOfLaps.
+	self assertValidAmountOfSpaceship: aCollectionOfSpaceships.
+	^ self new
+		  initializeWith: aCollectionOfSpots
+		  withALengthOf: anAmountOfParsecs
+		  around: anAmountOfLaps
+		  playedBy: aCollectionOfSpaceships
+]
+
+{ #category : #getters }
+Board >> amountOfLaps [
+	^laps.
+]
+
+{ #category : #effectApplying }
+Board >> applyEffect: aSpaceship [
+	self applyEffectTriggeredBy: aSpaceship
+	
+]
+
+{ #category : #effectApplying }
+Board >> applyEffectTriggeredBy: aSpaceship [
+	| spotNumber |
+	spotNumber := (self positionOf: aSpaceship) spotNumber .
+	spaceshipsPositions := (layout at: spotNumber)effectAtSpot applyTo: self by: aSpaceship.
+]
+
+{ #category : #validation }
+Board >> assertValidLap: aLapNumber [
+	((aLapNumber <= laps)and:(aLapNumber >= 0))ifFalse: [ 
+		Error signal:
+			'Cannot move a spaceship to an invalid lap number.' ]
+]
+
+{ #category : #validation }
+Board >> assertValidSpot: aSpotNumber [ 
+	((aSpotNumber <= length) and: (aSpotNumber > 0))ifFalse: [ 
+		Error signal:
+			'Cannot move a spaceship to an invalid spot number' ]
+]
+
+{ #category : #initialization }
+Board >> initializeWith: aCollectionOfSpots withALengthOf: anAmountOfParsecs around: anAmountOfLaps playedBy: aCollectionOfSpaceships [ 
+
+	| amountOfSpaceships |
+	layout := aCollectionOfSpots.
+	lengthInParsecs := anAmountOfParsecs.
+	laps := anAmountOfLaps.
+	length := aCollectionOfSpots size.
+	amountOfSpaceships := aCollectionOfSpaceships size.
+	spaceshipsPositions := Dictionary new: amountOfSpaceships.
+	1 to: amountOfSpaceships do: [: spaceship |  
+	spaceshipsPositions at: (aCollectionOfSpaceships at: spaceship) put: (Position atLap: 0 andSpot: 1).].  
+]
+
+{ #category : #asserting }
+Board >> isLapFinishedIf: spotBeforeRoll moves: rollNumber [
+
+	^ ((spotBeforeRoll + rollNumber) > (self lengthInSpots)).
 ]
 
 { #category : #validation }
 Board >> isValid [
-
-	^ numberOfSlots > 0
+	^ length > 0.
 ]
 
-{ #category : #accessing }
-Board >> layout [
-
-	^ layout
+{ #category : #getters }
+Board >> lengthInParsecs [
+	^ lengthInParsecs
 ]
 
-{ #category : #'accessing - attributes' }
-Board >> lenght [
-
-	^ numberOfSlots
+{ #category : #getters }
+Board >> lengthInSpots [
+	^length.
 ]
 
-{ #category : #accessing }
-Board >> moonwalkSlotActivated: spaceshipPosition [
+{ #category : #moving }
+Board >> move: aSpaceship fromEffectSpot: spotBeforeRoll andLap: lapBeforeRoll to: rollNumber [
 
-	^ (layout at: 'moonWalks' at: 1) indexOf: spaceshipPosition
+	| spotAfterLapping |
+	(rollNumber == 0)
+	ifTrue:[
+		self move: aSpaceship toLap: lapBeforeRoll andSpot: spotBeforeRoll.
+		]
+	ifFalse:[
+		(self isLapFinishedIf: spotBeforeRoll moves: rollNumber)
+			ifTrue: [ 
+				(lapBeforeRoll + 1 >=  laps)
+					ifTrue: [ self moveSpaceshipToFinishLine: aSpaceship ]
+					ifFalse: [ 
+						spotAfterLapping := spotBeforeRoll + rollNumber -  length .
+						(spotAfterLapping == 0) ifTrue: [ 
+							spotAfterLapping := length 
+							 ].
+						self
+							move: aSpaceship
+							toLap: lapBeforeRoll + 1
+							andSpot: spotAfterLapping.
+						 ] ]
+			ifFalse: [ 
+				self
+					move: aSpaceship
+					toLap: lapBeforeRoll
+					andSpot: spotBeforeRoll + rollNumber.
+				 ]
+			]
 ]
 
-{ #category : #initialize }
-Board >> percentageOfSlots: percentage [ 
-	^ (numberOfSlots * percentage)asInteger
+{ #category : #playing }
+Board >> move: aSpaceship fromSpot: spotBeforeRoll andLap: lapBeforeRoll to: rollNumber [
+
+	| spotAfterLapping |
+	(self isLapFinishedIf: spotBeforeRoll moves: rollNumber)
+		ifTrue: [ 
+			(lapBeforeRoll + 1 >=  laps)
+				ifTrue: [ self moveSpaceshipToFinishLine: aSpaceship ]
+				ifFalse: [ 
+					spotAfterLapping := (spotBeforeRoll + rollNumber -  length).
+					self
+						move: aSpaceship
+						toLap: lapBeforeRoll + 1
+						andSpot: spotAfterLapping.
+					self applyEffect: aSpaceship ] ]
+		ifFalse: [ 
+			self
+				move: aSpaceship
+				toLap: lapBeforeRoll
+				andSpot: spotBeforeRoll + rollNumber.
+			self applyEffect: aSpaceship ]
 ]
 
-{ #category : #'accessing - attributes' }
-Board >> slotAlreadyHasEffect: slot [ 
-	| slotHasEffect |
-	slotHasEffect := false.
-	(((layout  at: 'speedUps' ifAbsent: [ #[] ]) includes:slot) | ((layout  at: 'wormholes' ifAbsent: [ #[] ]) includes:slot) | ((layout  at: 'moonWalks' at:1 ifAbsent: [ #[] ]) includes:slot) | ((layout  at: 'hyperJumps' ifAbsent: [ #[] ]) includes:slot) | ((layout  at: 'atomicBombs' ifAbsent: [ #[] ]) includes:slot) ) ifTrue: [ 
-		slotHasEffect := true
+{ #category : #moving }
+Board >> move: aSpaceship toLap: aLapNumber andSpot: aSpotNumber [ 
+	self assertValidLap: aLapNumber.
+	self assertValidSpot: aSpotNumber.
+	spaceshipsPositions at: aSpaceship put: (Position atLap: aLapNumber andSpot: aSpotNumber).
+]
+
+{ #category : #'as yet unclassified' }
+Board >> moveSpaceshipToFinishLine: aSpaceship [
+	self move: aSpaceship toLap: laps andSpot: length.
+]
+
+{ #category : #getter }
+Board >> orderOfKeys: spaceshipArrayOfKeys [
+
+	|orderedRankingArray aux|
+
+	orderedRankingArray:= OrderedCollection new: (spaceshipArrayOfKeys size).
+	1 to: (spaceshipArrayOfKeys size ) do: [ :spaceship|
+		aux := Array new: 3.
+		aux at: 1 put: (spaceshipArrayOfKeys at: spaceship).
+		aux at: 2 put: ((spaceshipsPositions at: (spaceshipArrayOfKeys at: spaceship))lapNumber).
+		aux at: 3 put: ((spaceshipsPositions at: (spaceshipArrayOfKeys at: spaceship)) spotNumber ).
+		orderedRankingArray addLast: aux . 
+		].
+	^orderedRankingArray 
+]
+
+{ #category : #getters }
+Board >> positionOf: aSpaceship [
+	^ spaceshipsPositions at: aSpaceship .
+]
+
+{ #category : #getter }
+Board >> rankingOfSpaceships [
+	| rankingInOrder spaceshipPositionsKeys spaceshipCounter bestPositionedSpaceshipNotRanked rankedLap rankedSpot index |
+	spaceshipCounter := spaceshipsPositions size.
+	rankingInOrder := Array new: (spaceshipsPositions size).
+	spaceshipPositionsKeys := spaceshipsPositions keys.
+	[spaceshipPositionsKeys size > 1 ]whileTrue: [ 
+		bestPositionedSpaceshipNotRanked := spaceshipPositionsKeys at: 1. 
+		2 to: spaceshipCounter do: [ :spaceship | 
+			(((spaceshipsPositions at: (spaceshipPositionsKeys at: spaceship)) lapNumber) > ((spaceshipsPositions at: (bestPositionedSpaceshipNotRanked)) lapNumber) | ((((spaceshipsPositions at: (spaceshipPositionsKeys at: spaceship)) lapNumber) = ((spaceshipsPositions at: (bestPositionedSpaceshipNotRanked)) lapNumber)) & (((spaceshipsPositions at: (spaceshipPositionsKeys at: spaceship)) spotNumber ) > ((spaceshipsPositions at: (bestPositionedSpaceshipNotRanked)) spotNumber)) )) ifTrue: [ 
+				bestPositionedSpaceshipNotRanked := (spaceshipPositionsKeys at: spaceship)asString  ].
+			 ].
+		
+		1 to: (spaceshipPositionsKeys size) do: [ :keyIndex |
+			((spaceshipPositionsKeys at: keyIndex) = bestPositionedSpaceshipNotRanked) ifTrue: 
+				[ spaceshipPositionsKeys at: keyIndex put: (spaceshipPositionsKeys at: keyIndex) ].
+			].
+		rankedLap := ((spaceshipsPositions at: bestPositionedSpaceshipNotRanked) lapNumber).
+		rankedSpot := ((spaceshipsPositions at: bestPositionedSpaceshipNotRanked) spotNumber).
+		rankingInOrder addLast: [ bestPositionedSpaceshipNotRanked , rankedLap, rankedSpot ].
 		 ].
-	^ slotHasEffect.
+		rankedLap := ((spaceshipsPositions at: (spaceshipPositionsKeys at:1)) lapNumber).
+		rankedSpot := ((spaceshipsPositions at: (spaceshipPositionsKeys at:1)) spotNumber).
+		rankingInOrder addLast: [ (spaceshipPositionsKeys at:1) , rankedLap, rankedSpot ].
+	^rankingInOrder
 ]
 
-{ #category : #accessing }
-Board >> slotsForMoonwalk: spaceshipPosition [
+{ #category : #getter }
+Board >> rankingOfSpaceshipsSanti [
+	|spaceshipsArray positionOfSpaceshipA positionOfSpaceshipB  lapsOfSpaceshipA lapsOfSpaceshipB spotsOfSpaceshipA spotsOfSpaceshipB rankingOfSpaceships |
 
-	| positionOfMoonwalk |
-	positionOfMoonwalk := self moonwalkSlotActivated: spaceshipPosition.
-	^ self amountOfSlotsToMoveInMoonwalk: positionOfMoonwalk.
+	spaceshipsArray := (self spaceshipPositions) keys "['Razor', 'Meteoro, 'SC30']".
+	
+		spaceshipsArray sort: [ :spaceShipA :spaceShipB |
+			positionOfSpaceshipA := (self positionOf: spaceShipA).
+			positionOfSpaceshipB := (self positionOf: spaceShipB ).
+			lapsOfSpaceshipA := positionOfSpaceshipA lapNumber.
+			lapsOfSpaceshipB := positionOfSpaceshipB lapNumber.
+			spotsOfSpaceshipA := positionOfSpaceshipA spotNumber.
+			spotsOfSpaceshipB := positionOfSpaceshipB spotNumber.
+			
+			((lapsOfSpaceshipA > lapsOfSpaceshipB) |  ((lapsOfSpaceshipA = lapsOfSpaceshipB) & (spotsOfSpaceshipA > spotsOfSpaceshipB)))].
+		
+	"Meteoro, Razor SC30"
+	
+		rankingOfSpaceships := self orderOfKeys: spaceshipsArray .
+		^rankingOfSpaceships.
+		
+]
+
+{ #category : #getters }
+Board >> spaceshipPositions [
+	^ spaceshipsPositions .
 ]
