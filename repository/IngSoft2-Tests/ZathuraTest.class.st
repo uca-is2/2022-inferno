@@ -108,7 +108,7 @@ ZathuraTest >> test02AnEffectDoesNotTriggerAnotherEffect [
 { #category : #tests }
 ZathuraTest >> test03RankingOrdersAndAssertsCorrectPosition [
 
-	| aBoard aCollectionOfSpaceships aCollectionOfSpots aDie1 aCollectionOfDice aDiceCup zathura  firstSpot secondSpot thirdSpot fourthSpot fifthSpot sixthSpot expectedRanking |
+	| aBoard aCollectionOfSpaceships aCollectionOfSpots aDie1 aCollectionOfDice aDiceCup zathura  firstSpot secondSpot thirdSpot fourthSpot fifthSpot sixthSpot expectedRanking chequeorankings |
 	firstSpot := Spot createWith: NoEffect new.
 	secondSpot := Spot createWith: SpeedUp new.
 	thirdSpot := Spot createWith: NoEffect new.
@@ -123,12 +123,17 @@ ZathuraTest >> test03RankingOrdersAndAssertsCorrectPosition [
 	aCollectionOfDice := { aDie1.}.
 	aDiceCup := DiceCup with: aCollectionOfDice.
 	zathura := Zathura playWith: aDiceCup over: aBoard.
-	expectedRanking := [['SC30 StarFighter', 2,1],['Razor Crest', 1, 6],['Millenium Falcon', 1, 6]].
+	expectedRanking := OrderedCollection new: 3.
+	expectedRanking addLast:['SC30 StarFighter',1,1].
+	expectedRanking addLast:['Millenium Falcon',0,6].
+	expectedRanking addLast:['Razor Crest',0,6].
+
 	zathura playNextTurn .
 	zathura playNextTurn .
 	zathura playNextTurn .
 	zathura playNextTurn .
-	self assert: (zathura rankingOfSpaceships equals: expectedRanking).
+	chequeorankings := zathura rankingOfSpaceships .
+	self assert: (zathura rankingOfSpaceships = expectedRanking).
 	
 	
 ]

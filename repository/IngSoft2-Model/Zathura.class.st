@@ -79,5 +79,5 @@ Zathura >> positionOf: aSpaceship [
 
 { #category : #getter }
 Zathura >> rankingOfSpaceships [
-	^board rankingOfSpaceships.
+	^board rankingOfSpaceshipsSanti .
 ]

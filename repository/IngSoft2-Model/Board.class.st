@@ -168,7 +168,7 @@ Board >> move: aSpaceship fromSpot: spotBeforeRoll andLap: lapBeforeRoll to: rol
 			(lapBeforeRoll + 1 >=  laps)
 				ifTrue: [ self moveSpaceshipToFinishLine: aSpaceship ]
 				ifFalse: [ 
-					spotAfterLapping := (spotBeforeRoll + rollNumber -  length) +1.
+					spotAfterLapping := (spotBeforeRoll + rollNumber -  length).
 					self
 						move: aSpaceship
 						toLap: lapBeforeRoll + 1
@@ -192,6 +192,22 @@ Board >> move: aSpaceship toLap: aLapNumber andSpot: aSpotNumber [
 { #category : #'as yet unclassified' }
 Board >> moveSpaceshipToFinishLine: aSpaceship [
 	self move: aSpaceship toLap: laps andSpot: length.
+]
+
+{ #category : #getter }
+Board >> orderOfKeys: spaceshipArrayOfKeys [
+
+	|orderedRankingArray aux|
+
+	orderedRankingArray:= OrderedCollection new: (spaceshipArrayOfKeys size).
+	1 to: (spaceshipArrayOfKeys size ) do: [ :spaceship|
+		aux := Array new: 3.
+		aux at: 1 put: (spaceshipArrayOfKeys at: spaceship).
+		aux at: 2 put: ((spaceshipsPositions at: (spaceshipArrayOfKeys at: spaceship))lapNumber).
+		aux at: 3 put: ((spaceshipsPositions at: (spaceshipArrayOfKeys at: spaceship)) spotNumber ).
+		orderedRankingArray addLast: aux . 
+		].
+	^orderedRankingArray 
 ]
 
 { #category : #getters }
@@ -224,6 +240,29 @@ Board >> rankingOfSpaceships [
 		rankedSpot := ((spaceshipsPositions at: (spaceshipPositionsKeys at:1)) spotNumber).
 		rankingInOrder addLast: [ (spaceshipPositionsKeys at:1) , rankedLap, rankedSpot ].
 	^rankingInOrder
+]
+
+{ #category : #getter }
+Board >> rankingOfSpaceshipsSanti [
+	|spaceshipsArray positionOfSpaceshipA positionOfSpaceshipB  lapsOfSpaceshipA lapsOfSpaceshipB spotsOfSpaceshipA spotsOfSpaceshipB rankingOfSpaceships |
+
+	spaceshipsArray := (self spaceshipPositions) keys "['Razor', 'Meteoro, 'SC30']".
+	
+		spaceshipsArray sort: [ :spaceShipA :spaceShipB |
+			positionOfSpaceshipA := (self positionOf: spaceShipA).
+			positionOfSpaceshipB := (self positionOf: spaceShipB ).
+			lapsOfSpaceshipA := positionOfSpaceshipA lapNumber.
+			lapsOfSpaceshipB := positionOfSpaceshipB lapNumber.
+			spotsOfSpaceshipA := positionOfSpaceshipA spotNumber.
+			spotsOfSpaceshipB := positionOfSpaceshipB spotNumber.
+			
+			((lapsOfSpaceshipA > lapsOfSpaceshipB) |  ((lapsOfSpaceshipA = lapsOfSpaceshipB) & (spotsOfSpaceshipA > spotsOfSpaceshipB)))].
+		
+	"Meteoro, Razor SC30"
+	
+		rankingOfSpaceships := self orderOfKeys: spaceshipsArray .
+		^rankingOfSpaceships.
+		
 ]
 
 { #category : #getters }
