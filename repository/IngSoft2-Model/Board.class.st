@@ -217,33 +217,6 @@ Board >> positionOf: aSpaceship [
 
 { #category : #getter }
 Board >> rankingOfSpaceships [
-	| rankingInOrder spaceshipPositionsKeys spaceshipCounter bestPositionedSpaceshipNotRanked rankedLap rankedSpot index |
-	spaceshipCounter := spaceshipsPositions size.
-	rankingInOrder := Array new: (spaceshipsPositions size).
-	spaceshipPositionsKeys := spaceshipsPositions keys.
-	[spaceshipPositionsKeys size > 1 ]whileTrue: [ 
-		bestPositionedSpaceshipNotRanked := spaceshipPositionsKeys at: 1. 
-		2 to: spaceshipCounter do: [ :spaceship | 
-			(((spaceshipsPositions at: (spaceshipPositionsKeys at: spaceship)) lapNumber) > ((spaceshipsPositions at: (bestPositionedSpaceshipNotRanked)) lapNumber) | ((((spaceshipsPositions at: (spaceshipPositionsKeys at: spaceship)) lapNumber) = ((spaceshipsPositions at: (bestPositionedSpaceshipNotRanked)) lapNumber)) & (((spaceshipsPositions at: (spaceshipPositionsKeys at: spaceship)) spotNumber ) > ((spaceshipsPositions at: (bestPositionedSpaceshipNotRanked)) spotNumber)) )) ifTrue: [ 
-				bestPositionedSpaceshipNotRanked := (spaceshipPositionsKeys at: spaceship)asString  ].
-			 ].
-		
-		1 to: (spaceshipPositionsKeys size) do: [ :keyIndex |
-			((spaceshipPositionsKeys at: keyIndex) = bestPositionedSpaceshipNotRanked) ifTrue: 
-				[ spaceshipPositionsKeys at: keyIndex put: (spaceshipPositionsKeys at: keyIndex) ].
-			].
-		rankedLap := ((spaceshipsPositions at: bestPositionedSpaceshipNotRanked) lapNumber).
-		rankedSpot := ((spaceshipsPositions at: bestPositionedSpaceshipNotRanked) spotNumber).
-		rankingInOrder addLast: [ bestPositionedSpaceshipNotRanked , rankedLap, rankedSpot ].
-		 ].
-		rankedLap := ((spaceshipsPositions at: (spaceshipPositionsKeys at:1)) lapNumber).
-		rankedSpot := ((spaceshipsPositions at: (spaceshipPositionsKeys at:1)) spotNumber).
-		rankingInOrder addLast: [ (spaceshipPositionsKeys at:1) , rankedLap, rankedSpot ].
-	^rankingInOrder
-]
-
-{ #category : #getter }
-Board >> rankingOfSpaceshipsSanti [
 	|spaceshipsArray positionOfSpaceshipA positionOfSpaceshipB  lapsOfSpaceshipA lapsOfSpaceshipB spotsOfSpaceshipA spotsOfSpaceshipB rankingOfSpaceships |
 
 	spaceshipsArray := (self spaceshipPositions) keys "['Razor', 'Meteoro, 'SC30']".
