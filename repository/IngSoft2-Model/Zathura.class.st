@@ -9,7 +9,8 @@ Class {
 		'dice',
 		'gameIsFinished',
 		'turnController',
-		'spaceshipHands'
+		'spaceshipHands',
+		'cardsBeingApplied'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -32,6 +33,26 @@ Zathura >> assertItIsThatSpaceshipsTurn: aSpaceship [
 
 	aSpaceship == turnController activeSpaceship ifFalse: [ 
 		Error signal: 'Cannot play turn if it is not that spaceship turn.' ]
+]
+
+{ #category : #playing }
+Zathura >> cardApplicator [
+	| cardsAffectingRoll cardsAffectingAllRolls addToRoll |
+	cardsAffectingRoll := (cardsBeingApplied at: (turnController activeSpaceship)).
+	cardsAffectingAllRolls := (cardsBeingApplied at: 'General').
+	cardsAffectingRoll addAllLast: cardsAffectingAllRolls .
+	addToRoll := 0.
+	1 to: (cardsAffectingRoll size) do: [ :cardNumber |
+		addToRoll := ((cardsAffectingRoll at: cardNumber) effectOnRoll).
+		 ].
+	^ addToRoll
+]
+
+{ #category : #playing }
+Zathura >> currentSpaceshipPlaysCard: aPermanentCard applyTo: aSpaceship [
+	| cardToApply |
+	cardToApply := (spaceshipHands at: (turnController activeSpaceship)) playCardOfType: aPermanentCard .
+	(cardsBeingApplied at: aSpaceship) addLast: aPermanentCard.
 ]
 
 { #category : #getter }
@@ -61,9 +82,12 @@ Zathura >> initializeWith: aDiceCup over: aBoard dealing: handsOfCards [
 	turnController := TurnController with: aBoard spaceshipPositions.
 	spaceshipHands := Dictionary new: ((aBoard spaceshipPositions) size).
 	spaceshipKeys := ((aBoard spaceshipPositions) keys).
+	cardsBeingApplied := Dictionary new: ((aBoard spaceshipPositions) size + 1).
 	1 to: ((aBoard spaceshipPositions) size) do: [ :spaceship |
 		spaceshipHands at: (spaceshipKeys at: spaceship) put: (handsOfCards at: spaceship).
+		cardsBeingApplied at: (spaceshipKeys at: spaceship) put: (OrderedCollection new).
 		 ].
+	cardsBeingApplied at: 'General' put: (OrderedCollection new).
 	
 ]
 
@@ -79,17 +103,18 @@ Zathura >> playNextTurn [
 { #category : #playing }
 Zathura >> playTurn: aSpaceship [
 
-	| positionBeforeRoll lapBeforeRoll spotBeforeRoll rollNumber |
+	| positionBeforeRoll lapBeforeRoll spotBeforeRoll rollNumber cardsEffectsOnRoll |
 	self assertItIsThatSpaceshipsTurn: aSpaceship.
 	positionBeforeRoll := board positionOf: aSpaceship.
 	lapBeforeRoll := positionBeforeRoll lapNumber.
 	spotBeforeRoll := positionBeforeRoll spotNumber.
 	rollNumber := dice roll.
+	cardsEffectsOnRoll := self cardApplicator.
 	board
 		move: aSpaceship
 		fromSpot: spotBeforeRoll
 		andLap: lapBeforeRoll
-		to: rollNumber.
+		to: rollNumber + cardsEffectsOnRoll .
 	self hasItReachedTheFinishLine: aSpaceship.
 	turnController nextSpaceshipInLine
 ]
