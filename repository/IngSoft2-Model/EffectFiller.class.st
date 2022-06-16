@@ -134,7 +134,7 @@ EffectFiller >> loadHyperjump: anAmountOfSpots with: aCollectionOfJumpArrays [
 	| numberOfHyperJumps arrayOfHyperjump |
 	numberOfHyperJumps := self amountOfHyperJumpsForThisSize: anAmountOfSpots.
 	arrayOfHyperjump := Array new: numberOfHyperJumps.	
-	1 to: numberOfHyperJumps do: [:each | arrayOfHyperjump at: each put: (Spot createWith: (Hyperjump createWith: (aCollectionOfJumpArrays at: each)))].
+	1 to: numberOfHyperJumps do: [:each | arrayOfHyperjump at: each put: (Spot createWith: (Hyperjump createWith: (aCollectionOfJumpArrays at: each)measuredIn: 'lightyears'))].
 	^ arrayOfHyperjump 
 ]
 

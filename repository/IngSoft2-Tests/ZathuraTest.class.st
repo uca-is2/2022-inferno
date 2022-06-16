@@ -285,7 +285,7 @@ ZathuraTest >> test10HyperJumpsMakesFirstJumpAnAmountOfParsecsForward [
 	
 	arrayOfJumps := OrderedCollection new: 3.
 	arrayOfJumps addAllFirst: {2. 4. 6}.
-	secondSpot := Spot createWith: (Hyperjump  createWith: arrayOfJumps).
+	secondSpot := Spot createWith: (Hyperjump  createWith: arrayOfJumps measuredIn: 'parsecs').
 	
 	thirdSpot := Spot createWith: NoEffect new.
 	fourthSpot := Spot createWith: NoEffect new.

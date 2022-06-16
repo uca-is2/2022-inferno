@@ -107,7 +107,7 @@ EffectsTest >> test06HyperJumpMovesTriggeringSpaceshipTheAmountOfParsecsGiven [
 	secondSpot := Spot createWith: NoEffect  new.
 	arrayOfJumps := OrderedCollection new: 3.
 	arrayOfJumps addAllFirst: {1. 2. 3}.
-	thirdSpot := Spot createWith: (Hyperjump  createWith: arrayOfJumps).
+	thirdSpot := Spot createWith: (Hyperjump  createWith: arrayOfJumps measuredIn: 'parsecs').
 	aCollectionOfSpots := { firstSpot. secondSpot. thirdSpot.  }.
 	aCollectionOfSpaceships := { 'Razor Crest'. 'Millenium Falcon'. 'SC30 StarFighter' }.
 	aBoard := Board with: aCollectionOfSpots  withALengthOf: 9 around: 3 playedBy: aCollectionOfSpaceships.

@@ -1,0 +1,18 @@
+"
+i represent a type of card: repeat
+"
+Class {
+	#name : #RepeatCard,
+	#superclass : #Object,
+	#category : #'IngSoft2-Model'
+}
+
+{ #category : #assertion }
+RepeatCard >> assertThatIsACard [
+	^ self checkIfItIsAValidCard.
+]
+
+{ #category : #assertions }
+RepeatCard >> checkIfItIsAValidCard [
+	^ (self isKindOf: SpeedCard )or: ((self isKindOf: OverloadCard  )or: ((self isKindOf: AccelerationCard )or:((self isKindOf: CancellationCard )or:((self isKindOf: RedoCard )or:(self isKindOf: RepeatCard ))))).
+]
