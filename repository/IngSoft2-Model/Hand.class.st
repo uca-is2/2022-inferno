@@ -47,23 +47,22 @@ Hand >> initializeHandContaining: aCollectionOfCards [
 ]
 
 { #category : #playing }
-Hand >> playCardOfType: aCard [ "Poray deberia ser un string y hacer distintos case, nose"
-	| cardToPlay cardNumber | 
+Hand >> playCardOfType: aCard [
+
+	"Poray deberia ser un string y hacer distintos case, nose"
+
+	| cardToPlay cardNumber |
 	cardToPlay := nil.
 	cardNumber := 1.
-	[cardNumber < (self cardsOnHand + 1)] whileTrue: [ 
-		(aCard = (deck at: cardNumber) ) ifTrue: [ 
-			cardToPlay := (deck at: cardNumber).
+	[ cardNumber < (self cardsOnHand + 1) ] whileTrue: [ 
+		aCard = (deck at: cardNumber) ifTrue: [ 
+			cardToPlay := deck at: cardNumber.
 			deck removeAt: cardNumber.
-			cardNumber := (self cardsOnHand). 
-			 ].
-		cardNumber := (cardNumber + 1)
-		 ].
+			cardNumber := self cardsOnHand ].
+		cardNumber := cardNumber + 1 ].
 	"hacer bien el error"
-	(cardToPlay = nil) ifTrue: [ 
-		Error 
-		 ].
-	^cardToPlay.
+	cardToPlay isNil ifTrue: [ Error ].
+	^ cardToPlay
 ]
 
 { #category : #getters }

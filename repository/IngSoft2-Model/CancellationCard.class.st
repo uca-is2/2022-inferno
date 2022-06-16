@@ -8,6 +8,11 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
+{ #category : #comparing }
+CancellationCard >> = aCard [
+	^(self class = (aCard class))
+]
+
 { #category : #assertions }
 CancellationCard >> assertThatIsACard [
 	^ self checkIfItIsAValidCard.
