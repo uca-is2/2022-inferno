@@ -30,10 +30,40 @@ Hand class >> containing: aCollectionOfCards [
 	^ self new initializeHandContaining: aCollectionOfCards
 ]
 
+{ #category : #getter }
+Hand >> cardsOnHand [
+	^(deck size).
+]
+
+{ #category : #playind }
+Hand >> grabOne: aCard [
+	deck addLast: aCard.
+]
+
 { #category : #initialization }
 Hand >> initializeHandContaining: aCollectionOfCards [ 
 	deck := OrderedCollection new.
 	deck addAllFirst: aCollectionOfCards.
+]
+
+{ #category : #playing }
+Hand >> playCardOfType: aCard [ "Poray deberia ser un string y hacer distintos case, nose"
+	| cardToPlay cardNumber | 
+	cardToPlay := nil.
+	cardNumber := 1.
+	[cardNumber < (self cardsOnHand + 1)] whileTrue: [ 
+		(aCard = (deck at: cardNumber) ) ifTrue: [ 
+			cardToPlay := (deck at: cardNumber).
+			deck removeAt: cardNumber.
+			cardNumber := (self cardsOnHand). 
+			 ].
+		cardNumber := (cardNumber + 1)
+		 ].
+	"hacer bien el error"
+	(cardToPlay = nil) ifTrue: [ 
+		Error 
+		 ].
+	^cardToPlay.
 ]
 
 { #category : #getters }

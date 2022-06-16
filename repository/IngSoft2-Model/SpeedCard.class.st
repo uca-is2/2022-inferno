@@ -8,6 +8,11 @@ Class {
 }
 
 { #category : #assertions }
+SpeedCard >> = aCard [
+	^(self class = (aCard class))
+]
+
+{ #category : #assertions }
 SpeedCard >> assertThatIsACard [
 	^ self checkIfItIsAValidCard.
 ]
