@@ -19,7 +19,7 @@ EffectFillerTest >> test01EffectFillerCreatesCollectionOfSpotsOfGivenSize [
 ]
 
 { #category : #tests }
-EffectFillerTest >> test02EffectFillerCreatesCollectionOfSpotsInWhichFortyPercentAreNoEffect [
+EffectFillerTest >> test02EffectFillerCreatesCollectionOfSpotsInWhichThirtyPercentAreNoEffect [
 	| anEffectFiller boardLayout aCollectionOfJumpArrays aCollectionOfMoonwalkNumbers firstJumpArray secondJumpArray thirdJumpArray fourthJumpArray |
 	anEffectFiller := EffectFiller new.
 	firstJumpArray := { 4. 3. 2 }.
@@ -29,7 +29,7 @@ EffectFillerTest >> test02EffectFillerCreatesCollectionOfSpotsInWhichFortyPercen
 	aCollectionOfJumpArrays := { firstJumpArray. secondJumpArray. thirdJumpArray. fourthJumpArray. firstJumpArray. secondJumpArray. thirdJumpArray. fourthJumpArray }.
 	aCollectionOfMoonwalkNumbers := { 3. 2. 5. 7. 1. 4. 6. 5. 7. 2.}.
 	boardLayout := anEffectFiller for: 100 with: aCollectionOfJumpArrays and: aCollectionOfMoonwalkNumbers.
-	self assert: (anEffectFiller amountOfNoEffectsForThisSize: 100) equals: 40 .
+	self assert: (anEffectFiller amountOfNoEffectsForThisSize: 100) equals: 30 .
 ]
 
 { #category : #tests }
@@ -100,4 +100,18 @@ EffectFillerTest >> test07EffectFillerCreatesCollectionOfSpotsInWhichTwoPercentA
 	aCollectionOfMoonwalkNumbers := { 3. 2. 5. 7. 1. 4. 6. 5. 7. 2.}.
 	boardLayout := anEffectFiller for: 100 with: aCollectionOfJumpArrays and: aCollectionOfMoonwalkNumbers.
 	self assert: (anEffectFiller amountOfAtomicBombsForThisSize: 50) equals: 1 .
+]
+
+{ #category : #tests }
+EffectFillerTest >> test08EffectFillerCreatesCollectionOfSpotsInWhichTenPercentAreCardPickers [
+	| anEffectFiller boardLayout aCollectionOfJumpArrays aCollectionOfMoonwalkNumbers firstJumpArray secondJumpArray thirdJumpArray fourthJumpArray |
+	anEffectFiller := EffectFiller new.
+	firstJumpArray := { 4. 3. 2 }.
+	secondJumpArray :={ 5. 2. 1 }.
+	thirdJumpArray :={ 4. 1 . 0 }.
+	fourthJumpArray :={ 7. 2. 1 }.
+	aCollectionOfJumpArrays := { firstJumpArray. secondJumpArray. thirdJumpArray. fourthJumpArray. firstJumpArray. secondJumpArray. thirdJumpArray. fourthJumpArray }.
+	aCollectionOfMoonwalkNumbers := { 3. 2. 5. 7. 1. 4. 6. 5. 7. 2.}.
+	boardLayout := anEffectFiller for: 100 with: aCollectionOfJumpArrays and: aCollectionOfMoonwalkNumbers.
+	self assert: (anEffectFiller amountOfCardPickersForThisSize: 50) equals: 5 .
 ]

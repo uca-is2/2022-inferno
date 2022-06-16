@@ -14,9 +14,14 @@ EffectFiller >> amountOfAtomicBombsForThisSize: anAmountOfSpots [
 ]
 
 { #category : #amountGetters }
+EffectFiller >> amountOfCardPickersForThisSize: anAmountOfSpots [ 
+		^ (anAmountOfSpots * 0.1) asInteger
+]
+
+{ #category : #amountGetters }
 EffectFiller >> amountOfEveryOtherEffect: anAmountOfSpots [ 
 	| sum |
-	sum := (self amountOfAtomicBombsForThisSize: anAmountOfSpots) +( self amountOfHyperJumpsForThisSize: anAmountOfSpots) + (self amountOfMoonwalkForThisSize: anAmountOfSpots) + (self amountOfWormholesForThisSize: anAmountOfSpots) + (self amountOfSpeedUpsForThisSize: anAmountOfSpots).
+	sum := (self amountOfAtomicBombsForThisSize: anAmountOfSpots) +( self amountOfHyperJumpsForThisSize: anAmountOfSpots) + (self amountOfMoonwalkForThisSize: anAmountOfSpots) + (self amountOfWormholesForThisSize: anAmountOfSpots) + (self amountOfSpeedUpsForThisSize: anAmountOfSpots)+ (self amountOfCardPickersForThisSize: anAmountOfSpots).
 	^sum.
 ]
 
@@ -88,7 +93,7 @@ EffectFiller >> effectLoader: arrayOfEffects with: anAmountOfSpots [
 { #category : #effectFilling }
 EffectFiller >> fillWithEffects: aNumberOfSpots with: aCollectionOfJumpArrays and: aCollectionOfMoonwalkNumbers [
 	
-	| arrayOfNoEffect arrayOfEffects arrayOfSpots arrayOfSpeedUp arrayOfMoonwalk arrayOfWormhole arrayOfAtomicBomb arrayOfHyperJump |
+	| arrayOfNoEffect arrayOfEffects arrayOfSpots arrayOfSpeedUp arrayOfMoonwalk arrayOfWormhole arrayOfAtomicBomb arrayOfHyperJump arrayOfCardPickers |
 	arrayOfSpots := Array new: aNumberOfSpots.
 	arrayOfSpeedUp := self loadSpeedUps: aNumberOfSpots.
 	arrayOfMoonwalk := self loadMoonwalk: aNumberOfSpots with: aCollectionOfMoonwalkNumbers.
@@ -96,7 +101,8 @@ EffectFiller >> fillWithEffects: aNumberOfSpots with: aCollectionOfJumpArrays an
 	arrayOfAtomicBomb := self loadAtomicBomb: aNumberOfSpots.
 	arrayOfHyperJump := self loadHyperjump: aNumberOfSpots with: aCollectionOfJumpArrays.
 	arrayOfNoEffect := self loadNoEffect: aNumberOfSpots .
-	arrayOfEffects := [ arrayOfSpeedUp, arrayOfMoonwalk , arrayOfWormhole , arrayOfAtomicBomb , arrayOfHyperJump , arrayOfNoEffect].
+	arrayOfCardPickers := self loadCardPicker: aNumberOfSpots.
+	arrayOfEffects := [ arrayOfSpeedUp, arrayOfMoonwalk , arrayOfWormhole , arrayOfAtomicBomb , arrayOfHyperJump , arrayOfNoEffect, arrayOfCardPickers.].
 	arrayOfSpots := self effectLoader: arrayOfEffects with: aNumberOfSpots .
 	^ arrayOfSpots
 	
@@ -125,8 +131,12 @@ EffectFiller >> loadAtomicBomb: anAmountOfSpots [
 ]
 
 { #category : #effectLoading }
-EffectFiller >> loadHyperjump: anInteger [ 
-	self shouldBeImplemented.
+EffectFiller >> loadCardPicker: anAmountOfSpots [ 
+	| numberOfCardPickers arrayOfCardPickers |
+	numberOfCardPickers := self amountOfAtomicBombsForThisSize: anAmountOfSpots.
+	arrayOfCardPickers := Array new: numberOfCardPickers.
+	arrayOfCardPickers := arrayOfCardPickers collect: [:each| Spot createWith: CardPicker new.].
+	^ arrayOfCardPickers 
 ]
 
 { #category : #effectLoading }

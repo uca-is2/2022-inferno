@@ -1,14 +1,15 @@
 "
-i represent a type of effect: atomicbomb
+i reprsent a type of effect: cardpicker
+
 "
 Class {
-	#name : #AtomicBomb,
+	#name : #CardPicker,
 	#superclass : #Object,
 	#category : #'IngSoft2-Model'
 }
 
 { #category : #applying }
-AtomicBomb >> applyTo: aBoard by: aSpaceship [ 
+CardPicker >> applyTo: aBoard by: aSpaceship [ 
 	| spaceships lapBeforeAtomicBomb |
 	spaceships := (aBoard spaceshipPositions) keys.
 	spaceships do: [:eachSpaceship |

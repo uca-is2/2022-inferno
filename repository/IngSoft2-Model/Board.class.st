@@ -67,15 +67,24 @@ Board >> amountOfLaps [
 
 { #category : #effectApplying }
 Board >> applyEffect: aSpaceship [
-	self applyEffectTriggeredBy: aSpaceship
+	^ self applyEffectTriggeredBy: aSpaceship
 	
 ]
 
 { #category : #effectApplying }
 Board >> applyEffectTriggeredBy: aSpaceship [
-	| spotNumber |
+	| spotNumber resultOfEffectApplying cardPicked |
 	spotNumber := (self positionOf: aSpaceship) spotNumber .
-	spaceshipsPositions := (layout at: spotNumber)effectAtSpot applyTo: self by: aSpaceship.
+	resultOfEffectApplying :=(layout at: spotNumber)effectAtSpot applyTo: self by: aSpaceship.
+	((resultOfEffectApplying) class = Dictionary )
+	ifTrue:[
+		spaceshipsPositions := resultOfEffectApplying.
+		]
+	ifFalse: [ 
+		cardPicked := resultOfEffectApplying.
+		^ cardPicked.
+		 ]
+	
 ]
 
 { #category : #validation }
@@ -162,7 +171,7 @@ Board >> move: aSpaceship fromEffectSpot: spotBeforeRoll andLap: lapBeforeRoll t
 { #category : #playing }
 Board >> move: aSpaceship fromSpot: spotBeforeRoll andLap: lapBeforeRoll to: rollNumber [
 
-	| spotAfterLapping |
+	| spotAfterLapping cardPicked |
 	(self isLapFinishedIf: spotBeforeRoll moves: rollNumber)
 		ifTrue: [ 
 			(lapBeforeRoll + 1 >=  laps)
@@ -173,13 +182,13 @@ Board >> move: aSpaceship fromSpot: spotBeforeRoll andLap: lapBeforeRoll to: rol
 						move: aSpaceship
 						toLap: lapBeforeRoll + 1
 						andSpot: spotAfterLapping.
-					self applyEffect: aSpaceship ] ]
+					cardPicked :=self applyEffect: aSpaceship ] ]
 		ifFalse: [ 
 			self
 				move: aSpaceship
 				toLap: lapBeforeRoll
 				andSpot: spotBeforeRoll + rollNumber.
-			self applyEffect: aSpaceship ]
+			cardPicked := self applyEffect: aSpaceship ]
 ]
 
 { #category : #moving }
@@ -189,7 +198,7 @@ Board >> move: aSpaceship toLap: aLapNumber andSpot: aSpotNumber [
 	spaceshipsPositions at: aSpaceship put: (Position atLap: aLapNumber andSpot: aSpotNumber).
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #moving }
 Board >> moveSpaceshipToFinishLine: aSpaceship [
 	self move: aSpaceship toLap: laps andSpot: length.
 ]
