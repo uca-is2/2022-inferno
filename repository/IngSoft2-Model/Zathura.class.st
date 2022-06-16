@@ -8,14 +8,16 @@ Class {
 		'board',
 		'dice',
 		'gameIsFinished',
-		'turnController'
+		'turnController',
+		'spaceshipHands'
 	],
 	#category : #'IngSoft2-Model'
 }
 
 { #category : #'class initialization' }
-Zathura class >> playWith: aDiceCup over: aBoard [ 
-	^self new initializeWith: aDiceCup over: aBoard.
+Zathura class >> playWith: aDiceCup over: aBoard dealing: handsOfCards [
+
+	^ self new initializeWith: aDiceCup over: aBoard dealing: handsOfCards
 ]
 
 { #category : #playing }
@@ -32,6 +34,11 @@ Zathura >> assertItIsThatSpaceshipsTurn: aSpaceship [
 		Error signal: 'Cannot play turn if it is not that spaceship turn.' ]
 ]
 
+{ #category : #getter }
+Zathura >> handOf: aSpaceship [ 
+	^(spaceshipHands at: aSpaceship).
+]
+
 { #category : #getters }
 Zathura >> hasGameFinished [
 	^ gameIsFinished.
@@ -46,11 +53,18 @@ Zathura >> hasItReachedTheFinishLine: currentSpaceship [
 ]
 
 { #category : #initialization }
-Zathura >> initializeWith: aDiceCup over: aBoard [ 
+Zathura >> initializeWith: aDiceCup over: aBoard dealing: handsOfCards [ 
+	| spaceshipKeys |
 	board := aBoard.
 	dice := aDiceCup.
 	gameIsFinished := false.
-	turnController := TurnController with: aBoard spaceshipPositions  .
+	turnController := TurnController with: aBoard spaceshipPositions.
+	spaceshipHands := Dictionary new: ((aBoard spaceshipPositions) size).
+	spaceshipKeys := ((aBoard spaceshipPositions) keys).
+	1 to: ((aBoard spaceshipPositions) size) do: [ :spaceship |
+		spaceshipHands at: (spaceshipKeys at: spaceship) put: (handsOfCards at: spaceship).
+		 ].
+	
 ]
 
 { #category : #playing }
