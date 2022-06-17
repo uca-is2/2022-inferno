@@ -8,6 +8,7 @@ Class {
 }
 
 { #category : #applying }
-NoEffect >> applyTo: aBoard by: aSpaceship [ 
-	^ (aBoard spaceshipPositions).
+NoEffect >> applyTo: aBoard by: aSpaceship [
+
+	^ aBoard spaceshipPositions
 ]

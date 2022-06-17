@@ -16,8 +16,7 @@ Hand class >> assertThatCollectionIsAllCards: aCollectionOfCards [
 	| flag |
 	flag := true.
 	aCollectionOfCards do: [ :card | 
-		card assertThatIsACard ifFalse: [ 
-			flag := false ] ].
+		card assertThatIsACard ifFalse: [ flag := false ] ].
 	flag ifFalse: [ 
 		Error signal:
 			'Cant have a hand containing anything but a type of card.' ]
@@ -32,21 +31,21 @@ Hand class >> containing: aCollectionOfCards [
 
 { #category : #getter }
 Hand >> cardsOnHand [
-	^(deck size).
+
+	^ deck size
 ]
 
 { #category : #playind }
 Hand >> grabOne: aCard [
-	aCard ifNotNil: [ 
-		deck addLast: aCard.
-		 ]
-	
+
+	aCard ifNotNil: [ deck addLast: aCard ]
 ]
 
 { #category : #initialization }
-Hand >> initializeHandContaining: aCollectionOfCards [ 
+Hand >> initializeHandContaining: aCollectionOfCards [
+
 	deck := OrderedCollection new.
-	deck addAllFirst: aCollectionOfCards.
+	deck addAllFirst: aCollectionOfCards
 ]
 
 { #category : #playing }
@@ -57,18 +56,18 @@ Hand >> playCardOfType: aCard [
 	cardNumber := 1.
 	[ cardNumber < (self cardsOnHand + 1) ] whileTrue: [ 
 		aCard = (deck at: cardNumber) ifTrue: [ 
-			cardToPlay := (deck at: cardNumber).
+			cardToPlay := deck at: cardNumber.
 			deck removeAt: cardNumber.
 			cardNumber := self cardsOnHand ].
 		cardNumber := cardNumber + 1 ].
 	"hacer bien el error"
 	cardToPlay ifNil: [ 
-		Error signal: 'Spaceship does not have a card of that type'
-		 ].
+		Error signal: 'Spaceship does not have a card of that type' ].
 	^ cardToPlay
 ]
 
 { #category : #getters }
-Hand >> take: aSpeedCard [ 
-	^ deck remove: aSpeedCard.
+Hand >> take: aSpeedCard [
+
+	^ deck remove: aSpeedCard
 ]

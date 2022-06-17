@@ -7,12 +7,12 @@ Class {
 { #category : #asserting }
 ZathuraTest >> should: errorBlock raise: errorClass withMessage: expectedErrorMessage [
 
-	|errorWasRaised errorMessage|
+	| errorWasRaised errorMessage |
 	errorBlock
-	on: errorClass 
-	do: [ :error |
-		errorWasRaised := true.
-		errorMessage := error messageText ].
+		on: errorClass
+		do: [ :error | 
+			errorWasRaised := true.
+			errorMessage := error messageText ]
 ]
 
 { #category : #tests }
@@ -72,16 +72,16 @@ ZathuraTest >> test01AGameOfZathuraInfernoCanBePlayedByTurnsTilFinished [
 		                     aDie1.
 		                     aDie2 }.
 	aDiceCup := DiceCup with: aCollectionOfDice.
-	exampleCardOne := RedoCard  new.
+	exampleCardOne := RedoCard new.
 	exampleCardTwo := RepeatCard new.
 	dealer := Dealer new.
-	aHand1 := Hand containing: (dealer dealInitialCards) .
-	aHand2 := Hand containing: (dealer dealInitialCards) .
-	aHand3 := Hand containing: (dealer dealInitialCards) .
+	aHand1 := Hand containing: dealer dealInitialCards.
+	aHand2 := Hand containing: dealer dealInitialCards.
+	aHand3 := Hand containing: dealer dealInitialCards.
 	aCollectionOfHands := { 
 		                      aHand1.
-		                      aHand2. 
-									aHand3}.
+		                      aHand2.
+		                      aHand3 }.
 	zathura := Zathura
 		           playWith: aDiceCup
 		           over: aBoard
@@ -118,7 +118,7 @@ ZathuraTest >> test02MovementByAnEffectDoesNotTriggerAnotherEffect [
 	aDie1 := LoadedDie with: 5 loadedWith: 1.
 	aCollectionOfDice := { aDie1 }.
 	aDiceCup := DiceCup with: aCollectionOfDice.
-	exampleCardOne := RedoCard  new.
+	exampleCardOne := RedoCard new.
 	exampleCardTwo := RepeatCard new.
 	aHand1 := Hand containing: { 
 			          exampleCardOne.
@@ -131,8 +131,8 @@ ZathuraTest >> test02MovementByAnEffectDoesNotTriggerAnotherEffect [
 			          exampleCardOne }.
 	aCollectionOfHands := { 
 		                      aHand1.
-		                      aHand2. 
-									aHand3}.
+		                      aHand2.
+		                      aHand3 }.
 	zathura := Zathura
 		           playWith: aDiceCup
 		           over: aBoard
@@ -172,7 +172,7 @@ ZathuraTest >> test03NoEffectDoesNotMovesAnySpaceship [
 	aDie1 := LoadedDie with: 5 loadedWith: 5.
 	aCollectionOfDice := { aDie1 }.
 	aDiceCup := DiceCup with: aCollectionOfDice.
-	exampleCardOne := RedoCard  new.
+	exampleCardOne := RedoCard new.
 	exampleCardTwo := RepeatCard new.
 	aHand1 := Hand containing: { 
 			          exampleCardOne.
@@ -185,8 +185,8 @@ ZathuraTest >> test03NoEffectDoesNotMovesAnySpaceship [
 			          exampleCardOne }.
 	aCollectionOfHands := { 
 		                      aHand1.
-		                      aHand2. 
-									aHand3}.
+		                      aHand2.
+		                      aHand3 }.
 	zathura := Zathura
 		           playWith: aDiceCup
 		           over: aBoard
@@ -225,7 +225,7 @@ ZathuraTest >> test04SpeedUpMovesASpaceshipFourSpotsForward [
 	aDie1 := LoadedDie with: 5 loadedWith: 1.
 	aCollectionOfDice := { aDie1 }.
 	aDiceCup := DiceCup with: aCollectionOfDice.
-	exampleCardOne := RedoCard  new.
+	exampleCardOne := RedoCard new.
 	exampleCardTwo := RepeatCard new.
 	aHand1 := Hand containing: { 
 			          exampleCardOne.
@@ -238,8 +238,8 @@ ZathuraTest >> test04SpeedUpMovesASpaceshipFourSpotsForward [
 			          exampleCardOne }.
 	aCollectionOfHands := { 
 		                      aHand1.
-		                      aHand2. 
-									aHand3}.
+		                      aHand2.
+		                      aHand3 }.
 	zathura := Zathura
 		           playWith: aDiceCup
 		           over: aBoard
@@ -278,7 +278,7 @@ ZathuraTest >> test05WormHoleMovesASpaceshipFourSpotsBackwards [
 	aDie1 := LoadedDie with: 5 loadedWith: 5.
 	aCollectionOfDice := { aDie1 }.
 	aDiceCup := DiceCup with: aCollectionOfDice.
-	exampleCardOne := RedoCard  new.
+	exampleCardOne := RedoCard new.
 	exampleCardTwo := RepeatCard new.
 	aHand1 := Hand containing: { 
 			          exampleCardOne.
@@ -291,8 +291,8 @@ ZathuraTest >> test05WormHoleMovesASpaceshipFourSpotsBackwards [
 			          exampleCardOne }.
 	aCollectionOfHands := { 
 		                      aHand1.
-		                      aHand2. 
-									aHand3}.
+		                      aHand2.
+		                      aHand3 }.
 	zathura := Zathura
 		           playWith: aDiceCup
 		           over: aBoard
@@ -330,7 +330,7 @@ ZathuraTest >> test06AtomicBombMovesAllTheSpacehipsToTheStart [
 	aDie1 := LoadedDie with: 5 loadedWith: 2.
 	aCollectionOfDice := { aDie1 }.
 	aDiceCup := DiceCup with: aCollectionOfDice.
-	exampleCardOne := RedoCard  new.
+	exampleCardOne := RedoCard new.
 	exampleCardTwo := RepeatCard new.
 	aHand1 := Hand containing: { 
 			          exampleCardOne.
@@ -343,8 +343,8 @@ ZathuraTest >> test06AtomicBombMovesAllTheSpacehipsToTheStart [
 			          exampleCardOne }.
 	aCollectionOfHands := { 
 		                      aHand1.
-		                      aHand2. 
-									aHand3}.
+		                      aHand2.
+		                      aHand3 }.
 	zathura := Zathura
 		           playWith: aDiceCup
 		           over: aBoard
@@ -389,7 +389,7 @@ ZathuraTest >> test07RankingOrdersAndAssertsCorrectPosition [
 	aDie1 := LoadedDie with: 5 loadedWith: 1.
 	aCollectionOfDice := { aDie1 }.
 	aDiceCup := DiceCup with: aCollectionOfDice.
-	exampleCardOne := RedoCard  new.
+	exampleCardOne := RedoCard new.
 	exampleCardTwo := RepeatCard new.
 	aHand1 := Hand containing: { 
 			          exampleCardOne.
@@ -402,8 +402,8 @@ ZathuraTest >> test07RankingOrdersAndAssertsCorrectPosition [
 			          exampleCardOne }.
 	aCollectionOfHands := { 
 		                      aHand1.
-		                      aHand2. 
-									aHand3}.
+		                      aHand2.
+		                      aHand3 }.
 	zathura := Zathura
 		           playWith: aDiceCup
 		           over: aBoard
@@ -454,7 +454,7 @@ ZathuraTest >> test08PlayNextTurnDoesNotAllowSpaceshipToPlayWhenNotItsTurn [
 	aDie1 := LoadedDie with: 5 loadedWith: 3.
 	aCollectionOfDice := { aDie1 }.
 	aDiceCup := DiceCup with: aCollectionOfDice.
-	exampleCardOne := RedoCard  new.
+	exampleCardOne := RedoCard new.
 	exampleCardTwo := RepeatCard new.
 	aHand1 := Hand containing: { 
 			          exampleCardOne.
@@ -467,8 +467,8 @@ ZathuraTest >> test08PlayNextTurnDoesNotAllowSpaceshipToPlayWhenNotItsTurn [
 			          exampleCardOne }.
 	aCollectionOfHands := { 
 		                      aHand1.
-		                      aHand2. 
-									aHand3}.
+		                      aHand2.
+		                      aHand3 }.
 	zathura := Zathura
 		           playWith: aDiceCup
 		           over: aBoard
@@ -505,7 +505,7 @@ ZathuraTest >> test09MoonwalkMovesEveryOtherSpaceshipAnAmountOfSpotsBackwards [
 	aDie1 := LoadedDie with: 5 loadedWith: 2.
 	aCollectionOfDice := { aDie1 }.
 	aDiceCup := DiceCup with: aCollectionOfDice.
-	exampleCardOne := RedoCard  new.
+	exampleCardOne := RedoCard new.
 	exampleCardTwo := RepeatCard new.
 	aHand1 := Hand containing: { 
 			          exampleCardOne.
@@ -518,8 +518,8 @@ ZathuraTest >> test09MoonwalkMovesEveryOtherSpaceshipAnAmountOfSpotsBackwards [
 			          exampleCardOne }.
 	aCollectionOfHands := { 
 		                      aHand1.
-		                      aHand2. 
-									aHand3}.
+		                      aHand2.
+		                      aHand3 }.
 	zathura := Zathura
 		           playWith: aDiceCup
 		           over: aBoard
@@ -573,7 +573,7 @@ ZathuraTest >> test10HyperJumpsMakesFirstJumpAnAmountOfParsecsForward [
 	aDie1 := LoadedDie with: 5 loadedWith: 1.
 	aCollectionOfDice := { aDie1 }.
 	aDiceCup := DiceCup with: aCollectionOfDice.
-	exampleCardOne := RedoCard  new.
+	exampleCardOne := RedoCard new.
 	exampleCardTwo := RepeatCard new.
 	aHand1 := Hand containing: { 
 			          exampleCardOne.
@@ -586,8 +586,8 @@ ZathuraTest >> test10HyperJumpsMakesFirstJumpAnAmountOfParsecsForward [
 			          exampleCardOne }.
 	aCollectionOfHands := { 
 		                      aHand1.
-		                      aHand2. 
-									aHand3}.
+		                      aHand2.
+		                      aHand3 }.
 	zathura := Zathura
 		           playWith: aDiceCup
 		           over: aBoard
@@ -621,13 +621,22 @@ ZathuraTest >> test11ZathuraDealsTwoCardsToEachSpaceshipToStart [
 	aDiceCup := DiceCup with: aCollectionOfDice.
 	exampleCardOne := SpeedCard new.
 	exampleCardTwo := OverloadCard new.
-	aHand1 := Hand containing: { exampleCardOne. exampleCardTwo }.
-	aHand2 := Hand containing: { exampleCardTwo. exampleCardOne }.
-	aCollectionOfHands := { aHand1. aHand2 }.
-	zathura := Zathura playWith: aDiceCup over: aBoard dealing: aCollectionOfHands.
+	aHand1 := Hand containing: { 
+			          exampleCardOne.
+			          exampleCardTwo }.
+	aHand2 := Hand containing: { 
+			          exampleCardTwo.
+			          exampleCardOne }.
+	aCollectionOfHands := { 
+		                      aHand1.
+		                      aHand2 }.
+	zathura := Zathura
+		           playWith: aDiceCup
+		           over: aBoard
+		           dealing: aCollectionOfHands.
 	spaceshipCards1 := (zathura handOf: 'Razor Crest') cardsOnHand.
 	spaceshipCards2 := (zathura handOf: 'Millenium Falcon') cardsOnHand.
-	self assert: ((spaceshipCards1 = 2) & (spaceshipCards2 = 2)).
+	self assert: spaceshipCards1 = 2 & (spaceshipCards2 = 2)
 ]
 
 { #category : #tests }
@@ -719,7 +728,7 @@ ZathuraTest >> test13AssertASpaceshipAppliesSpeedToAnotherone [
 	zathura
 		currentSpaceshipPlaysCard: cardToPlay
 		applyTo: 'Razor Crest'
-		playedBy:'Millenium Falcon'.
+		playedBy: 'Millenium Falcon'.
 	zathura playNextTurn.
 	zathura playNextTurn.
 	zathura playNextTurn.
@@ -817,7 +826,10 @@ ZathuraTest >> test15AssertASpaceshipRemovesACardWithCancelationCard [
 		currentSpaceshipPlaysCard: cardToPlay
 		applyTo: 'Millenium Falcon'
 		playedBy: 'Razor Crest'.
-	zathura cancelCard: cardToPlay from: 'Millenium Falcon' playedBy: 'Millenium Falcon'.
+	zathura
+		cancelCard: cardToPlay
+		from: 'Millenium Falcon'
+		playedBy: 'Millenium Falcon'.
 	zathura playNextTurn.
 	zathura playNextTurn.
 	self assert: (zathura positionOf: 'Razor Crest') spotNumber = 3
@@ -837,7 +849,8 @@ ZathuraTest >> test16AssertASpaceshipRepeatsLastEffectWithRepeatCard [
 		                      firstSpot.
 		                      secondSpot.
 		                      thirdSpot.
-		                      fourthdSpot. fifthdSpot }.
+		                      fourthdSpot.
+		                      fifthdSpot }.
 	aCollectionOfSpaceships := { 'Razor Crest'. 'Millenium Falcon' }.
 	aBoard := Board
 		          with: aCollectionOfSpots
@@ -847,7 +860,7 @@ ZathuraTest >> test16AssertASpaceshipRepeatsLastEffectWithRepeatCard [
 	aDie1 := LoadedDie with: 5 loadedWith: 1.
 	aCollectionOfDice := { aDie1 }.
 	aDiceCup := DiceCup with: aCollectionOfDice.
-	exampleCardOne := RepeatCard  new.
+	exampleCardOne := RepeatCard new.
 	exampleCardTwo := OverloadCard new.
 	aHand1 := Hand containing: { 
 			          exampleCardOne.
@@ -864,9 +877,13 @@ ZathuraTest >> test16AssertASpaceshipRepeatsLastEffectWithRepeatCard [
 		           dealing: aCollectionOfHands.
 	zathura playNextTurn.
 	zathura playNextTurn.
-	zathura repeatEffectCardPlayedBy: 'Millenium Falcon' applyTo: 'Millenium Falcon'.
-	
-	self assert: ((zathura positionOf: 'Millenium Falcon') spotNumber) equals: 5
+	zathura
+		repeatEffectCardPlayedBy: 'Millenium Falcon'
+		applyTo: 'Millenium Falcon'.
+
+	self
+		assert: (zathura positionOf: 'Millenium Falcon') spotNumber
+		equals: 5
 ]
 
 { #category : #tests }
@@ -882,7 +899,8 @@ ZathuraTest >> test17AssertASpaceshipRedoSpeedCardWithRedoCard [
 		                      firstSpot.
 		                      secondSpot.
 		                      thirdSpot.
-		                      fourthdSpot. fifthdSpot }.
+		                      fourthdSpot.
+		                      fifthdSpot }.
 	aCollectionOfSpaceships := { 'Razor Crest'. 'Millenium Falcon' }.
 	aBoard := Board
 		          with: aCollectionOfSpots
@@ -892,7 +910,7 @@ ZathuraTest >> test17AssertASpaceshipRedoSpeedCardWithRedoCard [
 	aDie1 := LoadedDie with: 5 loadedWith: 1.
 	aCollectionOfDice := { aDie1 }.
 	aDiceCup := DiceCup with: aCollectionOfDice.
-	exampleCardOne := RedoCard  new.
+	exampleCardOne := RedoCard new.
 	exampleCardTwo := SpeedCard new.
 	aHand1 := Hand containing: { 
 			          exampleCardOne.
@@ -913,12 +931,12 @@ ZathuraTest >> test17AssertASpaceshipRedoSpeedCardWithRedoCard [
 	zathura
 		currentSpaceshipPlaysCard: cardToPlay
 		applyTo: 'Razor Crest'
-		playedBy:'Razor Crest'.
+		playedBy: 'Razor Crest'.
 	zathura redoLastCardPlayedBy: 'Razor Crest' applyTo: 'Razor Crest'.
 	zathura playNextTurn.
 	zathura playNextTurn.
-	
-	self assert: ((zathura positionOf: 'Razor Crest') spotNumber) equals: 5
+
+	self assert: (zathura positionOf: 'Razor Crest') spotNumber equals: 5
 ]
 
 { #category : #tests }
@@ -934,7 +952,8 @@ ZathuraTest >> test18AssertASpaceshipRedoAccelerationCardWithRedoCard [
 		                      firstSpot.
 		                      secondSpot.
 		                      thirdSpot.
-		                      fourthdSpot. fifthdSpot }.
+		                      fourthdSpot.
+		                      fifthdSpot }.
 	aCollectionOfSpaceships := { 'Razor Crest'. 'Millenium Falcon' }.
 	aBoard := Board
 		          with: aCollectionOfSpots
@@ -944,7 +963,7 @@ ZathuraTest >> test18AssertASpaceshipRedoAccelerationCardWithRedoCard [
 	aDie1 := LoadedDie with: 5 loadedWith: 1.
 	aCollectionOfDice := { aDie1 }.
 	aDiceCup := DiceCup with: aCollectionOfDice.
-	exampleCardOne := RedoCard  new.
+	exampleCardOne := RedoCard new.
 	exampleCardTwo := AccelerationCard new.
 	aHand1 := Hand containing: { 
 			          exampleCardOne.
@@ -961,16 +980,16 @@ ZathuraTest >> test18AssertASpaceshipRedoAccelerationCardWithRedoCard [
 		           dealing: aCollectionOfHands.
 	zathura playNextTurn.
 	zathura playNextTurn.
-	cardToPlay := AccelerationCard  new.
-	zathura
-		currentSpaceshipPlaysCard: cardToPlay
-		playedBy:'Razor Crest'.
+	cardToPlay := AccelerationCard new.
+	zathura currentSpaceshipPlaysCard: cardToPlay playedBy: 'Razor Crest'.
 	zathura redoLastCardPlayedBy: 'Razor Crest'.
 	zathura playNextTurn.
 	zathura playNextTurn.
-	
-	self assert: ((zathura positionOf: 'Razor Crest') spotNumber) equals: 5.
-	self assert: ((zathura positionOf: 'Millenium Falcon') spotNumber) equals: 5
+
+	self assert: (zathura positionOf: 'Razor Crest') spotNumber equals: 5.
+	self
+		assert: (zathura positionOf: 'Millenium Falcon') spotNumber
+		equals: 5
 ]
 
 { #category : #tests }
@@ -986,7 +1005,8 @@ ZathuraTest >> test19AssertASpaceshipRedocancelationCardWithRedoCard [
 		                      firstSpot.
 		                      secondSpot.
 		                      thirdSpot.
-		                      fourthdSpot. fifthdSpot }.
+		                      fourthdSpot.
+		                      fifthdSpot }.
 	aCollectionOfSpaceships := { 'Razor Crest'. 'Millenium Falcon' }.
 	aBoard := Board
 		          with: aCollectionOfSpots
@@ -996,18 +1016,20 @@ ZathuraTest >> test19AssertASpaceshipRedocancelationCardWithRedoCard [
 	aDie1 := LoadedDie with: 5 loadedWith: 1.
 	aCollectionOfDice := { aDie1 }.
 	aDiceCup := DiceCup with: aCollectionOfDice.
-	exampleCardOne := RedoCard  new.
+	exampleCardOne := RedoCard new.
 	exampleCardTwo := AccelerationCard new.
 	exampleCardThree := OverloadCard new.
 	exampleCardFour := CancellationCard new.
 	aHand1 := Hand containing: { 
 			          exampleCardOne.
 			          exampleCardTwo.
-						exampleCardThree. exampleCardFour }.
+			          exampleCardThree.
+			          exampleCardFour }.
 	aHand2 := Hand containing: { 
 			          exampleCardTwo.
 			          exampleCardOne.
-						exampleCardThree. exampleCardFour }.
+			          exampleCardThree.
+			          exampleCardFour }.
 	aCollectionOfHands := { 
 		                      aHand1.
 		                      aHand2 }.
@@ -1017,22 +1039,28 @@ ZathuraTest >> test19AssertASpaceshipRedocancelationCardWithRedoCard [
 		           dealing: aCollectionOfHands.
 	zathura playNextTurn.
 	zathura playNextTurn.
-	cardToPlay := AccelerationCard  new.
-	zathura
-		currentSpaceshipPlaysCard: cardToPlay
-		playedBy:'Razor Crest'.
+	cardToPlay := AccelerationCard new.
+	zathura currentSpaceshipPlaysCard: cardToPlay playedBy: 'Razor Crest'.
 	cardToPlay2 := OverloadCard new.
 	zathura
 		currentSpaceshipPlaysCard: cardToPlay2
 		applyTo: 'Millenium Falcon'
 		playedBy: 'Razor Crest'.
-	zathura cancelCard: cardToPlay2 from: 'Millenium Falcon' playedBy: 'Razor Crest'.
-	zathura redoCancelationCard: cardToPlay from: 'General' PlayedBy: 'Razor Crest'.
+	zathura
+		cancelCard: cardToPlay2
+		from: 'Millenium Falcon'
+		playedBy: 'Razor Crest'.
+	zathura
+		redoCancelationCard: cardToPlay
+		from: 'General'
+		PlayedBy: 'Razor Crest'.
 	zathura playNextTurn.
 	zathura playNextTurn.
-	
-	self assert: ((zathura positionOf: 'Razor Crest') spotNumber) equals: 3.
-	self assert: ((zathura positionOf: 'Millenium Falcon') spotNumber) equals: 3
+
+	self assert: (zathura positionOf: 'Razor Crest') spotNumber equals: 3.
+	self
+		assert: (zathura positionOf: 'Millenium Falcon') spotNumber
+		equals: 3
 ]
 
 { #category : #tests }
@@ -1048,7 +1076,8 @@ ZathuraTest >> test20AssertASpaceshipRedoRepeatCardWithRedoCard [
 		                      firstSpot.
 		                      secondSpot.
 		                      thirdSpot.
-		                      fourthdSpot. fifthdSpot }.
+		                      fourthdSpot.
+		                      fifthdSpot }.
 	aCollectionOfSpaceships := { 'Razor Crest'. 'Millenium Falcon' }.
 	aBoard := Board
 		          with: aCollectionOfSpots
@@ -1058,7 +1087,7 @@ ZathuraTest >> test20AssertASpaceshipRedoRepeatCardWithRedoCard [
 	aDie1 := LoadedDie with: 5 loadedWith: 1.
 	aCollectionOfDice := { aDie1 }.
 	aDiceCup := DiceCup with: aCollectionOfDice.
-	exampleCardOne := RedoCard  new.
+	exampleCardOne := RedoCard new.
 	exampleCardTwo := RepeatCard new.
 	aHand1 := Hand containing: { 
 			          exampleCardOne.
@@ -1075,11 +1104,14 @@ ZathuraTest >> test20AssertASpaceshipRedoRepeatCardWithRedoCard [
 		           dealing: aCollectionOfHands.
 	zathura playNextTurn.
 	zathura playNextTurn.
-	zathura repeatEffectCardPlayedBy: 'Millenium Falcon' applyTo: 'Millenium Falcon'.
+	zathura
+		repeatEffectCardPlayedBy: 'Millenium Falcon'
+		applyTo: 'Millenium Falcon'.
 	zathura redoRepeatCardPlayedBy: 'Razor Crest' applyTo: 'Razor Crest'.
 
-	
-	self assert: ((zathura positionOf: 'Razor Crest') spotNumber) equals: 5.
-	self assert: ((zathura positionOf: 'Millenium Falcon') spotNumber) equals: 5.
-	
+
+	self assert: (zathura positionOf: 'Razor Crest') spotNumber equals: 5.
+	self
+		assert: (zathura positionOf: 'Millenium Falcon') spotNumber
+		equals: 5
 ]

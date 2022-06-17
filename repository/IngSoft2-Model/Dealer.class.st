@@ -1,3 +1,7 @@
+"
+I represent a Dealer
+
+"
 Class {
 	#name : #Dealer,
 	#superclass : #Object,
@@ -6,11 +10,19 @@ Class {
 
 { #category : #dealing }
 Dealer >> dealInitialCards [
-	| array  randomcard1 randomcard2 initialHand |
-	array := { SpeedCard new. OverloadCard new. RedoCard new. AccelerationCard new. CancellationCard new. RepeatCard new.}.
+
+	| array randomcard1 randomcard2 initialHand |
+	array := { 
+		         SpeedCard new.
+		         OverloadCard new.
+		         RedoCard new.
+		         AccelerationCard new.
+		         CancellationCard new.
+		         RepeatCard new }.
 	randomcard1 := array atRandom.
 	randomcard2 := array atRandom.
-	initialHand := { randomcard1 . randomcard2  }.
+	initialHand := { 
+		               randomcard1.
+		               randomcard2 }.
 	^ initialHand
-
 ]

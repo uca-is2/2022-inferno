@@ -9,20 +9,27 @@ Class {
 
 { #category : #comparing }
 AccelerationCard >> = aCard [
-	^(self class = (aCard class))
+
+	^ self class = aCard class
 ]
 
 { #category : #assertions }
 AccelerationCard >> assertThatIsACard [
-	^ self checkIfItIsAValidCard.
+
+	^ self checkIfItIsAValidCard
 ]
 
 { #category : #assertions }
 AccelerationCard >> checkIfItIsAValidCard [
-	^ (self isKindOf: SpeedCard )or: ((self isKindOf: OverloadCard  )or: ((self isKindOf: AccelerationCard )or:((self isKindOf: CancellationCard )or:((self isKindOf: RedoCard )or:(self isKindOf: RepeatCard ))))).
+
+	^ (self isKindOf: SpeedCard) or: ((self isKindOf: OverloadCard) or:
+			   ((self isKindOf: AccelerationCard) or:
+				    ((self isKindOf: CancellationCard) or:
+					     ((self isKindOf: RedoCard) or: (self isKindOf: RepeatCard)))))
 ]
 
-{ #category : #playing }
+{ #category : #assertions }
 AccelerationCard >> effectOnRoll [
-	^1.
+
+	^ 1
 ]

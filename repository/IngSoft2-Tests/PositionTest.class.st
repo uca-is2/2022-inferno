@@ -6,21 +6,23 @@ Class {
 
 { #category : #tests }
 PositionTest >> test01APositionCanReturnSpotNumber [
+
 	| aPosition testPos |
 	testPos := Array new: 2.
 	testPos at: 1 put: 2.
 	testPos at: 2 put: 3.
 	aPosition := Position atLap: 2 andSpot: 3.
-	self assert: (aPosition lapNumber) equals: (testPos at: 1) .
-	self assert: (aPosition spotNumber) equals: (testPos at: 2)
+	self assert: aPosition lapNumber equals: (testPos at: 1).
+	self assert: aPosition spotNumber equals: (testPos at: 2)
 ]
 
 { #category : #tests }
 PositionTest >> test02APositionReturnsLapNumber [
+
 	| aPosition testPos |
 	testPos := Array new: 2.
 	testPos at: 1 put: 2.
 	testPos at: 2 put: 3.
 	aPosition := Position atLap: 2 andSpot: 3.
-	self assert: (aPosition lapNumber) equals: (testPos at: 1) .
+	self assert: aPosition lapNumber equals: (testPos at: 1)
 ]

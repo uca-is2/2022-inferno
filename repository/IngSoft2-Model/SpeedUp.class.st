@@ -8,12 +8,17 @@ Class {
 }
 
 { #category : #applying }
-SpeedUp >> applyTo: aBoard by: aSpaceship [ 
+SpeedUp >> applyTo: aBoard by: aSpaceship [
+
 	| positionBeforeSpeedUp lapBeforeSpeedUp spotBeforeSpeedUp speedUpNumber |
 	positionBeforeSpeedUp := aBoard positionOf: aSpaceship.
-	lapBeforeSpeedUp := positionBeforeSpeedUp lapNumber .
+	lapBeforeSpeedUp := positionBeforeSpeedUp lapNumber.
 	spotBeforeSpeedUp := positionBeforeSpeedUp spotNumber.
 	speedUpNumber := 4.
-	aBoard move: aSpaceship fromEffectSpot: spotBeforeSpeedUp andLap: lapBeforeSpeedUp to: speedUpNumber.
-	^ (aBoard spaceshipPositions).
+	aBoard
+		move: aSpaceship
+		fromEffectSpot: spotBeforeSpeedUp
+		andLap: lapBeforeSpeedUp
+		to: speedUpNumber.
+	^ aBoard spaceshipPositions
 ]
