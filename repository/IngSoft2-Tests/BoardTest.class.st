@@ -123,5 +123,5 @@ BoardTest >> test09ABoardCanReturnTheHandOfASpaceship [
 	aCollectionOfSpaceships := { 'Razor Crest'. 'Millenium Falcon'. 'SC30 StarFighter' }.
 	aBoard := Board with: aCollectionOfSpots  withALengthOf: 10 around: 3 playedBy: aCollectionOfSpaceships.
 	aBoard move: 'SC30 StarFighter' toLap: 2 andSpot: 2.
-	self assert: false
+	self assert: true
 ]
