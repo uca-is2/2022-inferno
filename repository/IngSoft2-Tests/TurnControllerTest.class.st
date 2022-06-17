@@ -7,41 +7,46 @@ Class {
 { #category : #tests }
 TurnControllerTest >> test01TurnControllerKeepsTrackOfTurns [
 
-	| aTurnController spaceshipsPositions initialPosition|
+	| aTurnController spaceshipsPositions initialPosition |
 	initialPosition := Position atLap: 0 andSpot: 1.
 	spaceshipsPositions := Dictionary new: 3.
 	spaceshipsPositions at: 'SC30 StarFighter' put: initialPosition.
 	spaceshipsPositions at: 'Razor Crest' put: initialPosition.
 	spaceshipsPositions at: 'Millenium Falcon' put: initialPosition.
 	aTurnController := TurnController with: spaceshipsPositions.
-	self assert: aTurnController activeSpaceship equals: 'SC30 StarFighter'.
+	self
+		assert: aTurnController activeSpaceship
+		equals: 'SC30 StarFighter'
 ]
 
 { #category : #tests }
 TurnControllerTest >> test02CanChangeActiveSpaceshipToTheNextOne [
 
-	| aTurnController spaceshipsPositions initialPosition|
+	| aTurnController spaceshipsPositions initialPosition |
 	initialPosition := Position atLap: 0 andSpot: 1.
 	spaceshipsPositions := Dictionary new: 3.
 	spaceshipsPositions at: 'SC30 StarFighter' put: initialPosition.
 	spaceshipsPositions at: 'Razor Crest' put: initialPosition.
 	spaceshipsPositions at: 'Millenium Falcon' put: initialPosition.
 	aTurnController := TurnController with: spaceshipsPositions.
-	aTurnController nextSpaceshipInLine .
-	self assert: aTurnController activeSpaceship equals: 'Razor Crest'.
+	aTurnController nextSpaceshipInLine.
+	self assert: aTurnController activeSpaceship equals: 'Razor Crest'
 ]
 
 { #category : #tests }
 TurnControllerTest >> test03CanChangeToFirstSpacehipWhenReachedTheLastOne [
-	| aTurnController spaceshipsPositions initialPosition|
+
+	| aTurnController spaceshipsPositions initialPosition |
 	initialPosition := Position atLap: 0 andSpot: 1.
 	spaceshipsPositions := Dictionary new: 3.
 	spaceshipsPositions at: 'SC30 StarFighter' put: initialPosition.
 	spaceshipsPositions at: 'Razor Crest' put: initialPosition.
 	spaceshipsPositions at: 'Millenium Falcon' put: initialPosition.
 	aTurnController := TurnController with: spaceshipsPositions.
-	aTurnController nextSpaceshipInLine .
-	aTurnController nextSpaceshipInLine .
-	aTurnController nextSpaceshipInLine .
-	self assert: aTurnController activeSpaceship equals: 'SC30 StarFighter'.
+	aTurnController nextSpaceshipInLine.
+	aTurnController nextSpaceshipInLine.
+	aTurnController nextSpaceshipInLine.
+	self
+		assert: aTurnController activeSpaceship
+		equals: 'SC30 StarFighter'
 ]
