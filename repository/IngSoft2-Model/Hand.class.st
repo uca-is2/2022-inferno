@@ -37,7 +37,10 @@ Hand >> cardsOnHand [
 
 { #category : #playind }
 Hand >> grabOne: aCard [
-	deck addLast: aCard.
+	aCard ifNotNil: [ 
+		deck addLast: aCard.
+		 ]
+	
 ]
 
 { #category : #initialization }
@@ -49,23 +52,18 @@ Hand >> initializeHandContaining: aCollectionOfCards [
 { #category : #playing }
 Hand >> playCardOfType: aCard [
 
-	"Poray deberia ser un string y hacer distintos case, nose"
-
 	| cardToPlay cardNumber |
 	cardToPlay := nil.
 	cardNumber := 1.
 	[ cardNumber < (self cardsOnHand + 1) ] whileTrue: [ 
 		aCard = (deck at: cardNumber) ifTrue: [ 
-			cardToPlay := deck at: cardNumber.
+			cardToPlay := (deck at: cardNumber).
 			deck removeAt: cardNumber.
 			cardNumber := self cardsOnHand ].
 		cardNumber := cardNumber + 1 ].
 	"hacer bien el error"
-	cardToPlay isNil ifTrue: [ Error ].
+	cardToPlay ifNil: [ 
+		Error signal: 'Spaceship does not have a card of that type'
+		 ].
 	^ cardToPlay
-]
-
-{ #category : #getters }
-Hand >> take: aSpeedCard [ 
-	^ deck remove: aSpeedCard.
 ]

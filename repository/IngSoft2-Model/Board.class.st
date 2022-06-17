@@ -9,7 +9,8 @@ Class {
 		'lengthInParsecs',
 		'laps',
 		'length',
-		'spaceshipsPositions'
+		'spaceshipsPositions',
+		'lastEffectAplied'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -75,7 +76,22 @@ Board >> applyEffect: aSpaceship [
 Board >> applyEffectTriggeredBy: aSpaceship [
 	| spotNumber |
 	spotNumber := (self positionOf: aSpaceship) spotNumber .
-	spaceshipsPositions := (layout at: spotNumber)effectAtSpot applyTo: self by: aSpaceship.
+	lastEffectAplied := (layout at: spotNumber)effectAtSpot.
+	spaceshipsPositions := lastEffectAplied applyTo: self by: aSpaceship.
+]
+
+{ #category : #effectApplying }
+Board >> applyLastEffectTo: aSpaceship [ 
+	| resultOfEffectApplying cardPicked |
+	resultOfEffectApplying := lastEffectAplied applyTo: self by: aSpaceship.
+    ((resultOfEffectApplying) class = Dictionary )
+    ifTrue:[
+        spaceshipsPositions := resultOfEffectApplying.
+        ]
+    ifFalse: [ 
+        cardPicked := resultOfEffectApplying.
+        ^cardPicked.
+         ]
 ]
 
 { #category : #validation }
@@ -101,9 +117,15 @@ Board >> initializeWith: aCollectionOfSpots withALengthOf: anAmountOfParsecs aro
 	laps := anAmountOfLaps.
 	length := aCollectionOfSpots size.
 	amountOfSpaceships := aCollectionOfSpaceships size.
+	lastEffectAplied := NoEffect new.
 	spaceshipsPositions := Dictionary new: amountOfSpaceships.
 	1 to: amountOfSpaceships do: [: spaceship |  
 	spaceshipsPositions at: (aCollectionOfSpaceships at: spaceship) put: (Position atLap: 0 andSpot: 1).].  
+]
+
+{ #category : #asserting }
+Board >> isLapDecreasedIf: spotBeforeRoll moves: rollNumber [ 
+	^( (spotBeforeRoll + rollNumber) < 1).
 ]
 
 { #category : #asserting }
@@ -125,6 +147,26 @@ Board >> lengthInParsecs [
 { #category : #getters }
 Board >> lengthInSpots [
 	^length.
+]
+
+{ #category : #moving }
+Board >> move: aSpaceship Back: rollNumber from: spotBeforeRoll and: lapBeforeRoll [
+	|lengthInSpots positionInTotalSpots nextPositionInTotalSpots decreaseToSpot decreaseToLap |
+	lengthInSpots := self lengthInSpots.
+	positionInTotalSpots := ((lengthInSpots * lapBeforeRoll) + spotBeforeRoll).
+	nextPositionInTotalSpots := positionInTotalSpots + rollNumber.
+	decreaseToSpot := (nextPositionInTotalSpots rem: lengthInSpots).
+	decreaseToLap := (nextPositionInTotalSpots//lengthInSpots).
+	(nextPositionInTotalSpots < 1)
+	ifTrue:[
+		self move: aSpaceship toLap:0 andSpot: 1]
+	ifFalse:[
+		(decreaseToSpot == 0)
+		ifTrue: [ 
+			self move: aSpaceship toLap: (decreaseToLap -1) andSpot: lengthInSpots.]
+		ifFalse:[ 
+			 	self move: aSpaceship toLap: decreaseToLap andSpot: decreaseToSpot]
+	 ]
 ]
 
 { #category : #moving }
@@ -165,20 +207,28 @@ Board >> move: aSpaceship fromSpot: spotBeforeRoll andLap: lapBeforeRoll to: rol
 	| spotAfterLapping |
 	(self isLapFinishedIf: spotBeforeRoll moves: rollNumber)
 		ifTrue: [ 
-			(lapBeforeRoll + 1 >=  laps)
+			lapBeforeRoll + 1 >= laps
 				ifTrue: [ self moveSpaceshipToFinishLine: aSpaceship ]
 				ifFalse: [ 
-					spotAfterLapping := (spotBeforeRoll + rollNumber -  length).
+					spotAfterLapping := spotBeforeRoll + rollNumber - length.
 					self
 						move: aSpaceship
 						toLap: lapBeforeRoll + 1
 						andSpot: spotAfterLapping.
 					self applyEffect: aSpaceship ] ]
 		ifFalse: [ 
-			self
-				move: aSpaceship
-				toLap: lapBeforeRoll
-				andSpot: spotBeforeRoll + rollNumber.
+			(self isLapDecreasedIf: spotBeforeRoll moves: rollNumber)
+				ifFalse: [ 
+					self
+						move: aSpaceship
+						toLap: lapBeforeRoll
+						andSpot: spotBeforeRoll + rollNumber ]
+				ifTrue: [ 
+					self
+						move: aSpaceship
+						Back: rollNumber
+						from: spotBeforeRoll
+						and: lapBeforeRoll .].
 			self applyEffect: aSpaceship ]
 ]
 
