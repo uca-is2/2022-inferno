@@ -167,12 +167,7 @@ Board >> move: aSpaceship fromSpot: spotBeforeRoll andLap: lapBeforeRoll to: rol
 						toLap: lapBeforeRoll + 1
 						andSpot: spotAfterLapping.
 					cardPicked :=self applyEffect: aSpaceship ] ]
-		ifFalse: [ 
-			self
-				move: aSpaceship
-				toLap: lapBeforeRoll
-				andSpot: spotBeforeRoll + rollNumber.
-			cardPicked := self applyEffect: aSpaceship ]
+		
 ]
 
 { #category : #moving }
