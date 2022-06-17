@@ -71,22 +71,6 @@ Board >> applyEffect: aSpaceship [
 	
 ]
 
-{ #category : #effectApplying }
-Board >> applyEffectTriggeredBy: aSpaceship [
-	| spotNumber resultOfEffectApplying cardPicked |
-	spotNumber := (self positionOf: aSpaceship) spotNumber .
-	resultOfEffectApplying :=(layout at: spotNumber)effectAtSpot applyTo: self by: aSpaceship.
-	((resultOfEffectApplying) class = Dictionary )
-	ifTrue:[
-		spaceshipsPositions := resultOfEffectApplying.
-		]
-	ifFalse: [ 
-		cardPicked := resultOfEffectApplying.
-		^ cardPicked.
-		 ]
-	
-]
-
 { #category : #validation }
 Board >> assertValidLap: aLapNumber [
 	((aLapNumber <= laps)and:(aLapNumber >= 0))ifFalse: [ 
