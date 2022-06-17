@@ -50,7 +50,7 @@ Moonwalk >> moonwalk: aSpaceship from: positionBeforeMoonwalk on: aBoard [
 	decreaseToSpot := (nextPositionInTotalSpots rem: lengthInSpots).
 	decreaseToLap := (nextPositionInTotalSpots//lengthInSpots).
 	(nextPositionInTotalSpots < 1)
-    ifTrue:[
+	ifTrue:[
         aBoard move: aSpaceship toLap:0 andSpot: 1]
     ifFalse:[
         (decreaseToSpot == 0)
@@ -59,9 +59,6 @@ Moonwalk >> moonwalk: aSpaceship from: positionBeforeMoonwalk on: aBoard [
         ifFalse:[ 
                  aBoard move: aSpaceship toLap: decreaseToLap andSpot: decreaseToSpot]
      ]
-		
-
-	 
 	
 	
 ]

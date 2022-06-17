@@ -41,7 +41,6 @@ HandTest >> test03CardIsRemovedFromHandWhenPlayed [
 			         exampleCardTwo }.
 	cardToPlay := SpeedCard new.
 	aHand playCardOfType: cardToPlay.
-	aHand playCardOfType: cardToPlay.
 	self assert: aHand cardsOnHand equals: 1
 ]
 

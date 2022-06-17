@@ -21,7 +21,7 @@ EffectFiller >> amountOfCardPickersForThisSize: anAmountOfSpots [
 { #category : #amountGetters }
 EffectFiller >> amountOfEveryOtherEffect: anAmountOfSpots [ 
 	| sum |
-	sum := (self amountOfAtomicBombsForThisSize: anAmountOfSpots) +( self amountOfHyperJumpsForThisSize: anAmountOfSpots) + (self amountOfMoonwalkForThisSize: anAmountOfSpots) + (self amountOfWormholesForThisSize: anAmountOfSpots) + (self amountOfSpeedUpsForThisSize: anAmountOfSpots)+ (self amountOfCardPickersForThisSize: anAmountOfSpots).
+	sum := (self amountOfAtomicBombsForThisSize: anAmountOfSpots) +( self amountOfHyperJumpsForThisSize: anAmountOfSpots) + (self amountOfMoonwalkForThisSize: anAmountOfSpots) + (self amountOfWormholesForThisSize: anAmountOfSpots) + (self amountOfSpeedUpsForThisSize: anAmountOfSpots) + (self amountOfCardPickersForThisSize:  anAmountOfSpots).
 	^sum.
 ]
 
@@ -102,7 +102,7 @@ EffectFiller >> fillWithEffects: aNumberOfSpots with: aCollectionOfJumpArrays an
 	arrayOfHyperJump := self loadHyperjump: aNumberOfSpots with: aCollectionOfJumpArrays.
 	arrayOfNoEffect := self loadNoEffect: aNumberOfSpots .
 	arrayOfCardPickers := self loadCardPicker: aNumberOfSpots.
-	arrayOfEffects := [ arrayOfSpeedUp, arrayOfMoonwalk , arrayOfWormhole , arrayOfAtomicBomb , arrayOfHyperJump , arrayOfNoEffect, arrayOfCardPickers.].
+	arrayOfEffects := [ arrayOfSpeedUp, arrayOfMoonwalk , arrayOfWormhole , arrayOfAtomicBomb , arrayOfHyperJump , arrayOfNoEffect, arrayOfCardPickers].
 	arrayOfSpots := self effectLoader: arrayOfEffects with: aNumberOfSpots .
 	^ arrayOfSpots
 	
@@ -133,10 +133,10 @@ EffectFiller >> loadAtomicBomb: anAmountOfSpots [
 { #category : #effectLoading }
 EffectFiller >> loadCardPicker: anAmountOfSpots [ 
 	| numberOfCardPickers arrayOfCardPickers |
-	numberOfCardPickers := self amountOfAtomicBombsForThisSize: anAmountOfSpots.
-	arrayOfCardPickers := Array new: numberOfCardPickers.
-	arrayOfCardPickers := arrayOfCardPickers collect: [:each| Spot createWith: CardPicker new.].
-	^ arrayOfCardPickers 
+    numberOfCardPickers := self amountOfCardPickersForThisSize: anAmountOfSpots.
+    arrayOfCardPickers := Array new: numberOfCardPickers.
+    arrayOfCardPickers := arrayOfCardPickers collect: [:each| Spot createWith: CardPicker new.].
+    ^ arrayOfCardPickers
 ]
 
 { #category : #effectLoading }
