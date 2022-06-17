@@ -8,12 +8,11 @@ Class {
 }
 
 { #category : #applying }
-AtomicBomb >> applyTo: aBoard by: aSpaceship [
-
+AtomicBomb >> applyTo: aBoard by: aSpaceship [ 
 	| spaceships lapBeforeAtomicBomb |
-	spaceships := aBoard spaceshipPositions keys.
-	spaceships do: [ :eachSpaceship | 
-		lapBeforeAtomicBomb := (aBoard positionOf: eachSpaceship) lapNumber.
-		aBoard move: eachSpaceship toLap: lapBeforeAtomicBomb andSpot: 1 ].
-	^ aBoard spaceshipPositions
+	spaceships := (aBoard spaceshipPositions) keys.
+	1 to: (spaceships size) do: [:eachSpaceship |
+		lapBeforeAtomicBomb := (aBoard positionOf: (spaceships at: eachSpaceship) ) lapNumber.
+		 aBoard move: (spaceships at: eachSpaceship) toLap: lapBeforeAtomicBomb andSpot: 1. ].
+	^ (aBoard spaceshipPositions)
 ]

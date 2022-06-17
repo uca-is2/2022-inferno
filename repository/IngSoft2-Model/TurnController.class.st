@@ -14,33 +14,29 @@ Class {
 
 { #category : #'class initialization' }
 TurnController class >> with: aMapOfSpaceshipsPositions [
-
-	^ self new initializeWith: aMapOfSpaceshipsPositions
+	^self new initializeWith: aMapOfSpaceshipsPositions.
 ]
 
 { #category : #getters }
 TurnController >> activeSpaceship [
-
-	^ activeSpaceship
+	^ activeSpaceship.
 ]
 
 { #category : #initialization }
-TurnController >> initializeWith: aMapOfSpaceshipsPositions [
-
+TurnController >> initializeWith: aMapOfSpaceshipsPositions [ 
 	spaceshipsOrderedByTurn := aMapOfSpaceshipsPositions keys.
 	activeSpaceshipID := 1.
-	activeSpaceship := spaceshipsOrderedByTurn at: 1
+	activeSpaceship := spaceshipsOrderedByTurn at: 1.
 ]
 
 { #category : #turnControlling }
 TurnController >> nextSpaceshipInLine [
-
-	activeSpaceshipID + 1 > spaceshipsOrderedByTurn size
-		ifTrue: [ 
-			activeSpaceshipID := 1.
-			activeSpaceship := spaceshipsOrderedByTurn at: 1 ]
-		ifFalse: [ 
-			activeSpaceship := spaceshipsOrderedByTurn at:
-				                   activeSpaceshipID + 1.
-			activeSpaceshipID := activeSpaceshipID + 1 ]
+	
+	(activeSpaceshipID + 1) > (spaceshipsOrderedByTurn size) 
+	ifTrue: [ 
+	activeSpaceshipID  := 1.
+	activeSpaceship := spaceshipsOrderedByTurn at: 1.]
+	ifFalse:[
+	activeSpaceship := spaceshipsOrderedByTurn at: (activeSpaceshipID +1).
+	activeSpaceshipID := activeSpaceshipID +1].
 ]
