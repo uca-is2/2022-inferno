@@ -12,26 +12,23 @@ Class {
 }
 
 { #category : #'class initialization' }
-Position class >> atLap: aLapNumber andSpot: aSpotNumber [
-
-	^ self new initializeAtLap: aLapNumber andSpot: aSpotNumber
+Position class >> atLap: aLapNumber andSpot: aSpotNumber [ 
+	^self new initializeAtLap: aLapNumber andSpot: aSpotNumber.
 ]
 
 { #category : #initialization }
-Position >> initializeAtLap: aLapNumber andSpot: aSpotNumber [
-
+Position >> initializeAtLap: aLapNumber andSpot: aSpotNumber [ 
+	
 	lapNumber := aLapNumber.
-	spotNumber := aSpotNumber
+	spotNumber := aSpotNumber.
 ]
 
 { #category : #getters }
 Position >> lapNumber [
-
 	^ lapNumber
 ]
 
 { #category : #getters }
 Position >> spotNumber [
-
 	^ spotNumber
 ]

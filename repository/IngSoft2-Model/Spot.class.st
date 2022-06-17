@@ -12,8 +12,8 @@ Class {
 
 { #category : #initialization }
 Spot class >> createWith: anEffect [
-
-	^ self new initializeWith: anEffect
+	^ self new initializeWith: anEffect.
+	
 ]
 
 { #category : #getters }
@@ -23,7 +23,7 @@ Spot >> effectAtSpot [
 ]
 
 { #category : #initialization }
-Spot >> initializeWith: anEffect [
-
-	effect := anEffect
+Spot >> initializeWith: anEffect [ 
+	
+	effect := anEffect.
 ]
