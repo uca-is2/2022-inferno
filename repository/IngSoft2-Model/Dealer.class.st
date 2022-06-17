@@ -11,7 +11,19 @@ Class {
 { #category : #dealing }
 Dealer >> dealInitialCards [
 
-	| array randomcard1 randomcard2 initialHand |
+	| randomcard1 randomcard2 initialHand |
+
+	randomcard1 := self dealOne .
+	randomcard2 := self dealOne .
+	initialHand := { 
+		               randomcard1.
+		               randomcard2 }.
+	^ initialHand
+]
+
+{ #category : #dealing }
+Dealer >> dealOne [
+	| array randomcard |
 	array := { 
 		         SpeedCard new.
 		         OverloadCard new.
@@ -19,10 +31,6 @@ Dealer >> dealInitialCards [
 		         AccelerationCard new.
 		         CancellationCard new.
 		         RepeatCard new }.
-	randomcard1 := array atRandom.
-	randomcard2 := array atRandom.
-	initialHand := { 
-		               randomcard1.
-		               randomcard2 }.
-	^ initialHand
+	randomcard := array atRandom.
+	^ randomcard
 ]

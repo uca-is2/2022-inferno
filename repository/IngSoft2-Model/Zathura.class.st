@@ -171,18 +171,20 @@ Zathura >> playNextTurn [
 { #category : #playing }
 Zathura >> playTurn: aSpaceship [
 
-	| positionBeforeRoll lapBeforeRoll spotBeforeRoll rollNumber cardsEffectsOnRoll |
+	| positionBeforeRoll lapBeforeRoll spotBeforeRoll rollNumber cardsEffectsOnRoll pickedCard |
 	self assertItIsThatSpaceshipsTurn: aSpaceship.
 	positionBeforeRoll := board positionOf: aSpaceship.
 	lapBeforeRoll := positionBeforeRoll lapNumber.
 	spotBeforeRoll := positionBeforeRoll spotNumber.
 	rollNumber := dice roll.
 	cardsEffectsOnRoll := self cardApplicator.
-	board
-		move: aSpaceship
-		fromSpot: spotBeforeRoll
-		andLap: lapBeforeRoll
-		to: rollNumber + cardsEffectsOnRoll.
+	pickedCard := board
+		              move: aSpaceship
+		              fromSpot: spotBeforeRoll
+		              andLap: lapBeforeRoll
+		              to: rollNumber + cardsEffectsOnRoll.
+
+	(spaceshipHands at: aSpaceship) grabOne: pickedCard.
 	self hasItReachedTheFinishLine: aSpaceship.
 	turnController nextSpaceshipInLine
 ]
@@ -253,4 +255,9 @@ Zathura >> repeatEffectCardPlayedBy: aSpaceship applyTo: anotherSpaceship [
 	cardPicked := board applyLastEffectTo: anotherSpaceship.
 	(spaceshipHands at: anotherSpaceship) grabOne: cardPicked.
 	lastCardPlayed := repeatCard
+]
+
+{ #category : #getters }
+Zathura >> showCardsOnHandFor: aSpaceship [ 
+	^(spaceshipHands at: aSpaceship) showHand.
 ]

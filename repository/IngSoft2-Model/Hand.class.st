@@ -66,6 +66,11 @@ Hand >> playCardOfType: aCard [
 	^ cardToPlay
 ]
 
+{ #category : #gettesr }
+Hand >> showHand [
+	^ deck   
+]
+
 { #category : #getters }
 Hand >> take: aSpeedCard [
 
