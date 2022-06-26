@@ -17,16 +17,26 @@ Class {
 }
 
 { #category : #'class initialization' }
-Zathura class >> playWith: aDiceCup over: aBoard dealing: handsOfCards [
+Zathura class >> assertAmountOfSpaceshipOn: aBoard matchesAmountOf: handsOfCards [
 
 	handsOfCards size = aBoard spaceshipPositions size ifFalse: [ 
 		Error signal:
-			'Can not play with amount of hands different than amount of spaceships' ].
-		handsOfCards do: [ :hand |
-			hand cardsOnHand = 2 ifFalse: [ 
-			Error signal:
-			'All players should start with 2 cards' ].
-			 ].
+			'Can not play with amount of hands different than amount of spaceships' ]
+]
+
+{ #category : #asserting }
+Zathura class >> assertSpaceshipsStartWith2Cards: handsOfCards [
+
+	handsOfCards do: [ :hand | 
+		hand cardsOnHand = 2 ifFalse: [ 
+			Error signal: 'All players should start with 2 cards' ] ].
+]
+
+{ #category : #'class initialization' }
+Zathura class >> playWith: aDiceCup over: aBoard dealing: handsOfCards [
+
+	self assertAmountOfSpaceshipOn: aBoard matchesAmountOf: handsOfCards.
+	self assertSpaceshipsStartWith2Cards: handsOfCards.
 	^ self new
 		  initializeWith: aDiceCup
 		  over: aBoard
