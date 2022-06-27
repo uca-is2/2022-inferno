@@ -13,47 +13,7 @@ CardsTest >> test01SpeedCardCanRespondToAssertionIfItIsATypeOfCard [
 ]
 
 { #category : #tests }
-CardsTest >> test02OverloadCardCanRespondToAssertionIfItIsATypeOfCard [
-
-	| aTestCard |
-	aTestCard := OverloadCard new.
-	self assert: aTestCard assertThatIsACard
-]
-
-{ #category : #tests }
-CardsTest >> test03AccelerationCardCanRespondToAssertionIfItIsATypeOfCard [
-
-	| aTestCard |
-	aTestCard := AccelerationCard new.
-	self assert: aTestCard assertThatIsACard
-]
-
-{ #category : #tests }
-CardsTest >> test04CancellationCardCanRespondToAssertionIfItIsATypeOfCard [
-
-	| aTestCard |
-	aTestCard := CancellationCard new.
-	self assert: aTestCard assertThatIsACard
-]
-
-{ #category : #tests }
-CardsTest >> test05RedoCardCanRespondToAssertionIfItIsATypeOfCard [
-
-	| aTestCard |
-	aTestCard := RedoCard new.
-	self assert: aTestCard assertThatIsACard
-]
-
-{ #category : #tests }
-CardsTest >> test06RepeatCardCanRespondToAssertionIfItIsATypeOfCard [
-
-	| aTestCard |
-	aTestCard := RepeatCard new.
-	self assert: aTestCard assertThatIsACard
-]
-
-{ #category : #tests }
-CardsTest >> test07SpeedCardCanTellIfACardIsOfSameType [
+CardsTest >> test02SpeedCardCanTellIfACardIsOfSameType [
 
 	| aTestCard aCard |
 	aTestCard := SpeedCard new.
@@ -62,7 +22,15 @@ CardsTest >> test07SpeedCardCanTellIfACardIsOfSameType [
 ]
 
 { #category : #tests }
-CardsTest >> test08OverloadCardCanTellIfACardIsOfSameType [
+CardsTest >> test03OverloadCardCanRespondToAssertionIfItIsATypeOfCard [
+
+	| aTestCard |
+	aTestCard := OverloadCard new.
+	self assert: aTestCard assertThatIsACard
+]
+
+{ #category : #tests }
+CardsTest >> test04OverloadCardCanTellIfACardIsOfSameType [
 
 	| aTestCard aCard |
 	aTestCard := OverloadCard new.
@@ -71,16 +39,15 @@ CardsTest >> test08OverloadCardCanTellIfACardIsOfSameType [
 ]
 
 { #category : #tests }
-CardsTest >> test09AccelerationCardCanTellIfACardIsOfSameType [
+CardsTest >> test05CancellationCardCanRespondToAssertionIfItIsATypeOfCard [
 
-	| aTestCard aCard |
-	aTestCard := AccelerationCard new.
-	aCard := AccelerationCard new.
-	self assert: aTestCard equals: aCard
+	| aTestCard |
+	aTestCard := CancellationCard new.
+	self assert: aTestCard assertThatIsACard
 ]
 
 { #category : #tests }
-CardsTest >> test10CancellationCardCanTellIfACardIsOfSameType [
+CardsTest >> test06CancellationCardCanTellIfACardIsOfSameType [
 
 	| aTestCard aCard |
 	aTestCard := CancellationCard new.
@@ -89,12 +56,45 @@ CardsTest >> test10CancellationCardCanTellIfACardIsOfSameType [
 ]
 
 { #category : #tests }
-CardsTest >> test11RedoCardCanTellIfACardIsOfSameType [
+CardsTest >> test07RedoCardCanRespondToAssertionIfItIsATypeOfCard [
+
+	| aTestCard |
+	aTestCard := RedoCard new.
+	self assert: aTestCard assertThatIsACard
+]
+
+{ #category : #tests }
+CardsTest >> test08RedoCardCanTellIfACardIsOfSameType [
 
 	| aTestCard aCard |
 	aTestCard := RedoCard new.
 	aCard := RedoCard new.
 	self assert: aTestCard equals: aCard
+]
+
+{ #category : #tests }
+CardsTest >> test09AccelerationCardCanRespondToAssertionIfItIsATypeOfCard [
+
+	| aTestCard |
+	aTestCard := AccelerationCard new.
+	self assert: aTestCard assertThatIsACard
+]
+
+{ #category : #tests }
+CardsTest >> test10AccelerationCardCanTellIfACardIsOfSameType [
+
+	| aTestCard aCard |
+	aTestCard := AccelerationCard new.
+	aCard := AccelerationCard new.
+	self assert: aTestCard equals: aCard
+]
+
+{ #category : #tests }
+CardsTest >> test11RepeatCardCanRespondToAssertionIfItIsATypeOfCard [
+
+	| aTestCard |
+	aTestCard := RepeatCard new.
+	self assert: aTestCard assertThatIsACard
 ]
 
 { #category : #tests }

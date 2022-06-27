@@ -20,5 +20,4 @@ SpeedUp >> applyTo: aBoard by: aSpaceship [
 		fromEffectSpot: spotBeforeSpeedUp
 		andLap: lapBeforeSpeedUp
 		to: speedUpNumber.
-	^ aBoard spaceshipPositions
 ]

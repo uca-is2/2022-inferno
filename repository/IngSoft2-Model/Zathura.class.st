@@ -16,7 +16,7 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #'class initialization' }
+{ #category : #asserting }
 Zathura class >> assertAmountOfSpaceshipOn: aBoard matchesAmountOf: handsOfCards [
 
 	handsOfCards size = aBoard spaceshipPositions size ifFalse: [ 
@@ -24,26 +24,28 @@ Zathura class >> assertAmountOfSpaceshipOn: aBoard matchesAmountOf: handsOfCards
 			'Can not play with amount of hands different than amount of spaceships' ]
 ]
 
-{ #category : #asserting }
-Zathura class >> assertSpaceshipsStartWith2Cards: handsOfCards [
-
-	handsOfCards do: [ :hand | 
-		hand cardsOnHand = 2 ifFalse: [ 
-			Error signal: 'All players should start with 2 cards' ] ].
-]
-
 { #category : #'class initialization' }
-Zathura class >> playWith: aDiceCup over: aBoard dealing: handsOfCards [
+Zathura class >> playWith: aDiceCup over: aBoard dealing: aCollectionOfHands [
 
-	self assertAmountOfSpaceshipOn: aBoard matchesAmountOf: handsOfCards.
-	self assertSpaceshipsStartWith2Cards: handsOfCards.
+	self
+		assertAmountOfSpaceshipOn: aBoard
+		matchesAmountOf: aCollectionOfHands.
+	self selfAssertEachPlayerHasTwoCardsAtTheBegining: aCollectionOfHands.
 	^ self new
 		  initializeWith: aDiceCup
 		  over: aBoard
-		  dealing: handsOfCards
+		  dealing: aCollectionOfHands
 ]
 
-{ #category : #playing }
+{ #category : #'class initialization' }
+Zathura class >> selfAssertEachPlayerHasTwoCardsAtTheBegining: aCollectionOfHands [
+
+	aCollectionOfHands do: [ :hand | 
+		hand cardsOnHand = 2 ifFalse: [ 
+			Error signal: 'All players should start with 2 cards' ] ]
+]
+
+{ #category : #assertions }
 Zathura >> assert: aCard isBeingAppliedTo: aSpaceship [
 
 	((cardsBeingApplied at: aSpaceship) includes: aCard) ifFalse: [ 
@@ -51,7 +53,7 @@ Zathura >> assert: aCard isBeingAppliedTo: aSpaceship [
 			'there is no card of that type being applied to that spaceship' ]
 ]
 
-{ #category : #playing }
+{ #category : #assertions }
 Zathura >> assertCorrectMethodForTypeOfCard: anAcceleratorCard [
 
 	| acceleratorCard |
@@ -60,21 +62,21 @@ Zathura >> assertCorrectMethodForTypeOfCard: anAcceleratorCard [
 		Error signal: 'Wrong method used, this is not an acceleration card' ]
 ]
 
-{ #category : #playing }
+{ #category : #assertions }
 Zathura >> assertGameIsFinished [
 
 	gameIsFinished ifTrue: [ 
 		Error signal: 'Game is finished! You cannot keep playing this game.' ]
 ]
 
-{ #category : #playing }
+{ #category : #assertions }
 Zathura >> assertItIsThatSpaceshipsTurn: aSpaceship [
 
 	aSpaceship == turnController activeSpaceship ifFalse: [ 
 		Error signal: 'Cannot play turn if it is not that spaceship turn.' ]
 ]
 
-{ #category : #playing }
+{ #category : #assertions }
 Zathura >> assertSpaceshipCanPlayCard: aSpaceship [
 
 	aSpaceship = turnController activeSpaceship ifFalse: [ 
@@ -160,7 +162,7 @@ Zathura >> initializeWith: aDiceCup over: aBoard dealing: handsOfCards [
 	gameIsFinished := false.
 	turnController := TurnController with: aBoard spaceshipPositions.
 	lastCardPlayed := CancellationCard new.
-	spaceshipHands := Dictionary new: aBoard spaceshipPositions size.
+	spaceshipHands := Dictionary new: (aBoard spaceshipPositions size).
 	spaceshipKeys := aBoard spaceshipPositions keys.
 	cardsBeingApplied := Dictionary new:
 		                     aBoard spaceshipPositions size + 1.
@@ -186,17 +188,14 @@ Zathura >> playNextTurn [
 { #category : #playing }
 Zathura >> playTurn: aSpaceship [
 
-	| positionBeforeRoll lapBeforeRoll spotBeforeRoll rollNumber cardsEffectsOnRoll pickedCard |
+	| positionBeforeRoll  rollNumber cardsEffectsOnRoll pickedCard |
 	self assertItIsThatSpaceshipsTurn: aSpaceship.
 	positionBeforeRoll := board positionOf: aSpaceship.
-	lapBeforeRoll := positionBeforeRoll lapNumber.
-	spotBeforeRoll := positionBeforeRoll spotNumber.
 	rollNumber := dice roll.
 	cardsEffectsOnRoll := self cardApplicator.
 	pickedCard := board
 		              move: aSpaceship
-		              fromSpot: spotBeforeRoll
-		              andLap: lapBeforeRoll
+		              from: positionBeforeRoll 
 		              to: rollNumber + cardsEffectsOnRoll.
 
 	(spaceshipHands at: aSpaceship) grabOne: pickedCard.

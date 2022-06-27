@@ -25,9 +25,9 @@ BoardTest >> test01ABoardHasAtLeastOneSpot [
 	                           'SC30 StarFighter' }.
 	aBoard := Board
 		          with: aCollectionOfSpots
-		          withALengthOf: 10
-		          around: 3
-		          playedBy: aCollectionOfSpaceships.
+		          and: 10
+		          playedFor: 3
+		          by: aCollectionOfSpaceships.
 	self assert: aBoard isValid
 ]
 
@@ -44,9 +44,9 @@ BoardTest >> test02ABoardCanMoveASpaceshipToDesiredPosition [
 	                           'SC30 StarFighter' }.
 	aBoard := Board
 		          with: aCollectionOfSpots
-		          withALengthOf: 10
-		          around: 3
-		          playedBy: aCollectionOfSpaceships.
+		          and: 10
+		          playedFor: 3
+		          by: aCollectionOfSpaceships.
 	aBoard move: 'SC30 StarFighter' toLap: 2 andSpot: 2.
 	self
 		assert: (aBoard positionOf: 'SC30 StarFighter') lapNumber
@@ -71,9 +71,9 @@ BoardTest >> test03ABoardCannotMoveASpaceshipToInvalidLap [
 	                           'SC30 StarFighter' }.
 	aBoard := Board
 		          with: aCollectionOfSpots
-		          withALengthOf: 10
-		          around: 3
-		          playedBy: aCollectionOfSpaceships.
+		          and: 10
+		          playedFor: 3
+		          by: aCollectionOfSpaceships.
 	invalidMove := [ aBoard move: 'SC30 StarFighter' toLap: 2 andSpot: 3 ].
 	self should: invalidMove raise: error withMessage: errorMessage
 ]
@@ -93,9 +93,9 @@ BoardTest >> test04ABoardCannotMoveASpaceshipToInvalidPosition [
 	                           'SC30 StarFighter' }.
 	aBoard := Board
 		          with: aCollectionOfSpots
-		          withALengthOf: 10
-		          around: 3
-		          playedBy: aCollectionOfSpaceships.
+		          and: 10
+		          playedFor: 3
+		          by: aCollectionOfSpaceships.
 	invalidMove := [ 
 	               aBoard move: 'SC30 StarFighter' toLap: 1 andSpot: -1 ].
 	self should: invalidMove raise: error withMessage: errorMessage
@@ -114,9 +114,9 @@ BoardTest >> test05ABoardCanReturnItsLenghtInSpots [
 	                           'SC30 StarFighter' }.
 	aBoard := Board
 		          with: aCollectionOfSpots
-		          withALengthOf: 10
-		          around: 3
-		          playedBy: aCollectionOfSpaceships.
+		          and: 10
+		          playedFor: 3
+		          by: aCollectionOfSpaceships.
 	aBoard move: 'SC30 StarFighter' toLap: 2 andSpot: 2.
 	self assert: aBoard lengthInSpots equals: 2
 ]
@@ -134,9 +134,9 @@ BoardTest >> test06ABoardCanReturnItsLenghtInParsecs [
 	                           'SC30 StarFighter' }.
 	aBoard := Board
 		          with: aCollectionOfSpots
-		          withALengthOf: 10
-		          around: 3
-		          playedBy: aCollectionOfSpaceships.
+		          and: 10
+		          playedFor: 3
+		          by: aCollectionOfSpaceships.
 	aBoard move: 'SC30 StarFighter' toLap: 2 andSpot: 2.
 	self assert: aBoard lengthInParsecs equals: 10
 ]
@@ -154,9 +154,9 @@ BoardTest >> test07ABoardCanReturnItsAmountOfLapsToBePlayed [
 	                           'SC30 StarFighter' }.
 	aBoard := Board
 		          with: aCollectionOfSpots
-		          withALengthOf: 10
-		          around: 3
-		          playedBy: aCollectionOfSpaceships.
+		          and: 10
+		          playedFor: 3
+		          by: aCollectionOfSpaceships.
 	aBoard move: 'SC30 StarFighter' toLap: 2 andSpot: 2.
 	self assert: aBoard amountOfLaps equals: 3
 ]
@@ -174,9 +174,9 @@ BoardTest >> test08ABoardCanReturnThePositionOfAllTheSpaceships [
 	                           'SC30 StarFighter' }.
 	aBoard := Board
 		          with: aCollectionOfSpots
-		          withALengthOf: 10
-		          around: 3
-		          playedBy: aCollectionOfSpaceships.
+		          and: 10
+		          playedFor: 3
+		          by: aCollectionOfSpaceships.
 	aBoard move: 'SC30 StarFighter' toLap: 2 andSpot: 2.
 	self
 		assert: (aBoard spaceshipPositions at: 'SC30 StarFighter') lapNumber
@@ -196,9 +196,9 @@ BoardTest >> test09ABoardCanReturnTheHandOfASpaceship [
 	                           'SC30 StarFighter' }.
 	aBoard := Board
 		          with: aCollectionOfSpots
-		          withALengthOf: 10
-		          around: 3
-		          playedBy: aCollectionOfSpaceships.
+		          and: 10
+		          playedFor: 3
+		          by: aCollectionOfSpaceships.
 	aBoard move: 'SC30 StarFighter' toLap: 2 andSpot: 2.
 	self assert: true
 ]

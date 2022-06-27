@@ -13,20 +13,22 @@ Class {
 { #category : #'class initialization' }
 Hand class >> assertThatCollectionIsAllCards: aCollectionOfCards [
 
-	| flag |
-	flag := true.
 	aCollectionOfCards do: [ :card | 
-		card assertThatIsACard ifFalse: [ flag := false ] ].
-	flag ifFalse: [ 
-		Error signal:
-			'Cant have a hand containing anything but a type of card.' ]
+		card assertThatIsACard ifFalse: [ Error signal: 'Cant have a hand containing anything but a type of card.' ] ].
 ]
 
 { #category : #'class initialization' }
 Hand class >> containing: aCollectionOfCards [
 
 	self assertThatCollectionIsAllCards: aCollectionOfCards.
-	^ self new initializeHandContaining: aCollectionOfCards
+	^ self new initializeContaining: aCollectionOfCards
+]
+
+{ #category : #playing }
+Hand >> assertCardIsOnHand: cardToPlay [
+
+	cardToPlay ifNil: [ 
+		Error signal: 'Spaceship does not have a card of that type' ]
 ]
 
 { #category : #getter }
@@ -42,7 +44,7 @@ Hand >> grabOne: aCard [
 ]
 
 { #category : #initialization }
-Hand >> initializeHandContaining: aCollectionOfCards [
+Hand >> initializeContaining: aCollectionOfCards [
 
 	deck := OrderedCollection new.
 	deck addAllFirst: aCollectionOfCards
@@ -51,28 +53,15 @@ Hand >> initializeHandContaining: aCollectionOfCards [
 { #category : #playing }
 Hand >> playCardOfType: aCard [
 
-	| cardToPlay cardNumber |
+	| cardToPlay |
 	cardToPlay := nil.
-	cardNumber := 1.
-	[ cardNumber < (self cardsOnHand + 1) ] whileTrue: [ 
-		aCard = (deck at: cardNumber) ifTrue: [ 
-			cardToPlay := deck at: cardNumber.
-			deck removeAt: cardNumber.
-			cardNumber := self cardsOnHand ].
-		cardNumber := cardNumber + 1 ].
-	"hacer bien el error"
-	cardToPlay ifNil: [ 
-		Error signal: 'Spaceship does not have a card of that type' ].
+	cardToPlay := deck detect: [:eachCard |aCard = eachCard] ifNone: [nil].
+			deck remove: cardToPlay.
+	self assertCardIsOnHand: cardToPlay.
 	^ cardToPlay
 ]
 
 { #category : #gettesr }
 Hand >> showHand [
 	^ deck   
-]
-
-{ #category : #getters }
-Hand >> take: aSpeedCard [
-
-	^ deck remove: aSpeedCard
 ]

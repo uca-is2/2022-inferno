@@ -11,10 +11,16 @@ Class {
 }
 
 { #category : #initialization }
-Moonwalk class >> createWith: aMoonwalkNumber [
+Moonwalk class >> assertValid: aMoonwalkNumber [
 
 	aMoonwalkNumber >= 0 ifFalse: [ 
-		Error signal: 'Moonwalk number cant be a negative number.' ].
+		Error signal: 'Moonwalk number cant be a negative number.' ]
+]
+
+{ #category : #initialization }
+Moonwalk class >> createWith: aMoonwalkNumber [
+
+	self assertValid: aMoonwalkNumber.
 	^ self new initializeWith: aMoonwalkNumber
 ]
 
@@ -23,46 +29,17 @@ Moonwalk >> applyTo: aBoard by: aSpaceship [
 
 	| positionBeforeMoonwalk spaceships |
 	spaceships := aBoard spaceshipPositions keys.
-	1 to: spaceships size do: [ :each | 
-		(spaceships at: each) == aSpaceship ifFalse: [ 
-			positionBeforeMoonwalk := aBoard positionOf: (spaceships at: each).
-			self
-				moonwalk: (spaceships at: each)
-				from: positionBeforeMoonwalk
-				on: aBoard ] ].
-	^ aBoard spaceshipPositions
+	 spaceships do: [ :eachSpaceship | 
+		(eachSpaceship) == aSpaceship ifFalse: [ 
+			positionBeforeMoonwalk := aBoard positionOf: (eachSpaceship).
+			aBoard
+				move: (eachSpaceship)
+				back: (number*(-1))
+				from: positionBeforeMoonwalk ] ].
 ]
 
 { #category : #initialization }
 Moonwalk >> initializeWith: aMoonwalkNumber [
 
 	number := aMoonwalkNumber
-]
-
-{ #category : #applying }
-Moonwalk >> moonwalk: aSpaceship from: positionBeforeMoonwalk on: aBoard [
-
-	| lapBeforeMoonwalk spotBeforeMoonwalk lengthInSpots positionInTotalSpots nextPositionInTotalSpots decreaseToSpot decreaseToLap |
-	lapBeforeMoonwalk := positionBeforeMoonwalk lapNumber.
-	spotBeforeMoonwalk := positionBeforeMoonwalk spotNumber.
-	lengthInSpots := aBoard lengthInSpots.
-	positionInTotalSpots := lengthInSpots * lapBeforeMoonwalk
-	                        + spotBeforeMoonwalk.
-	nextPositionInTotalSpots := positionInTotalSpots - number.
-	decreaseToSpot := nextPositionInTotalSpots rem: lengthInSpots.
-	decreaseToLap := nextPositionInTotalSpots // lengthInSpots.
-	nextPositionInTotalSpots < 1
-		ifTrue: [ aBoard move: aSpaceship toLap: 0 andSpot: 1 ]
-		ifFalse: [ 
-			decreaseToSpot == 0
-				ifTrue: [ 
-					aBoard
-						move: aSpaceship
-						toLap: decreaseToLap - 1
-						andSpot: lengthInSpots ]
-				ifFalse: [ 
-					aBoard
-						move: aSpaceship
-						toLap: decreaseToLap
-						andSpot: decreaseToSpot ] ]
 ]

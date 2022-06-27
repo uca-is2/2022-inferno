@@ -66,7 +66,6 @@ Hyperjump >> applyTo: aBoard by: aSpaceship [
 		fromEffectSpot: spotBeforeJump
 		andLap: lapBeforeJump
 		to: jumpNumber.
-	^ aBoard spaceshipPositions
 ]
 
 { #category : #getters }

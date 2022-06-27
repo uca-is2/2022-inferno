@@ -11,7 +11,7 @@ PositionTest >> test01APositionCanReturnSpotNumber [
 	testPos := Array new: 2.
 	testPos at: 1 put: 2.
 	testPos at: 2 put: 3.
-	aPosition := Position atLap: 2 andSpot: 3.
+	aPosition := Position at: 2 on: 3.
 	self assert: aPosition lapNumber equals: (testPos at: 1).
 	self assert: aPosition spotNumber equals: (testPos at: 2)
 ]
@@ -23,6 +23,6 @@ PositionTest >> test02APositionReturnsLapNumber [
 	testPos := Array new: 2.
 	testPos at: 1 put: 2.
 	testPos at: 2 put: 3.
-	aPosition := Position atLap: 2 andSpot: 3.
+	aPosition := Position at: 2 on: 3.
 	self assert: aPosition lapNumber equals: (testPos at: 1)
 ]

@@ -12,13 +12,13 @@ Class {
 }
 
 { #category : #'class initialization' }
-Position class >> atLap: aLapNumber andSpot: aSpotNumber [
+Position class >> at: aLapNumber on: aSpotNumber [
 
-	^ self new initializeAtLap: aLapNumber andSpot: aSpotNumber
+	^ self new initializeAt: aLapNumber on: aSpotNumber
 ]
 
 { #category : #initialization }
-Position >> initializeAtLap: aLapNumber andSpot: aSpotNumber [
+Position >> initializeAt: aLapNumber on: aSpotNumber [
 
 	lapNumber := aLapNumber.
 	spotNumber := aSpotNumber
