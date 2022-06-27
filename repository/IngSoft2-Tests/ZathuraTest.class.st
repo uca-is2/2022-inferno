@@ -615,10 +615,10 @@ ZathuraTest >> test12AssertASpaceshipAppliesOverloadToAnotherone [
 	aCollectionOfSpaceships := { 'Razor Crest'. 'Millenium Falcon' }.
 	aBoard := Board
 		          with: aCollectionOfSpots
-		          withALengthOf: 10
-		          around: 3
-		          playedBy: aCollectionOfSpaceships.
-	aDie1 := LoadedDie with: 5 loadedWith: 1.
+		          and: 10
+		          playedFor: 3
+		          by: aCollectionOfSpaceships.
+	aDie1 := LoadedDie with: 1.
 	aCollectionOfDice := { aDie1 }.
 	aDiceCup := DiceCup with: aCollectionOfDice.
 	exampleCardOne := SpeedCard new.
@@ -645,7 +645,7 @@ ZathuraTest >> test12AssertASpaceshipAppliesOverloadToAnotherone [
 	zathura playNextTurn.
 	zathura playNextTurn.
 	zathura playNextTurn.
-	self assert: (zathura positionOf: 'Razor Crest') spotNumber = 1
+	self assert: (zathura positionOf: 'Razor Crest') spotNumber equals: 1
 ]
 
 { #category : #tests }
@@ -664,10 +664,10 @@ ZathuraTest >> test13AssertASpaceshipAppliesSpeedToAnotherone [
 	aCollectionOfSpaceships := { 'Razor Crest'. 'Millenium Falcon' }.
 	aBoard := Board
 		          with: aCollectionOfSpots
-		          withALengthOf: 10
-		          around: 3
-		          playedBy: aCollectionOfSpaceships.
-	aDie1 := LoadedDie with: 5 loadedWith: 1.
+		          and: 10
+		          playedFor: 3
+		          by: aCollectionOfSpaceships.
+	aDie1 := LoadedDie with: 1.
 	aCollectionOfDice := { aDie1 }.
 	aDiceCup := DiceCup with: aCollectionOfDice.
 	exampleCardOne := SpeedCard new.
@@ -694,7 +694,7 @@ ZathuraTest >> test13AssertASpaceshipAppliesSpeedToAnotherone [
 	zathura playNextTurn.
 	zathura playNextTurn.
 	zathura playNextTurn.
-	self assert: (zathura positionOf: 'Razor Crest') spotNumber = 4
+	self assert: (zathura positionOf: 'Razor Crest') spotNumber equals: 4
 ]
 
 { #category : #tests }
