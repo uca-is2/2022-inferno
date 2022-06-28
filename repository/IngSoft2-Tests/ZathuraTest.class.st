@@ -968,14 +968,10 @@ ZathuraTest >> test19AssertASpaceshipRedocancelationCardWithRedoCard [
 	exampleCardThree := OverloadCard new.
 	exampleCardFour := CancellationCard new.
 	aHand1 := Hand containing: { 
-			          exampleCardOne.
 			          exampleCardTwo.
-			          exampleCardThree.
-			          exampleCardFour }.
+			          exampleCardThree. }.
 	aHand2 := Hand containing: { 
-			          exampleCardTwo.
 			          exampleCardOne.
-			          exampleCardThree.
 			          exampleCardFour }.
 	aCollectionOfHands := { 
 		                      aHand1.
@@ -993,11 +989,11 @@ ZathuraTest >> test19AssertASpaceshipRedocancelationCardWithRedoCard [
 	zathura
 		cancelCard: cardToPlay2
 		from: 'Millenium Falcon'
-		playedBy: 'Razor Crest'.
+		playedBy: 'Millenium Falcon'.
 	zathura
 		redoCancelationCard: cardToPlay
 		from: 'General'
-		PlayedBy: 'Razor Crest'.
+		PlayedBy: 'Millenium Falcon'.
 	zathura playNextTurn.
 	zathura playNextTurn.
 
