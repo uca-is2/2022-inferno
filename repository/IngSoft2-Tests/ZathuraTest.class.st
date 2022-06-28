@@ -868,7 +868,7 @@ ZathuraTest >> test14AssertASpaceshipAppliesAccelerationToTheGameBis [
 	zathura playNextTurn.
 	zathura playNextTurn.
 	cardToPlay := AccelerationCard new.
-	zathura play: cardToPlay by: 'Razor Crest' affecting: 'all'.
+	zathura play: cardToPlay by: 'Razor Crest' affecting: 'General'.
 	zathura playNextTurn.
 	zathura playNextTurn.
 	self assert: (zathura positionOf: 'Razor Crest') spotNumber = 4
@@ -966,10 +966,6 @@ ZathuraTest >> test15AssertASpaceshipRemovesACardWithCancelationCardBis [
 	zathura play: cardToPlay by: 'Razor Crest' affecting: 'Millenium Falcon'.
 	cardToPlay2 := CancellationCard new.
 	zathura play: cardToPlay2  by: 'Millenium Falcon' affecting: {'Millenium Falcon'. cardToPlay }.
-	"zathura
-		cancelCard: cardToPlay
-		from: 'Millenium Falcon'
-		playedBy: 'Millenium Falcon'."
 	zathura playNextTurn.
 	zathura playNextTurn.
 	self assert: (zathura positionOf: 'Razor Crest') spotNumber = 3
@@ -1256,9 +1252,9 @@ ZathuraTest >> test18AssertASpaceshipRedoAccelerationCardWithRedoCardBis [
 	zathura playNextTurn.
 	zathura playNextTurn.
 	cardToPlay := AccelerationCard new.
-	zathura play: cardToPlay by: 'Razor Crest' affecting: 'all'.
+	zathura play: cardToPlay by: 'Razor Crest' affecting: 'General'.
 	cardToPlay := RedoCard new.
-	zathura play: cardToPlay by: 'Razor Crest' affecting: 'all'.
+	zathura play: cardToPlay by: 'Razor Crest' affecting: 'General'.
 	zathura playNextTurn.
 	zathura playNextTurn.
 
@@ -1333,6 +1329,63 @@ ZathuraTest >> test19AssertASpaceshipRedocancelationCardWithRedoCard [
 ]
 
 { #category : #tests }
+ZathuraTest >> test19AssertASpaceshipRedocancelationCardWithRedoCardBis [
+
+	| aBoard aCollectionOfSpaceships aCollectionOfSpots aDie1 aCollectionOfDice aDiceCup zathura firstSpot secondSpot thirdSpot fourthdSpot aHand1 aHand2 aCollectionOfHands exampleCardOne exampleCardTwo fifthdSpot cardToPlay cardToPlay2 exampleCardThree exampleCardFour cardToPlay3 cardToPlay4 |
+	firstSpot := Spot createWith: NoEffect new.
+	secondSpot := Spot createWith: NoEffect new.
+	thirdSpot := Spot createWith: NoEffect new.
+	fourthdSpot := Spot createWith: NoEffect new.
+	fifthdSpot := Spot createWith: NoEffect new.
+	aCollectionOfSpots := { 
+		                      firstSpot.
+		                      secondSpot.
+		                      thirdSpot.
+		                      fourthdSpot.
+		                      fifthdSpot }.
+	aCollectionOfSpaceships := { 'Razor Crest'. 'Millenium Falcon' }.
+	aBoard := Board
+		          with: aCollectionOfSpots
+		          and: 10
+		          playedFor: 3
+		          by: aCollectionOfSpaceships.
+	aDie1 := LoadedDie with: 1.
+	aCollectionOfDice := { aDie1 }.
+	aDiceCup := DiceCup with: aCollectionOfDice.
+	exampleCardOne := RedoCard new.
+	exampleCardTwo := AccelerationCard new.
+	exampleCardThree := OverloadCard new.
+	exampleCardFour := CancellationCard new.
+	aHand1 := Hand containing: { 
+			          exampleCardTwo.
+			          exampleCardThree. }.
+	aHand2 := Hand containing: { 
+			          exampleCardOne.
+			          exampleCardFour }.
+	aCollectionOfHands := { 
+		                      aHand1.
+		                      aHand2 }.
+	zathura := Zathura playWith: aDiceCup over: aBoard dealing: aCollectionOfHands.
+	zathura playNextTurn.
+	zathura playNextTurn.
+	cardToPlay := AccelerationCard new.
+	zathura play: cardToPlay by: 'Razor Crest' affecting: 'General'.
+	cardToPlay2 := OverloadCard new.
+	zathura play: cardToPlay2 by: 'Razor Crest' affecting: 'Millenium Falcon'.
+	cardToPlay3 := CancellationCard new.
+	zathura play: cardToPlay3 by: 'Millenium Falcon' affecting: {'Millenium Falcon'. cardToPlay2 }.
+	cardToPlay4 := RedoCard new.
+	zathura play: cardToPlay4 by: 'Millenium Falcon' affecting: {'General'. cardToPlay }.
+	zathura playNextTurn.
+	zathura playNextTurn.
+
+	self assert: (zathura positionOf: 'Razor Crest') spotNumber equals: 3.
+	self
+		assert: (zathura positionOf: 'Millenium Falcon') spotNumber
+		equals: 3
+]
+
+{ #category : #tests }
 ZathuraTest >> test20AssertASpaceshipRedoRepeatCardWithRedoCard [
 
 	| aBoard aCollectionOfSpaceships aCollectionOfSpots aDie1 aCollectionOfDice aDiceCup zathura firstSpot secondSpot thirdSpot fourthdSpot aHand1 aHand2 aCollectionOfHands exampleCardOne exampleCardTwo fifthdSpot |
@@ -1375,6 +1428,55 @@ ZathuraTest >> test20AssertASpaceshipRedoRepeatCardWithRedoCard [
 		applyTo: 'Millenium Falcon'.
 	zathura redoRepeatCardPlayedBy: 'Razor Crest' applyTo: 'Razor Crest'.
 
+
+	self assert: (zathura positionOf: 'Razor Crest') spotNumber equals: 5.
+	self
+		assert: (zathura positionOf: 'Millenium Falcon') spotNumber
+		equals: 5
+]
+
+{ #category : #tests }
+ZathuraTest >> test20AssertASpaceshipRedoRepeatCardWithRedoCardBis [
+
+	| aBoard aCollectionOfSpaceships aCollectionOfSpots aDie1 aCollectionOfDice aDiceCup zathura firstSpot secondSpot thirdSpot fourthdSpot aHand1 aHand2 aCollectionOfHands exampleCardOne exampleCardTwo fifthdSpot cardToPlay |
+	firstSpot := Spot createWith: NoEffect new.
+	secondSpot := Spot createWith: SpeedUp new.
+	thirdSpot := Spot createWith: NoEffect new.
+	fourthdSpot := Spot createWith: NoEffect new.
+	fifthdSpot := Spot createWith: NoEffect new.
+	aCollectionOfSpots := { 
+		                      firstSpot.
+		                      secondSpot.
+		                      thirdSpot.
+		                      fourthdSpot.
+		                      fifthdSpot }.
+	aCollectionOfSpaceships := { 'Razor Crest'. 'Millenium Falcon' }.
+	aBoard := Board
+		          with: aCollectionOfSpots
+		          and: 10
+		          playedFor: 3
+		          by: aCollectionOfSpaceships.
+	aDie1 := LoadedDie with: 1.
+	aCollectionOfDice := { aDie1 }.
+	aDiceCup := DiceCup with: aCollectionOfDice.
+	exampleCardOne := RedoCard new.
+	exampleCardTwo := RepeatCard new.
+	aHand1 := Hand containing: { 
+			          exampleCardOne.
+			          exampleCardTwo }.
+	aHand2 := Hand containing: { 
+			          exampleCardTwo.
+			          exampleCardOne }.
+	aCollectionOfHands := { 
+		                      aHand1.
+		                      aHand2 }.
+	zathura := Zathura playWith: aDiceCup over: aBoard dealing: aCollectionOfHands.
+	zathura playNextTurn.
+	zathura playNextTurn.
+	cardToPlay := RepeatCard new.
+	zathura play: cardToPlay by: 'Millenium Falcon' affecting: 'Millenium Falcon'.
+	cardToPlay := RedoCard new.
+	zathura play: cardToPlay by: 'Razor Crest' affecting: 'Razor Crest'.
 
 	self assert: (zathura positionOf: 'Razor Crest') spotNumber equals: 5.
 	self

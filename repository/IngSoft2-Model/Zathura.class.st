@@ -193,10 +193,20 @@ Zathura >> play: aCard by: aSpaceship affecting: affectedSpaceship [
 		self repeatEffectCardPlayedBy: aSpaceship applyTo: affectedSpaceship.
 		 ].
 	(aCard =(RedoCard new)) ifTrue: [ 
-		(lastCardPlayed = (AccelerationCard new)) ifTrue
-		self redoLastCardPlayedBy: aSpaceship applyTo: affectedSpaceship.
-		self redoLastCardPlayedBy: 'Razor Crest'.
+		 ((lastCardPlayed = (OverloadCard  new)) | (lastCardPlayed = (SpeedCard new))) ifTrue:[ 
+				self redoLastCardPlayedBy: aSpaceship applyTo: affectedSpaceship.
+			 ].
+		(lastCardPlayed = (AccelerationCard new)) ifTrue: [ 
+			 self redoLastCardPlayedBy: aSpaceship.
+			].
+		(lastCardPlayed = (CancellationCard new)) ifTrue: [ 
+			 self redoCancelationCard: (affectedSpaceship at: 2) from: (affectedSpaceship at: 1) PlayedBy: aSpaceship.
+			].
+		(lastCardPlayed = (RepeatCard new)) ifTrue: [ 
+			 self redoRepeatCardPlayedBy: aSpaceship applyTo: affectedSpaceship.
+			].
 		 ].
+	
 	
 	((aCard =(OverloadCard new)) | (aCard = (SpeedCard new)) | (aCard =(AccelerationCard  new)) | (aCard =(CancellationCard new)) | (aCard =(RepeatCard new)) | (aCard =(RedoCard new))) ifFalse: [ 
 		Error signal: 'no existe ese tipo de carta'
