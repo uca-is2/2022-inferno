@@ -177,6 +177,33 @@ Zathura >> initializeWith: aDiceCup over: aBoard dealing: handsOfCards [
 ]
 
 { #category : #playing }
+Zathura >> play: aCard by: aSpaceship affecting: affectedSpaceship [ 
+	((aCard =(OverloadCard new)) | (aCard = (SpeedCard new))) ifTrue: [ 
+		self currentSpaceshipPlaysCard: aCard
+		applyTo: affectedSpaceship
+		playedBy: aSpaceship.
+		 ]. 
+	(aCard =(AccelerationCard new)) ifTrue: [ 
+		self currentSpaceshipPlaysCard: aCard playedBy: aSpaceship.
+		 ].
+	(aCard =(CancellationCard new)) ifTrue: [ 
+		self cancelCard: (affectedSpaceship at: 2) from: (affectedSpaceship at: 1) playedBy: aSpaceship
+		 ].
+	(aCard =(RepeatCard new)) ifTrue: [ 
+		self repeatEffectCardPlayedBy: aSpaceship applyTo: affectedSpaceship.
+		 ].
+	(aCard =(RedoCard new)) ifTrue: [ 
+		(lastCardPlayed = (AccelerationCard new)) ifTrue
+		self redoLastCardPlayedBy: aSpaceship applyTo: affectedSpaceship.
+		self redoLastCardPlayedBy: 'Razor Crest'.
+		 ].
+	
+	((aCard =(OverloadCard new)) | (aCard = (SpeedCard new)) | (aCard =(AccelerationCard  new)) | (aCard =(CancellationCard new)) | (aCard =(RepeatCard new)) | (aCard =(RedoCard new))) ifFalse: [ 
+		Error signal: 'no existe ese tipo de carta'
+		 ]
+]
+
+{ #category : #playing }
 Zathura >> playNextTurn [
 
 	| currentSpaceship |
