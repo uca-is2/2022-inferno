@@ -16,8 +16,8 @@ HandTest >> test01AHandIsInitializedWithTwoCards [
 	self assert: aHand cardsOnHand equals: 2
 ]
 
-{ #category : #accessing }
-HandTest >> test02AHandAddsOneCardToADeckOfTwo [
+{ #category : #tests }
+HandTest >> test02ACardCanBeAddedToAHand [
 
 	| aHand exampleCardOne exampleCardTwo cardToAdd |
 	exampleCardOne := SpeedCard new.
@@ -25,9 +25,9 @@ HandTest >> test02AHandAddsOneCardToADeckOfTwo [
 	aHand := Hand containing: { 
 			         exampleCardOne.
 			         exampleCardTwo }.
-	cardToAdd := SpeedCard new.
-	aHand grabOne: cardToAdd.
-	self assert: aHand cardsOnHand equals: 3
+	cardToAdd := AccelerationCard new.
+	aHand addPickedCardToHand: cardToAdd.
+	self assert: aHand cardsOnHand equals: 3.
 ]
 
 { #category : #tests }
@@ -61,4 +61,33 @@ HandTest >> test04AHandCanReturnACardThatIsPresentInThatDeck [
 	self
 		assert: (aHand playCardOfType: typeOfCardToTake)
 		equals: testCard
+]
+
+{ #category : #tests }
+HandTest >> test05AnObjectIsNotAddedToHandUnlessItIsACard [
+
+	| aHand exampleCardOne exampleCardTwo cardToAdd aCollectionOfSpots firstSpot secondSpot thirdSpot fourthSpot fifthSpot sixthSpot aCollectionOfSpaceships |
+	exampleCardOne := SpeedCard new.
+	exampleCardTwo := OverloadCard new.
+	aHand := Hand containing: { 
+			         exampleCardOne.
+			         exampleCardTwo }.
+	firstSpot := Spot createWith: NoEffect new.
+	secondSpot := Spot createWith: SpeedUp new.
+	thirdSpot := Spot createWith: NoEffect new.
+	fourthSpot := Spot createWith: NoEffect new.
+	fifthSpot := Spot createWith: NoEffect new.
+	sixthSpot := Spot createWith: SpeedUp new.
+
+	aCollectionOfSpots := { 
+		                      firstSpot.
+		                      secondSpot.
+		                      thirdSpot.
+		                      fourthSpot.
+		                      fifthSpot.
+		                      sixthSpot }.
+	aCollectionOfSpaceships := { 'testShipOne'. 'testShipTwo' }.
+	cardToAdd := Board with: aCollectionOfSpots and: 100 playedFor: 3 by: aCollectionOfSpaceships.
+	aHand addPickedCardToHand: cardToAdd.
+	self assert: aHand cardsOnHand equals: 2.
 ]

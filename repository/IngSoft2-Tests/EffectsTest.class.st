@@ -22,7 +22,7 @@ EffectsTest >> test01NoEffectDoesNothingToAnySpaceship [
 		          and: 10
 		          playedFor: 3
 		          by: aCollectionOfSpaceships.
-	aBoard move: 'Razor Crest' toLap: 1 andSpot: 1.
+	aBoard move: 'Razor Crest' to: 1 and: 1.
 	expectedPosition := Position at: 1 on: 1.
 	aBoard applyEffectTriggeredBy: 'Razor Crest'.
 	self
@@ -51,7 +51,7 @@ EffectsTest >> test02SpeedUpMovesSpaceship4SpotsForward [
 		          and: 10
 		          playedFor: 3
 		          by: aCollectionOfSpaceships.
-	aBoard move: 'Razor Crest' toLap: 1 andSpot: 1.
+	aBoard move: 'Razor Crest' to: 1 and: 1.
 	expectedPosition := Position at: 2 on: 2.
 	aBoard applyEffectTriggeredBy: 'Razor Crest'.
 	self
@@ -80,7 +80,7 @@ EffectsTest >> test03WormholeMovesSpaceship4SpotsBackwards [
 		          and: 10
 		          playedFor: 2
 		          by: aCollectionOfSpaceships.
-	aBoard move: 'Razor Crest' toLap: 1 andSpot: 3.
+	aBoard move: 'Razor Crest' to: 1 and: 3.
 	expectedPosition := Position at: 0 on: 2.
 	aBoard applyEffectTriggeredBy: 'Razor Crest'.
 	self
@@ -109,9 +109,9 @@ EffectsTest >> test04AtomicBombPutsEverySpaceshipInSpotZeroAndCurrentLap [
 		          and: 10
 		          playedFor: 3
 		          by: aCollectionOfSpaceships.
-	aBoard move: 'Razor Crest' toLap: 0 andSpot: 3.
-	aBoard move: 'Millenium Falcon' toLap: 1 andSpot: 3.
-	aBoard move: 'SC30 StarFighter' toLap: 2 andSpot: 3.
+	aBoard move: 'Razor Crest' to: 0 and: 3.
+	aBoard move: 'Millenium Falcon' to: 1 and: 3.
+	aBoard move: 'SC30 StarFighter' to: 2 and: 3.
 	expectedPositionOne := Position at: 0 on: 1.
 	expectedPositionTwo := Position at: 1 on: 1.
 	expectedPositionThree := Position at: 2 on: 1.
@@ -152,9 +152,9 @@ EffectsTest >> test05MoonwalkMovesEveryOtherSpaceshipNSpotsBackwards [
 		          and: 10
 		          playedFor: 3
 		          by: aCollectionOfSpaceships.
-	aBoard move: 'Razor Crest' toLap: 0 andSpot: 3.
-	aBoard move: 'Millenium Falcon' toLap: 2 andSpot: 2.
-	aBoard move: 'SC30 StarFighter' toLap: 3 andSpot: 3.
+	aBoard move: 'Razor Crest' to: 0 and: 3.
+	aBoard move: 'Millenium Falcon' to: 2 and: 2.
+	aBoard move: 'SC30 StarFighter' to: 3 and: 3.
 	expectedPositionOne := Position at: 0 on: 3.
 	expectedPositionTwo := Position at: 0 on: 1.
 	expectedPositionThree := Position at: 0 on: 2.
@@ -202,7 +202,7 @@ EffectsTest >> test06HyperJumpMovesTriggeringSpaceshipTheAmountOfParsecsGiven [
 		          and: 9
 		          playedFor: 3
 		          by: aCollectionOfSpaceships.
-	aBoard move: 'Razor Crest' toLap: 0 andSpot: 3.
+	aBoard move: 'Razor Crest' to: 0 and: 3.
 	expectedPositionAfterFirstJump := Position at: 1 on: 1.
 	aBoard applyEffectTriggeredBy: 'Razor Crest'.
 	self
@@ -228,7 +228,7 @@ EffectsTest >> test07CardPickerSpotReturnsATypeOfCard [
 		          and: 9
 		          playedFor: 3
 		          by: aCollectionOfSpaceships.
-	aBoard move: 'Razor Crest' toLap: 0 andSpot: 3.
+	aBoard move: 'Razor Crest' to: 0 and: 3.
 	cardPicked := aBoard applyEffectTriggeredBy: 'Razor Crest'.
 	self assert: cardPicked assertThatIsACard.
 	

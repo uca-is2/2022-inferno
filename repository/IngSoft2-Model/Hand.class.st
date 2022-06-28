@@ -25,6 +25,15 @@ Hand class >> containing: aCollectionOfCards [
 ]
 
 { #category : #playing }
+Hand >> addPickedCardToHand: aCard [
+
+	[aCard assertThatIsACard] on: Exception do: [ ^aCard ].
+
+	deck addLast: aCard.
+	^aCard
+]
+
+{ #category : #playing }
 Hand >> assertCardIsOnHand: cardToPlay [
 
 	cardToPlay ifNil: [ 
@@ -33,21 +42,15 @@ Hand >> assertCardIsOnHand: cardToPlay [
 
 { #category : #getter }
 Hand >> cardsOnHand [
-
-	^ deck size
-]
-
-{ #category : #playind }
-Hand >> grabOne: aCard [
-
-	aCard ifNotNil: [ deck addLast: aCard ]
+	^ (deck size)
 ]
 
 { #category : #initialization }
 Hand >> initializeContaining: aCollectionOfCards [
 
 	deck := OrderedCollection new.
-	deck addAllFirst: aCollectionOfCards
+	deck addAllFirst: aCollectionOfCards.
+	^self 
 ]
 
 { #category : #playing }
@@ -61,7 +64,7 @@ Hand >> playCardOfType: aCard [
 	^ cardToPlay
 ]
 
-{ #category : #gettesr }
+{ #category : #getter }
 Hand >> showHand [
 	^ deck   
 ]

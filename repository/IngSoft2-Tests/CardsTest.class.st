@@ -5,7 +5,7 @@ Class {
 }
 
 { #category : #tests }
-CardsTest >> test01SpeedCardCanRespondToAssertionIfItIsATypeOfCard [
+CardsTest >> test01SpeedCardCanRespondToAssertionMessage [
 
 	| aTestCard |
 	aTestCard := SpeedCard new.
@@ -13,7 +13,7 @@ CardsTest >> test01SpeedCardCanRespondToAssertionIfItIsATypeOfCard [
 ]
 
 { #category : #tests }
-CardsTest >> test02SpeedCardCanTellIfACardIsOfSameType [
+CardsTest >> test02SpeedCardEqualsAnotherInstanceOfSameCard [
 
 	| aTestCard aCard |
 	aTestCard := SpeedCard new.
@@ -22,7 +22,15 @@ CardsTest >> test02SpeedCardCanTellIfACardIsOfSameType [
 ]
 
 { #category : #tests }
-CardsTest >> test03OverloadCardCanRespondToAssertionIfItIsATypeOfCard [
+CardsTest >> test03SpeedCardEffectOnRollIsPlusOne [
+
+	| aTestCard |
+	aTestCard := SpeedCard new.
+	self assert: aTestCard effectOnRoll equals: 1.
+]
+
+{ #category : #tests }
+CardsTest >> test04OverloadCardCanRespondToAssertionMessage [
 
 	| aTestCard |
 	aTestCard := OverloadCard new.
@@ -30,7 +38,7 @@ CardsTest >> test03OverloadCardCanRespondToAssertionIfItIsATypeOfCard [
 ]
 
 { #category : #tests }
-CardsTest >> test04OverloadCardCanTellIfACardIsOfSameType [
+CardsTest >> test05OverloadCardEqualsAnotherInstanceOfSameCard [
 
 	| aTestCard aCard |
 	aTestCard := OverloadCard new.
@@ -39,7 +47,15 @@ CardsTest >> test04OverloadCardCanTellIfACardIsOfSameType [
 ]
 
 { #category : #tests }
-CardsTest >> test05CancellationCardCanRespondToAssertionIfItIsATypeOfCard [
+CardsTest >> test06OverloadEffectOnRollIsMinusTwo [
+
+	| aTestCard |
+	aTestCard := OverloadCard  new.
+	self assert: aTestCard effectOnRoll equals: -2.
+]
+
+{ #category : #tests }
+CardsTest >> test07CancellationCardCanRespondToAssertionMessage [
 
 	| aTestCard |
 	aTestCard := CancellationCard new.
@@ -47,7 +63,7 @@ CardsTest >> test05CancellationCardCanRespondToAssertionIfItIsATypeOfCard [
 ]
 
 { #category : #tests }
-CardsTest >> test06CancellationCardCanTellIfACardIsOfSameType [
+CardsTest >> test08CancellationCardEqualsAnotherInstanceOfSameCard [
 
 	| aTestCard aCard |
 	aTestCard := CancellationCard new.
@@ -56,24 +72,7 @@ CardsTest >> test06CancellationCardCanTellIfACardIsOfSameType [
 ]
 
 { #category : #tests }
-CardsTest >> test07RedoCardCanRespondToAssertionIfItIsATypeOfCard [
-
-	| aTestCard |
-	aTestCard := RedoCard new.
-	self assert: aTestCard assertThatIsACard
-]
-
-{ #category : #tests }
-CardsTest >> test08RedoCardCanTellIfACardIsOfSameType [
-
-	| aTestCard aCard |
-	aTestCard := RedoCard new.
-	aCard := RedoCard new.
-	self assert: aTestCard equals: aCard
-]
-
-{ #category : #tests }
-CardsTest >> test09AccelerationCardCanRespondToAssertionIfItIsATypeOfCard [
+CardsTest >> test09AccelerationCardCanRespondToAssertionMessage [
 
 	| aTestCard |
 	aTestCard := AccelerationCard new.
@@ -81,7 +80,7 @@ CardsTest >> test09AccelerationCardCanRespondToAssertionIfItIsATypeOfCard [
 ]
 
 { #category : #tests }
-CardsTest >> test10AccelerationCardCanTellIfACardIsOfSameType [
+CardsTest >> test10AccelerationCardEqualsAnotherInstanceOfSameCard [
 
 	| aTestCard aCard |
 	aTestCard := AccelerationCard new.
@@ -90,7 +89,15 @@ CardsTest >> test10AccelerationCardCanTellIfACardIsOfSameType [
 ]
 
 { #category : #tests }
-CardsTest >> test11RepeatCardCanRespondToAssertionIfItIsATypeOfCard [
+CardsTest >> test11AccelerationCardEffectOnRollIsPlusOne [
+
+	| aTestCard |
+	aTestCard := AccelerationCard new.
+	self assert: aTestCard effectOnRoll equals: 1.
+]
+
+{ #category : #tests }
+CardsTest >> test12RepeatCardCanRespondToAssertionMessage [
 
 	| aTestCard |
 	aTestCard := RepeatCard new.
@@ -98,10 +105,27 @@ CardsTest >> test11RepeatCardCanRespondToAssertionIfItIsATypeOfCard [
 ]
 
 { #category : #tests }
-CardsTest >> test12RepeatCardCanTellIfACardIsOfSameType [
+CardsTest >> test13RepeatCardEqualsAnotherInstanceOfSameCard [
 
 	| aTestCard aCard |
 	aTestCard := RepeatCard new.
 	aCard := RepeatCard new.
 	self assert: aTestCard equals: aCard
+]
+
+{ #category : #tests }
+CardsTest >> test14RedoCardEqualsAnotherInstanceOfSameCard [
+
+	| aTestCard aCard |
+	aTestCard := RedoCard new.
+	aCard := RedoCard new.
+	self assert: aTestCard equals: aCard
+]
+
+{ #category : #tests }
+CardsTest >> test15RedoCardCanRespondToAssertionMessage [
+
+	| aTestCard |
+	aTestCard := RedoCard new.
+	self assert: aTestCard assertThatIsACard
 ]

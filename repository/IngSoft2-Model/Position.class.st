@@ -17,6 +17,18 @@ Position class >> at: aLapNumber on: aSpotNumber [
 	^ self new initializeAt: aLapNumber on: aSpotNumber
 ]
 
+{ #category : #comparison }
+Position >> > aPosition [ 
+
+	| lapsOfSpaceshipA lapsOfSpaceshipB spotsOfSpaceshipA spotsOfSpaceshipB |
+	
+	lapsOfSpaceshipA := self lapNumber.
+	lapsOfSpaceshipB := aPosition lapNumber .
+	spotsOfSpaceshipA := self spotNumber.
+	spotsOfSpaceshipB := aPosition spotNumber.
+	^((lapsOfSpaceshipA > lapsOfSpaceshipB) or: (lapsOfSpaceshipA = lapsOfSpaceshipB and: (spotsOfSpaceshipA > spotsOfSpaceshipB)))
+]
+
 { #category : #initialization }
 Position >> initializeAt: aLapNumber on: aSpotNumber [
 

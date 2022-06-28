@@ -89,15 +89,15 @@ EffectFiller >> effectLoader: arrayOfEffects with: anAmountOfSpots [
 	spotsWithThisEffect := 0.
 	arrayOfUsedSpots := OrderedCollection new: anAmountOfSpots.
 	arrayOfSpots := Array new: anAmountOfSpots.
-	1 to: arrayOfEffects size do: [ :effect | 
-		[ (arrayOfEffects at: effect) size > spotsWithThisEffect ] 
+	arrayOfEffects do: [ :eachEffect | 
+		[ (eachEffect size) > spotsWithThisEffect ] 
 			whileTrue: [ 
 				randomSlot := anAmountOfSpots atRandom.
 				(arrayOfUsedSpots includes: randomSlot) ifFalse: [ 
 					arrayOfUsedSpots addLast: randomSlot.
 					arrayOfSpots
 						at: randomSlot
-						put: ((arrayOfEffects at: effect) at: spotsWithThisEffect + 1).
+						put: ((eachEffect) at: spotsWithThisEffect + 1).
 					spotsWithThisEffect := spotsWithThisEffect + 1 ] ].
 		spotsWithThisEffect := 0 ].
 	^ arrayOfSpots
@@ -119,10 +119,10 @@ EffectFiller >> fillWithEffects: aNumberOfSpots with: aCollectionOfJumpArrays an
 		                    with: aCollectionOfJumpArrays.
 	arrayOfNoEffect := self loadNoEffect: aNumberOfSpots.
 	arrayOfCardPickers := self loadCardPicker: aNumberOfSpots.
-	arrayOfEffects := [ 
-	                  arrayOfSpeedUp , arrayOfMoonwalk , arrayOfWormhole
-	                  , arrayOfAtomicBomb , arrayOfHyperJump
-	                  , arrayOfNoEffect , arrayOfCardPickers ].
+	arrayOfEffects := {   
+	                  arrayOfSpeedUp . arrayOfMoonwalk . arrayOfWormhole
+	                  . arrayOfAtomicBomb . arrayOfHyperJump
+	                  . arrayOfNoEffect . arrayOfCardPickers }.
 	arrayOfSpots := self
 		                effectLoader: arrayOfEffects
 		                with: aNumberOfSpots.

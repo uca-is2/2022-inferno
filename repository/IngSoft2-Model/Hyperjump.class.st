@@ -54,18 +54,12 @@ Hyperjump class >> createWith: aJumpsArray measuredIn: aMeasure [
 { #category : #applying }
 Hyperjump >> applyTo: aBoard by: aSpaceship [
 
-	| positionBeforeJump lapBeforeJump spotBeforeJump jumpNumber orderedJumpsArray |
+	| positionBeforeJump  jumpNumber orderedJumpsArray |
 	positionBeforeJump := aBoard positionOf: aSpaceship.
-	lapBeforeJump := positionBeforeJump lapNumber.
-	spotBeforeJump := positionBeforeJump spotNumber.
 	orderedJumpsArray := jumpsArray sorted.
 	jumpsArray := orderedJumpsArray reverse.
 	jumpNumber := self getJumpNumberInSpots: aBoard.
-	aBoard
-		move: aSpaceship
-		fromEffectSpot: spotBeforeJump
-		andLap: lapBeforeJump
-		to: jumpNumber.
+	aBoard move: aSpaceship withoutTriggeringNewEffectsfrom: positionBeforeJump to: jumpNumber
 ]
 
 { #category : #getters }
