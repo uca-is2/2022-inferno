@@ -172,6 +172,23 @@ Zathura >> cardApplicator [
 ]
 
 { #category : #cardApplying }
+Zathura >> cardRedoerWith: aCard to: affectedSpaceship by: aSpaceship [
+
+	(self assertThatIsRedoCard: aCard) ifFalse: [ ^ self ].
+	(self assertThatIsOverloadOrSpeed: lastCardPlayed) ifTrue: [ 
+		self redoLastCardPlayedBy: aSpaceship applyTo: affectedSpaceship ].
+	(self assertThatIsOfTypeAcceleration: lastCardPlayed) ifTrue: [ 
+		self redoLastCardPlayedBy: aSpaceship ].
+	(self assertThatIsCancellationCard: lastCardPlayed) ifTrue: [ 
+		self
+			redoCancelationCard: (affectedSpaceship at: 2)
+			from: (affectedSpaceship at: 1)
+			PlayedBy: aSpaceship ].
+	(self assertThatIsRepeatCard: lastCardPlayed) ifTrue: [ 
+		self redoRepeatCardPlayedBy: aSpaceship applyTo: affectedSpaceship ]
+]
+
+{ #category : #cardApplying }
 Zathura >> currentSpaceshipPlaysCard: aPermanentCard applyTo: aSpaceship playedBy: anotherSpaceship [
 
 	| cardToApply |

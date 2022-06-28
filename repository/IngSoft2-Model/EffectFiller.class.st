@@ -193,9 +193,9 @@ EffectFiller >> loadMoonwalk: anAmountOfSpots with: aCollectionOfMoonwalkNumbers
 	| numberOfMoonwalk arrayOfMoonwalk |
 	numberOfMoonwalk := self amountOfMoonwalkForThisSize: anAmountOfSpots.
 	arrayOfMoonwalk := Array new: numberOfMoonwalk.
-	1 to: numberOfMoonwalk do: [ :each | 
-		arrayOfMoonwalk at: each put: (Spot createWith:
-				 (Moonwalk createWith: (aCollectionOfMoonwalkNumbers at: each))) ].
+	1 to: numberOfMoonwalk do: [ :eachNumber | 
+		arrayOfMoonwalk at: eachNumber put: (Spot createWith:
+				 (Moonwalk createWith: (aCollectionOfMoonwalkNumbers at: eachNumber))) ].
 	^ arrayOfMoonwalk
 ]
 
