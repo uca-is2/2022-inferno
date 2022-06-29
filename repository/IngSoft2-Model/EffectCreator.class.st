@@ -7,6 +7,18 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
+{ #category : #randomCreation }
+EffectCreator >> arrayOfJumpsCreator [ 
+	| arrayOfJumps arraySize|
+	arraySize := (10 atRandom).
+	arrayOfJumps := OrderedCollection new.
+	arraySize timesRepeat:[
+		arrayOfJumps add: (Parsecs with: (15 atRandom))
+		].
+	^ arrayOfJumps
+	
+]
+
 { #category : #assertions }
 EffectCreator >> assertAmountOfSpotsIsMoreThanZero: anAmountOfSpots [
 
@@ -45,7 +57,7 @@ EffectCreator >> createLayoutFor: anAmountOfSpots using: aDictionaryWithEffectsA
 			boardLayout at: eachSpotNumber put: (Spot createWith: AtomicBomb new).
 			].
 		(randomNumber > atomicBombTopLimit and: (randomNumber <= hyperjumpTopLimit))ifTrue:[
-			boardLayout at: eachSpotNumber put: (Spot createWith: (Hyperjump createWith: (self arrayOfJumpsCreator) measuredIn: 'parsecs' )).
+			boardLayout at: eachSpotNumber put: (Spot createWith: (Hyperjump createWith: (self arrayOfJumpsCreator))).
 			].
 		(randomNumber > hyperjumpTopLimit and: (randomNumber <= moonwalkTopLimit))ifTrue:[
 			boardLayout at: eachSpotNumber put: (Spot createWith: (Moonwalk createWith:(self moonwalkNumberCreator))).
@@ -81,4 +93,9 @@ EffectCreator >> for: anAmountOfSpots with: aDictionaryWithEffectAndItsProbabili
 	^ self
 		  createLayoutFor: anAmountOfSpots
 		  using: aDictionaryWithEffectAndItsProbabilities
+]
+
+{ #category : #randomCreation }
+EffectCreator >> moonwalkNumberCreator [
+	^ (10 atRandom)
 ]

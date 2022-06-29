@@ -16,48 +16,19 @@ ZathuraTest >> should: errorBlock raise: errorClass withMessage: expectedErrorMe
 ]
 
 { #category : #tests }
-ZathuraTest >> test01AGameOfZathuraInfernoCanBePlayedByTurnsTilFinished [
+ZathuraTest >> test01AGameOfZathuraInfernoCanBePlayedByTurnsTilFinishedWithRandomlyGeneratedBoardLayoutAndDies [
 
-	| aCollectionOfSpaceships aBoard aCollectionOfSpots anEffectFiller aCollectionOfMoonwalkNumbers aCollectionOfJumpArrays lengthInParsecs aDiceCup aCollectionOfDice zathura aDie1 aDie2 firstHyperJumpValues secondHyperJumpValues thirdHyperJumpValues fourthHyperJumpValues fifthHyperJumpValues sixthHyperJumpValues seventhHyperJumpValues eigthHyperJumpValues aHand1 aHand2 aHand3 aCollectionOfHands |
-	anEffectFiller := EffectFiller new.
-	aCollectionOfMoonwalkNumbers := { 5. 3. 2. 1. 2. 3. 5. 3. 2. 4 }.
-	firstHyperJumpValues := OrderedCollection new: 3.
-	firstHyperJumpValues addAllFirst: { 1. 2. 3 }.
-
-	secondHyperJumpValues := OrderedCollection new: 3.
-	secondHyperJumpValues addAllFirst: { 0. 3. 5 }.
-
-	thirdHyperJumpValues := OrderedCollection new: 3.
-	thirdHyperJumpValues addAllFirst: { 2. 4. 6 }.
-
-	fourthHyperJumpValues := OrderedCollection new: 3.
-	fourthHyperJumpValues addAllFirst: { 3. 4. 5 }.
-
-	fifthHyperJumpValues := OrderedCollection new: 3.
-	fifthHyperJumpValues addAllFirst: { 1. 2. 3 }.
-
-	sixthHyperJumpValues := OrderedCollection new: 3.
-	sixthHyperJumpValues addAllFirst: { 1. 3. 5 }.
-
-	seventhHyperJumpValues := OrderedCollection new: 3.
-	seventhHyperJumpValues addAllFirst: { 2. 5. 6 }.
-
-	eigthHyperJumpValues := OrderedCollection new: 3.
-	eigthHyperJumpValues addAllFirst: { 1. 4. 5 }.
-
-	aCollectionOfJumpArrays := { 
-		                           firstHyperJumpValues.
-		                           secondHyperJumpValues.
-		                           thirdHyperJumpValues.
-		                           fourthHyperJumpValues.
-		                           fifthHyperJumpValues.
-		                           sixthHyperJumpValues.
-		                           seventhHyperJumpValues.
-		                           eigthHyperJumpValues }.
-	aCollectionOfSpots := anEffectFiller
-		                      fillWithEffects: 100
-		                      with: aCollectionOfJumpArrays
-		                      and: aCollectionOfMoonwalkNumbers.
+	| aCollectionOfSpaceships aBoard aCollectionOfSpots anEffectCreator lengthInParsecs aDiceCup aCollectionOfDice zathura aDie1 aDie2 aHand1 aHand2 aHand3 aCollectionOfHands aDictionaryWithEffectProbabilities |
+	anEffectCreator := EffectCreator new.
+	aDictionaryWithEffectProbabilities := Dictionary new.
+	aDictionaryWithEffectProbabilities at: 'SpeedUp' put: 20.
+	aDictionaryWithEffectProbabilities at: 'Wormhole' put: 20.
+	aDictionaryWithEffectProbabilities at: 'AtomicBomb' put: 2.
+	aDictionaryWithEffectProbabilities at: 'Moonwalk' put: 10.
+	aDictionaryWithEffectProbabilities at: 'Hyperjump' put: 8.
+	aDictionaryWithEffectProbabilities at: 'CardPicker' put: 10.
+	aCollectionOfSpots := anEffectCreator for: 1000 with: aDictionaryWithEffectProbabilities.
+	
 	aCollectionOfSpaceships := { 'Razor Crest'. 'Millenium Falcon'.
 	                           'SC30 StarFighter' }.
 	lengthInParsecs := 100.
@@ -521,11 +492,10 @@ ZathuraTest >> test10HyperJumpsMakesFirstJumpAnAmountOfParsecsForward [
 	firstSpot := Spot createWith: NoEffect new.
 
 	arrayOfJumps := OrderedCollection new: 3.
-	arrayOfJumps addAllFirst: { 2. 4. 6 }.
+	arrayOfJumps addAllFirst: { Lightyear with:17. Parsecs with: 4. Parsecs with: 6 }.
 	secondSpot := Spot createWith:
 		              (Hyperjump
-			               createWith: arrayOfJumps
-			               measuredIn: 'parsecs').
+			               createWith: arrayOfJumps).
 
 	thirdSpot := Spot createWith: NoEffect new.
 	fourthSpot := Spot createWith: NoEffect new.
