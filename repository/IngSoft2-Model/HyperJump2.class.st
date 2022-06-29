@@ -21,6 +21,33 @@ HyperJump2 class >> createWith: aJumpsArray [
 	
 ]
 
+{ #category : #private }
+HyperJump2 >> applyTo: aBoard by: aSpaceship [ 
+	| jump positionBeforeJump jumpInParsecs jumpNumber |
+	positionBeforeJump:= aBoard positionOf: aSpaceship.
+	jump:= jumpsArray first.
+	jumpsArray := (jumpsArray reject: [:each |
+		each=jump]),{jump}.
+	jumpInParsecs:= jump amountInParsecs.
+	jumpNumber:= self getJumpNumberInSpots: aBoard.
+	
+	aBoard move: aSpaceship withoutTriggeringNewEffectsfrom: positionBeforeJump to: jumpNumber
+]
+
+{ #category : #getters }
+HyperJump2 >> getJumpNumberInSpots: aBoard [ 
+	
+	| hyperJumpValues parsecsForThisJump lengthInParsecs amountOfSpots parsecsPerSpot amountOfSpotsToJump |
+	hyperJumpValues:= jumpsArray.
+	parsecsForThisJump:= hyperJumpValues removeFirst.
+	hyperJumpValues addLast: parsecsForThisJump.
+	lengthInParsecs:=aBoard  lengthInParsecs.
+	amountOfSpots:=aBoard lengthInSpots.
+	parsecsPerSpot:=lengthInParsecs/amountOfSpots.
+	amountOfSpotsToJump:= (parsecsForThisJump amount) // parsecsPerSpot.
+	^ amountOfSpotsToJump.
+]
+
 { #category : #initialization }
 HyperJump2 >> initializeWith: aJumpsArray [
 
