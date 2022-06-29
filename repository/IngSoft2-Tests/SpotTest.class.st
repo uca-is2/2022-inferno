@@ -27,9 +27,10 @@ SpotTest >> test03SpotCanBeCreatedAndLoadedWithHyperJumpsArrayInParsecs [
 
 	| aSpot arrayOfJumps |
 	arrayOfJumps := OrderedCollection new: 3.
-	arrayOfJumps addAllFirst: { 2. 4. 6 }.
+	arrayOfJumps addAllFirst: { Parsecs with: 2. Parsecs with: 4. Parsecs with:6 }.
 	aSpot := Spot createWith:
-		         (Hyperjump createWith: arrayOfJumps measuredIn: 'parsecs').
+		         (Hyperjump createWith: arrayOfJumps).
+	arrayOfJumps := ((arrayOfJumps sorted) reversed).
 	self assert: aSpot effectAtSpot jumpValues equals: arrayOfJumps
 ]
 
@@ -38,14 +39,11 @@ SpotTest >> test04SpotCanBeCreatedAndLoadedWithHyperJumpsArrayInLightyears [
 
 	| aSpot arrayOfJumps expectedArrayOfJumps |
 	arrayOfJumps := OrderedCollection new: 3.
-	arrayOfJumps addAllFirst: { 3. 6. 9 }.
+	arrayOfJumps addAllFirst: { Lightyear with:3. Lightyear with:6. Lightyear with:9 }.
 	aSpot := Spot createWith:
 		         (Hyperjump
-			          createWith: arrayOfJumps
-			          measuredIn: 'lightyears').
-	expectedArrayOfJumps := OrderedCollection new: 3.
-	expectedArrayOfJumps addAllFirst: { 3. 2. 1 }.
+			          createWith: arrayOfJumps).
+	expectedArrayOfJumps := (arrayOfJumps sorted)reversed.
 	self
-		assert: aSpot effectAtSpot jumpValues
-		equals: expectedArrayOfJumps
+		assert: aSpot effectAtSpot jumpValues equals: expectedArrayOfJumps
 ]
