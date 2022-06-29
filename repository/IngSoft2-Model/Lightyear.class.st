@@ -3,7 +3,7 @@ I represent a type of distance: a Lightyear
 "
 Class {
 	#name : #Lightyear,
-	#superclass : #Distance,
+	#superclass : #Object,
 	#instVars : [
 		'distance'
 	],
@@ -18,15 +18,19 @@ Lightyear class >> assertValid: aDistance [
 ]
 
 { #category : #'instance creation' }
-Lightyear class >> with: aDistance [
-
-
+Lightyear class >> distanceOf: aDistance [
 
 	self assertValid: aDistance.
 	^ self new initializeWith: aDistance
 ]
 
-{ #category : #accesing }
+{ #category : #actions }
+Lightyear >> <= aDistance [
+	
+	^ self amountInParsecs <= aDistance amountInParsecs .
+]
+
+{ #category : #actions }
 Lightyear >> amount [
 
 	^ distance

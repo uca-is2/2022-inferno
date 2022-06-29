@@ -13,7 +13,7 @@ EffectCreator >> arrayOfJumpsCreator [
 	arraySize := (10 atRandom).
 	arrayOfJumps := OrderedCollection new.
 	arraySize timesRepeat:[
-		arrayOfJumps add: (Parsecs with: (15 atRandom))
+		arrayOfJumps add: (Parsec distanceOf: (15 atRandom))
 		].
 	^ arrayOfJumps
 	

@@ -206,9 +206,9 @@ EffectsTest >> test07HyperJumpSpotIsTriggeredBySpaceshipAndMovesIt3Parsecs [
 	| firstSpot secondSpot aDistance1 aDistance2 aDistance3 arrayOfJumps thirdSpot aCollectionOfSpots aCollectionOfSpaceships aBoard expectedPositionAfterFirstJump |
 	firstSpot:= Spot createWith: NoEffect new.
 	secondSpot := Spot createWith: NoEffect new.
-	aDistance1:= Parsecs with: 1.
-	aDistance2:= Parsecs with: 2.
-	aDistance3:= Parsecs with: 3.
+	aDistance1:= Parsec distanceOf: 1.
+	aDistance2:= Parsec distanceOf: 2.
+	aDistance3:= Parsec distanceOf: 3.
 	arrayOfJumps:= OrderedCollection new:3.
 	arrayOfJumps addAllFirst: { aDistance1. aDistance2. aDistance3. }.
 	thirdSpot := Spot createWith:
@@ -243,9 +243,9 @@ EffectsTest >> test08HyperJumpSpotIsCreatedWithParsecsAndLightyearsAndIsTriggere
 	| firstSpot secondSpot aDistance1 aDistance2 aDistance3 arrayOfJumps thirdSpot aCollectionOfSpots aCollectionOfSpaceships aBoard expectedPositionAfterFirstJump expectedPositionAfterSecondJump |
 	firstSpot:= Spot createWith: NoEffect new.
 	secondSpot := Spot createWith: NoEffect new.
-	aDistance1:= Parsecs with: 1.
-	aDistance2:= Parsecs with: 3.
-	aDistance3:= Lightyear with: 5.
+	aDistance1:= Parsec distanceOf: 1.
+	aDistance2:= Parsec distanceOf: 3.
+	aDistance3:= Lightyear distanceOf: 5.
 	arrayOfJumps:= OrderedCollection new:3.
 	arrayOfJumps addAllFirst: { aDistance1. aDistance2. aDistance3. }.
 	thirdSpot := Spot createWith:
@@ -285,7 +285,7 @@ EffectsTest >> test09HyperJumpSpotIsTriggeredBySpaceshipAndMovesIt9Lightyears [
 	firstSpot := Spot createWith: NoEffect new.
 	secondSpot := Spot createWith: NoEffect new.
 	arrayOfJumps := OrderedCollection new: 3.
-	arrayOfJumps addAllFirst: { Lightyear with: 9. Parsecs with: 2. Parsecs with: 1 }.
+	arrayOfJumps addAllFirst: { Lightyear distanceOf: 9. Parsec distanceOf: 2. Parsec distanceOf: 1 }.
 	thirdSpot := Spot createWith:
 		             (Hyperjump
 			              createWith: arrayOfJumps).
@@ -318,7 +318,7 @@ EffectsTest >> test10HyperJumpMovesTriggeringSpaceshipTwiceOneExpresedInLightyea
 	firstSpot := Spot createWith: NoEffect new.
 	secondSpot := Spot createWith: NoEffect new.
 	arrayOfJumps := OrderedCollection new: 3.
-	arrayOfJumps addAllFirst: { Lightyear with: 9. Parsecs with: 2. Parsecs with: 1 }.
+	arrayOfJumps addAllFirst: { Lightyear distanceOf: 10. Parsec distanceOf: 3. Parsec distanceOf: 1 }.
 	thirdSpot := Spot createWith:
 		             (Hyperjump
 			              createWith: arrayOfJumps).
@@ -341,7 +341,18 @@ EffectsTest >> test10HyperJumpMovesTriggeringSpaceshipTwiceOneExpresedInLightyea
 		equals: expectedPositionAfterFirstJump lapNumber.
 	self
 		assert: (aBoard positionOf: 'Razor Crest') spotNumber
-		equals: expectedPositionAfterFirstJump spotNumber
+		equals: expectedPositionAfterFirstJump spotNumber.
+	expectedPositionAfterFirstJump := Position at: 2 on: 1.
+	aBoard move: 'Razor Crest' to: 1 and: 3.
+	aBoard applyEffectTriggeredBy: 'Razor Crest'.
+	self
+		assert: (aBoard positionOf: 'Razor Crest') lapNumber
+		equals: expectedPositionAfterFirstJump lapNumber.
+	self
+		assert: (aBoard positionOf: 'Razor Crest') spotNumber
+		equals: expectedPositionAfterFirstJump spotNumber.
+	
+	
 ]
 
 { #category : #tests }
@@ -350,9 +361,9 @@ EffectsTest >> test11IfJumpsDistanceIsSmallerThanParsecsPerSpotSpaceshipIsNotMov
 	| firstSpot secondSpot aDistance1 aDistance2 aDistance3 arrayOfJumps thirdSpot aCollectionOfSpots aCollectionOfSpaceships aBoard expectedPositionAfterFirstJump expectedPositionAfterSecondJump  |
 	firstSpot:= Spot createWith: NoEffect new.
 	secondSpot := Spot createWith: NoEffect new.
-	aDistance1:= Parsecs with: 1.
-	aDistance2:= Parsecs with: 2.
-	aDistance3:= Parsecs with: 3.
+	aDistance1:= Parsec distanceOf: 1.
+	aDistance2:= Parsec distanceOf: 2.
+	aDistance3:= Parsec distanceOf: 3.
 	arrayOfJumps:= OrderedCollection new:3.
 	arrayOfJumps addAllFirst: { aDistance1. aDistance2. aDistance3. }.
 	thirdSpot := Spot createWith:
@@ -390,9 +401,9 @@ EffectsTest >> test12AfterUsedAllHyperJumpsStartsFromFirstOneAgain [
 	| firstSpot secondSpot aDistance1 aDistance2 aDistance3 arrayOfJumps thirdSpot aCollectionOfSpots aCollectionOfSpaceships aBoard expectedPositionAfterFirstJump expectedPositionAfterSecondJump expectedPositionAfterThirdJump expectedPositionAfterFourthJump |
 	firstSpot:= Spot createWith: NoEffect new.
 	secondSpot := Spot createWith: NoEffect new.
-	aDistance1:= Parsecs with: 1.
-	aDistance2:= Parsecs with: 2.
-	aDistance3:= Parsecs with: 3.
+	aDistance1:= Parsec distanceOf: 1.
+	aDistance2:= Parsec distanceOf: 2.
+	aDistance3:= Parsec distanceOf: 3.
 	arrayOfJumps:= OrderedCollection new:3.
 	arrayOfJumps addAllFirst: { aDistance1. aDistance2. aDistance3. }.
 	thirdSpot := Spot createWith:
@@ -429,4 +440,41 @@ EffectsTest >> test12AfterUsedAllHyperJumpsStartsFromFirstOneAgain [
 	self
 		assert: (aBoard positionOf: 'Razor Crest') spotNumber
 		equals: expectedPositionAfterFourthJump spotNumber.
+]
+
+{ #category : #tests }
+EffectsTest >> test13IfJumpsDistanceHasDecimalPartItOnlyJumpsTheIntegerPart [
+
+	| firstSpot secondSpot arrayOfJumps thirdSpot aCollectionOfSpots aCollectionOfSpaceships aBoard expectedPositionAfterFirstJump expectedPositionAfterSecondJump  |
+	firstSpot:= Spot createWith: NoEffect new.
+	secondSpot := Spot createWith: NoEffect new.
+	arrayOfJumps:= OrderedCollection new:3.
+	arrayOfJumps addAllFirst: { Parsec distanceOf: 4. Parsec distanceOf: 2. Parsec distanceOf: 1. }.
+	thirdSpot := Spot createWith:
+		             (Hyperjump createWith: arrayOfJumps).
+	aCollectionOfSpots := { 
+		firstSpot.
+		secondSpot.
+		thirdSpot.
+	 }.
+	aCollectionOfSpaceships := { 'Razor Crest'. 'Millenium Falcon'.
+	                           'SC30 StarFighter' }.
+	aBoard := Board
+		          with: aCollectionOfSpots
+		          and: 10
+		          playedFor: 5
+		          by: aCollectionOfSpaceships.
+	aBoard move: 'Razor Crest' to: 0 and: 3.
+	expectedPositionAfterFirstJump := Position at: 1 on: 1.
+	aBoard applyEffectTriggeredBy: 'Razor Crest'.
+	aBoard move: 'Razor Crest' to: 1 and: 3.
+	expectedPositionAfterSecondJump:= Position at: 1 on: 3.
+	aBoard applyEffectTriggeredBy: 'Razor Crest'.
+
+	self
+		assert: (aBoard positionOf: 'Razor Crest') lapNumber
+		equals: expectedPositionAfterSecondJump lapNumber.
+	self
+		assert: (aBoard positionOf: 'Razor Crest') spotNumber
+		equals: expectedPositionAfterSecondJump spotNumber.
 ]

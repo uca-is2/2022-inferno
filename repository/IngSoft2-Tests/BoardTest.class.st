@@ -182,23 +182,3 @@ BoardTest >> test08ABoardCanReturnThePositionOfAllTheSpaceships [
 		assert: (aBoard spaceshipPositions at: 'SC30 StarFighter') lapNumber
 		equals: 2
 ]
-
-{ #category : #tests }
-BoardTest >> test09ABoardCanReturnTheHandOfASpaceship [
-
-	| aBoard aCollectionOfSpaceships aCollectionOfSpots firstSpot secondSpot |
-	firstSpot := Spot createWith: NoEffect new.
-	secondSpot := Spot createWith: NoEffect new.
-	aCollectionOfSpots := { 
-		                      firstSpot.
-		                      secondSpot }.
-	aCollectionOfSpaceships := { 'Razor Crest'. 'Millenium Falcon'.
-	                           'SC30 StarFighter' }.
-	aBoard := Board
-		          with: aCollectionOfSpots
-		          and: 10
-		          playedFor: 3
-		          by: aCollectionOfSpaceships.
-	aBoard move: 'SC30 StarFighter' to: 2 and: 2.
-	self assert: true
-]

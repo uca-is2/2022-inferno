@@ -188,6 +188,12 @@ Zathura >> cardRedoerWith: aCard to: affectedSpaceship by: aSpaceship [
 		self redoRepeatCardPlayedBy: aSpaceship applyTo: affectedSpaceship ]
 ]
 
+{ #category : #getters }
+Zathura >> cardsBeingAppliedOn: aSpaceship [
+
+	^ cardsBeingApplied at: aSpaceship.
+]
+
 { #category : #cardApplying }
 Zathura >> currentSpaceshipPlaysCard: aPermanentCard applyTo: aSpaceship playedBy: anotherSpaceship [
 

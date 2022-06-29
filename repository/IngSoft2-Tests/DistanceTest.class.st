@@ -19,7 +19,7 @@ DistanceTest >> should: errorBlock raise: errorClass withMessage: expectedErrorM
 DistanceTest >> test01ParsecCanBeCreated [
 
 	| aParsec |
-	aParsec := Parsecs with: 3.
+	aParsec := Parsec distanceOf: 3.
 	self assert: aParsec isValid
 ]
 
@@ -27,7 +27,7 @@ DistanceTest >> test01ParsecCanBeCreated [
 DistanceTest >> test02ParsecCannotBeANegativeValue [
 
 	| aParsec error errorMessage |
-	aParsec := [ Parsecs with: -5 ].
+	aParsec := [ Parsec distanceOf: -5 ].
 	error := Error.
 	errorMessage := 'Parsecs value has to be greater or equal than zero'.
 	self should: aParsec raise: error withMessage: errorMessage
@@ -37,7 +37,7 @@ DistanceTest >> test02ParsecCannotBeANegativeValue [
 DistanceTest >> test03LightYearCanBeCreated [
 
 	| aLightYear |
-	aLightYear  := Lightyear  with: 3.
+	aLightYear  := Lightyear  distanceOf: 3.
 	self assert: aLightYear  isValid
 ]
 
@@ -45,7 +45,7 @@ DistanceTest >> test03LightYearCanBeCreated [
 DistanceTest >> test04LightYearCannotBeANegativeValue [
 
 	| aLightyear error errorMessage |
-	aLightyear  := [ Lightyear  with: -5 ].
+	aLightyear  := [ Lightyear  distanceOf: -5 ].
 	error := Error.
 	errorMessage := 'LightYears value has to be greater or equal than zero'.
 	self should: aLightyear  raise: error withMessage: errorMessage
@@ -55,18 +55,18 @@ DistanceTest >> test04LightYearCannotBeANegativeValue [
 DistanceTest >> test05AParsecEquals3LightYears [
 
 	| aParsec aLightYear |
-	aParsec:= Parsecs with: 1.
-	aLightYear:= Lightyear with: 3.
+	aParsec:= Parsec distanceOf: 1.
+	aLightYear:= Lightyear distanceOf: 3.
 	
 	self assert: aParsec amountInLightYears equals: aLightYear amount.
 ]
 
 { #category : #tests }
-DistanceTest >> test05SixLightYearsEqualTwoParsecs [
+DistanceTest >> test06SixLightYearsEqualTwoParsecs [
 
 	| aDistanceInParsecs aDistanceInLightYears |
-	aDistanceInParsecs := Parsecs with: 2.
-	aDistanceInLightYears := Lightyear with: 6.
+	aDistanceInParsecs := Parsec distanceOf: 2.
+	aDistanceInLightYears := Lightyear distanceOf: 6.
 	
 	self assert: aDistanceInParsecs amount equals: aDistanceInLightYears amountInParsecs.
 ]

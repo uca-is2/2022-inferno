@@ -2,8 +2,8 @@
 I represent a type of distance: a Parsec
 "
 Class {
-	#name : #Parsecs,
-	#superclass : #Distance,
+	#name : #Parsec,
+	#superclass : #Object,
 	#instVars : [
 		'distance'
 	],
@@ -11,44 +11,50 @@ Class {
 }
 
 { #category : #'instance cre' }
-Parsecs class >> assertValid: aTotalDistance [
+Parsec class >> assertValid: aTotalDistance [
 
 	aTotalDistance >=0 ifFalse: [ 
 		Error signal: 'Parsecs value has to be greater or equal than zero' ]
 ]
 
 { #category : #'instance cre' }
-Parsecs class >> with: aTotalDistance [
+Parsec class >> distanceOf: aDistance [
 
-	self assertValid: aTotalDistance.
-	^ self new initializeWith: aTotalDistance
+	self assertValid: aDistance.
+	^ self new initializeWith: aDistance
 ]
 
-{ #category : #accesing }
-Parsecs >> amount [
+{ #category : #actions }
+Parsec >> <= aDistance [
+	
+	^ self amountInParsecs <= aDistance amountInParsecs .
+]
+
+{ #category : #accessing }
+Parsec >> amount [
 
 	^ distance
 ]
 
 { #category : #actions }
-Parsecs >> amountInLightYears [ 
+Parsec >> amountInLightYears [ 
 
 	^ distance*3
 ]
 
 { #category : #actions }
-Parsecs >> amountInParsecs [
+Parsec >> amountInParsecs [
 
 	^ distance
 ]
 
 { #category : #initialization }
-Parsecs >> initializeWith: aDistance [
+Parsec >> initializeWith: aDistance [
 
 	distance := aDistance
 ]
 
 { #category : #validation }
-Parsecs >> isValid [
+Parsec >> isValid [
 	^ distance >=0.
 ]
