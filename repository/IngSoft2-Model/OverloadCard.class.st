@@ -22,10 +22,7 @@ OverloadCard >> assertThatIsACard [
 { #category : #assertions }
 OverloadCard >> checkIfItIsAValidCard [
 
-	^ (self isKindOf: SpeedCard) or: ((self isKindOf: OverloadCard) or:
-			   ((self isKindOf: AccelerationCard) or:
-				    ((self isKindOf: CancellationCard) or:
-					     ((self isKindOf: RedoCard) or: (self isKindOf: RepeatCard)))))
+	^ true
 ]
 
 { #category : #effect }

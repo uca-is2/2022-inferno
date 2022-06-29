@@ -55,7 +55,7 @@ DieTest >> test04DieIsRolledAndReturnsANumberBetweenOneAndNumberOfSides [
 DieTest >> test05ALoadedDieHasALoadedSideAndDieIsValid [
 
 	| aDie |
-	aDie := LoadedDie with: 5 loadedWith: 3.
+	aDie := LoadedDie with: 3.
 	self assert: aDie isValid
 ]
 
@@ -64,6 +64,6 @@ DieTest >> test06ALoadedDieIsRolledAndReturnsLoadedSide [
 
 	| aLoadedSide aDie |
 	aLoadedSide := 3.
-	aDie := LoadedDie with: 6 loadedWith: aLoadedSide.
+	aDie := LoadedDie with: aLoadedSide.
 	self assert: aDie roll equals: aLoadedSide
 ]
