@@ -1,3 +1,6 @@
+"
+I represent a type of distance: a Parsec
+"
 Class {
 	#name : #Parsecs,
 	#superclass : #Distance,
@@ -8,8 +11,16 @@ Class {
 }
 
 { #category : #'instance cre' }
+Parsecs class >> assertValid: aTotalDistance [
+
+	aTotalDistance >=0 ifFalse: [ 
+		Error signal: 'Parsecs value has to be greater or equal than zero' ]
+]
+
+{ #category : #'instance cre' }
 Parsecs class >> with: aTotalDistance [
 
+	self assertValid: aTotalDistance.
 	^ self new initializeWith: aTotalDistance
 ]
 
@@ -35,4 +46,9 @@ Parsecs >> amountInParsecs [
 Parsecs >> initializeWith: aDistance [
 
 	distance := aDistance
+]
+
+{ #category : #validation }
+Parsecs >> isValid [
+	^ distance >=0.
 ]

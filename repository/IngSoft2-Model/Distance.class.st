@@ -1,3 +1,6 @@
+"
+I represent a distance
+"
 Class {
 	#name : #Distance,
 	#superclass : #Object,
