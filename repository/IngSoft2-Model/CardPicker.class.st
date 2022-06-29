@@ -10,8 +10,8 @@ Class {
 
 { #category : #applying }
 CardPicker >> applyTo: aBoard by: aSpaceship [
-	
+
 	| pickedCard |
-	pickedCard := (aBoard dealer) dealOne.
-	^ pickedCard .
+	pickedCard := aBoard dealer dealOne.
+	^ pickedCard
 ]

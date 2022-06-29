@@ -25,31 +25,34 @@ Hyperjump class >> createWith: aJumpsArray [
 { #category : #applying }
 Hyperjump >> applyTo: aBoard by: aSpaceship [
 
-	| positionBeforeJump  jumpNumber |
+	| positionBeforeJump jumpNumber |
 	positionBeforeJump := aBoard positionOf: aSpaceship.
 	jumpNumber := self getJumpNumberInSpots: aBoard.
-	aBoard move: aSpaceship withoutTriggeringNewEffectsfrom: positionBeforeJump to: jumpNumber
+	aBoard
+		move: aSpaceship
+		withoutTriggeringNewEffectsfrom: positionBeforeJump
+		to: jumpNumber
 ]
 
 { #category : #getters }
 Hyperjump >> getJumpNumberInSpots: aBoard [
-	
-	| hyperJumpValues parsecsForThisJump lengthInParsecs amountOfSpots parsecsPerSpot amountOfSpotsToJump amountOfParsecsToJump|
-	hyperJumpValues:= jumpsArray.
-	parsecsForThisJump:= (hyperJumpValues removeFirst) .
+
+	| hyperJumpValues parsecsForThisJump lengthInParsecs amountOfSpots parsecsPerSpot amountOfSpotsToJump amountOfParsecsToJump |
+	hyperJumpValues := jumpsArray.
+	parsecsForThisJump := hyperJumpValues removeFirst.
 	hyperJumpValues addLast: parsecsForThisJump.
-	lengthInParsecs:=aBoard  lengthInParsecs.
-	amountOfSpots:=aBoard lengthInSpots.
-	parsecsPerSpot:=lengthInParsecs/amountOfSpots.
+	lengthInParsecs := aBoard lengthInParsecs.
+	amountOfSpots := aBoard lengthInSpots.
+	parsecsPerSpot := lengthInParsecs / amountOfSpots.
 	amountOfParsecsToJump := parsecsForThisJump amountInParsecs.
-	amountOfSpotsToJump:= (amountOfParsecsToJump // parsecsPerSpot).
-	^ amountOfSpotsToJump.
+	amountOfSpotsToJump := amountOfParsecsToJump // parsecsPerSpot.
+	^ amountOfSpotsToJump
 ]
 
 { #category : #initialization }
 Hyperjump >> initializeWith: aJumpsArray [
 
-	jumpsArray:= (aJumpsArray sorted reversed).
+	jumpsArray := aJumpsArray sorted reversed
 ]
 
 { #category : #getters }

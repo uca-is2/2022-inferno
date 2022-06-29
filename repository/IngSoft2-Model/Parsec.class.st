@@ -26,8 +26,8 @@ Parsec class >> distanceOf: aDistance [
 
 { #category : #actions }
 Parsec >> <= aDistance [
-	
-	^ self amountInParsecs <= aDistance amountInParsecs .
+
+	^ self amountInParsecs <= aDistance amountInParsecs
 ]
 
 { #category : #accessing }
@@ -37,9 +37,9 @@ Parsec >> amount [
 ]
 
 { #category : #actions }
-Parsec >> amountInLightYears [ 
+Parsec >> amountInLightYears [
 
-	^ distance*3
+	^ distance * 3
 ]
 
 { #category : #actions }
@@ -56,5 +56,6 @@ Parsec >> initializeWith: aDistance [
 
 { #category : #validation }
 Parsec >> isValid [
-	^ distance >=0.
+
+	^ distance >= 0
 ]

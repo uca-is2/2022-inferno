@@ -66,10 +66,11 @@ Board class >> with: aCollectionOfSpots and: aLengthInParsecs playedFor: anAmoun
 Board >> addEachPositionToRanking: spaceshipArrayOfKeys [
 
 	| orderedRanking |
-	orderedRanking := Dictionary new: (spaceshipArrayOfKeys size).
+	orderedRanking := Dictionary new: spaceshipArrayOfKeys size.
 	spaceshipArrayOfKeys do: [ :eachSpaceship | 
-		orderedRanking at: eachSpaceship  put: (spaceshipsPositions at: eachSpaceship).
-		 ].
+		orderedRanking
+			at: eachSpaceship
+			put: (spaceshipsPositions at: eachSpaceship) ].
 	^ orderedRanking
 ]
 
@@ -94,7 +95,9 @@ Board >> applyEffectTriggeredBy: aSpaceship [
 	resultOfEffectApplying := lastEffectAplied
 		                          applyTo: self
 		                          by: aSpaceship.
-	[resultOfEffectApplying assertThatIsACard] on: Exception do: [ ^ self ].
+	[ resultOfEffectApplying assertThatIsACard ]
+		on: Exception
+		do: [ ^ self ].
 	cardPicked := resultOfEffectApplying.
 	^ cardPicked
 ]
@@ -106,7 +109,9 @@ Board >> applyLastEffectTo: aSpaceship [
 	resultOfEffectApplying := lastEffectAplied
 		                          applyTo: self
 		                          by: aSpaceship.
-	[resultOfEffectApplying assertThatIsACard] on: Exception do: [ ^ self ].
+	[ resultOfEffectApplying assertThatIsACard ]
+		on: Exception
+		do: [ ^ self ].
 	cardPicked := resultOfEffectApplying.
 	^ cardPicked
 ]
@@ -161,8 +166,8 @@ Board >> lengthInSpots [
 { #category : #moving }
 Board >> move: aSpaceship back: rollNumber from: positionBeforeRoll [
 
-	| lengthInSpots positionInTotalSpots nextPositionInTotalSpots nextSpotCandidate nextLapCandidate spotBeforeRoll lapBeforeRoll|
-	spotBeforeRoll:= positionBeforeRoll spotNumber.
+	| lengthInSpots positionInTotalSpots nextPositionInTotalSpots nextSpotCandidate nextLapCandidate spotBeforeRoll lapBeforeRoll |
+	spotBeforeRoll := positionBeforeRoll spotNumber.
 	lapBeforeRoll := positionBeforeRoll lapNumber.
 	lengthInSpots := self lengthInSpots.
 	positionInTotalSpots := lengthInSpots * lapBeforeRoll
@@ -175,10 +180,7 @@ Board >> move: aSpaceship back: rollNumber from: positionBeforeRoll [
 		ifFalse: [ 
 			nextSpotCandidate == 0
 				ifTrue: [ 
-					self
-						move: aSpaceship
-						to: nextLapCandidate - 1
-						and: lengthInSpots ]
+				self move: aSpaceship to: nextLapCandidate - 1 and: lengthInSpots ]
 				ifFalse: [ 
 				self move: aSpaceship to: nextLapCandidate and: nextSpotCandidate ] ]
 ]
@@ -187,7 +189,7 @@ Board >> move: aSpaceship back: rollNumber from: positionBeforeRoll [
 Board >> move: aSpaceship from: positionBeforeRoll to: rollNumber [
 
 	| spotAfterLapping cardPicked spotBeforeRoll lapBeforeRoll |
-	spotBeforeRoll:= positionBeforeRoll spotNumber.
+	spotBeforeRoll := positionBeforeRoll spotNumber.
 	lapBeforeRoll := positionBeforeRoll lapNumber.
 	(self isLapFinishedIf: spotBeforeRoll moves: rollNumber)
 		ifTrue: [ 
@@ -195,10 +197,7 @@ Board >> move: aSpaceship from: positionBeforeRoll to: rollNumber [
 				ifTrue: [ cardPicked := self moveToFinishLine: aSpaceship ]
 				ifFalse: [ 
 					spotAfterLapping := spotBeforeRoll + rollNumber - length.
-					self
-						move: aSpaceship
-						to: lapBeforeRoll + 1
-						and: spotAfterLapping.
+					self move: aSpaceship to: lapBeforeRoll + 1 and: spotAfterLapping.
 					cardPicked := self applyEffect: aSpaceship ] ]
 		ifFalse: [ 
 			(self isLapDecreasedIf: spotBeforeRoll moves: rollNumber)
@@ -210,12 +209,13 @@ Board >> move: aSpaceship from: positionBeforeRoll to: rollNumber [
 				ifTrue: [ 
 				self move: aSpaceship back: rollNumber from: spotBeforeRoll ].
 			cardPicked := self applyEffect: aSpaceship ].
-		
-		^cardPicked.
+
+	^ cardPicked
 ]
 
 { #category : #moving }
 Board >> move: aSpaceship to: aLapNumber and: aSpotNumber [
+
 	spaceshipsPositions
 		at: aSpaceship
 		put: (Position at: aLapNumber on: aSpotNumber)

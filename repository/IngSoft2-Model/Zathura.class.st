@@ -283,15 +283,15 @@ Zathura >> playNextTurn [
 { #category : #playing }
 Zathura >> playTurn: aSpaceship [
 
-	| positionBeforeRoll  rollNumber cardsEffectsOnRoll pickedCard |
+	| positionBeforeRoll rollNumber cardsEffectsOnRoll pickedCard |
 	self assertItIsThatSpaceshipsTurn: aSpaceship.
 	positionBeforeRoll := board positionOf: aSpaceship.
 	rollNumber := dice roll.
 	cardsEffectsOnRoll := self cardApplicator.
 	pickedCard := board
 		              move: aSpaceship
-		              from: positionBeforeRoll 
-		              to: rollNumber + cardsEffectsOnRoll. 
+		              from: positionBeforeRoll
+		              to: rollNumber + cardsEffectsOnRoll.
 	(spaceshipHands at: aSpaceship) addPickedCardToHand: pickedCard.
 	self hasItReachedTheFinishLine: aSpaceship.
 	turnController nextSpaceshipInLine

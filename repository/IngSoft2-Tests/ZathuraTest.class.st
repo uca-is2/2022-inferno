@@ -1131,7 +1131,10 @@ ZathuraTest >> test23SpaceshipCannotPlayPermanentCardWhenItIsNotItsTurn [
 		                      aHand1.
 		                      aHand2.
 		                      aHand3 }.
-	zathura := Zathura playWith: aDiceCup over: aBoard dealing: aCollectionOfHands.
+	zathura := Zathura
+		           playWith: aDiceCup
+		           over: aBoard
+		           dealing: aCollectionOfHands.
 	cardToUse := AccelerationCard new.
 	invalidCardUse := [ 
 	                  zathura
@@ -1182,7 +1185,10 @@ ZathuraTest >> test24SpaceshipCannotUseRedoOfPermanentCardWhenItIsNotItsTurn [
 		                      aHand1.
 		                      aHand2.
 		                      aHand3 }.
-	zathura := Zathura playWith: aDiceCup over: aBoard dealing: aCollectionOfHands.
+	zathura := Zathura
+		           playWith: aDiceCup
+		           over: aBoard
+		           dealing: aCollectionOfHands.
 	cardToUse := AccelerationCard new.
 	zathura
 		currentSpaceshipPlaysCard: cardToUse
@@ -1233,7 +1239,10 @@ ZathuraTest >> test25SpaceshipCannotUseRedoCardIfNoCardHasBeenPlayedYet [
 		                      aHand1.
 		                      aHand2.
 		                      aHand3 }.
-	zathura := Zathura playWith: aDiceCup over: aBoard dealing: aCollectionOfHands.
+	zathura := Zathura
+		           playWith: aDiceCup
+		           over: aBoard
+		           dealing: aCollectionOfHands.
 	invalidCardUse := [ zathura redoLastCardPlayedBy: 'Millenium Falcon' ].
 
 	self should: invalidCardUse raise: error withMessage: errorMessage
@@ -1280,15 +1289,22 @@ ZathuraTest >> test26SpaceshipCannotPlayCardIfItDoesNotHasItInHisHand [
 		                      aHand1.
 		                      aHand2.
 		                      aHand3 }.
-	zathura := Zathura playWith: aDiceCup over: aBoard dealing: aCollectionOfHands.
-	invalidCardUse := [zathura play: (CancellationCard new) by: 'Millenium Falcon' affecting: 'SC30 StarFighter'].
+	zathura := Zathura
+		           playWith: aDiceCup
+		           over: aBoard
+		           dealing: aCollectionOfHands.
+	invalidCardUse := [ 
+	                  zathura
+		                  play: CancellationCard new
+		                  by: 'Millenium Falcon'
+		                  affecting: 'SC30 StarFighter' ].
 	self should: invalidCardUse raise: error withMessage: errorMessage
 ]
 
 { #category : #tests }
 ZathuraTest >> test27SpaceshipCanCancelAnAccelerationCard [
 
-	| aBoard aCollectionOfSpaceships aCollectionOfSpots aDie1 aCollectionOfDice aDiceCup zathura firstSpot secondSpot thirdSpot fourthSpot   exampleCardOne exampleCardTwo aHand1 aHand2 aHand3 aCollectionOfHands expectedHandAfterUsage  emptyCollection |
+	| aBoard aCollectionOfSpaceships aCollectionOfSpots aDie1 aCollectionOfDice aDiceCup zathura firstSpot secondSpot thirdSpot fourthSpot exampleCardOne exampleCardTwo aHand1 aHand2 aHand3 aCollectionOfHands expectedHandAfterUsage emptyCollection |
 	firstSpot := Spot createWith: NoEffect new.
 	secondSpot := Spot createWith: NoEffect new.
 	thirdSpot := Spot createWith: NoEffect new.
@@ -1324,20 +1340,34 @@ ZathuraTest >> test27SpaceshipCanCancelAnAccelerationCard [
 		                      aHand1.
 		                      aHand2.
 		                      aHand3 }.
-	expectedHandAfterUsage := Hand containing: { 
-											exampleCardOne. }.
-	zathura := Zathura playWith: aDiceCup over: aBoard dealing: aCollectionOfHands.
-	zathura play: (AccelerationCard new) by: 'SC30 StarFighter' affecting: 'General'.
-	zathura play: (CancellationCard new) by: 'Millenium Falcon' affecting: {'General'. exampleCardOne }.
-	self assert: (zathura showCardsOnHandFor: 'Millenium Falcon') equals: expectedHandAfterUsage showHand.
+	expectedHandAfterUsage := Hand containing: { exampleCardOne }.
+	zathura := Zathura
+		           playWith: aDiceCup
+		           over: aBoard
+		           dealing: aCollectionOfHands.
+	zathura
+		play: AccelerationCard new
+		by: 'SC30 StarFighter'
+		affecting: 'General'.
+	zathura
+		play: CancellationCard new
+		by: 'Millenium Falcon'
+		affecting: { 
+				'General'.
+				exampleCardOne }.
+	self
+		assert: (zathura showCardsOnHandFor: 'Millenium Falcon')
+		equals: expectedHandAfterUsage showHand.
 	emptyCollection := OrderedCollection new.
-	self assert: (zathura cardsBeingAppliedOn: 'General') equals: emptyCollection.
+	self
+		assert: (zathura cardsBeingAppliedOn: 'General')
+		equals: emptyCollection
 ]
 
 { #category : #tests }
 ZathuraTest >> test28SpaceshipCanCancelAnOverloadCardBeingAppliedOnItself [
 
-	| aBoard aCollectionOfSpaceships aCollectionOfSpots aDie1 aCollectionOfDice aDiceCup zathura firstSpot secondSpot thirdSpot fourthSpot   exampleCardOne exampleCardTwo aHand1 aHand2 aHand3 aCollectionOfHands expectedHandAfterUsage  emptyCollection |
+	| aBoard aCollectionOfSpaceships aCollectionOfSpots aDie1 aCollectionOfDice aDiceCup zathura firstSpot secondSpot thirdSpot fourthSpot exampleCardOne exampleCardTwo aHand1 aHand2 aHand3 aCollectionOfHands expectedHandAfterUsage emptyCollection |
 	firstSpot := Spot createWith: NoEffect new.
 	secondSpot := Spot createWith: NoEffect new.
 	thirdSpot := Spot createWith: NoEffect new.
@@ -1373,20 +1403,34 @@ ZathuraTest >> test28SpaceshipCanCancelAnOverloadCardBeingAppliedOnItself [
 		                      aHand1.
 		                      aHand2.
 		                      aHand3 }.
-	expectedHandAfterUsage := Hand containing: { 
-											exampleCardOne. }.
-	zathura := Zathura playWith: aDiceCup over: aBoard dealing: aCollectionOfHands.
-	zathura play: (OverloadCard new) by: 'SC30 StarFighter' affecting: 'Millenium Falcon'.
-	zathura play: (CancellationCard new) by: 'Millenium Falcon' affecting: {'Millenium Falcon'. exampleCardOne }.
-	self assert: (zathura showCardsOnHandFor: 'Millenium Falcon') equals: expectedHandAfterUsage showHand.
+	expectedHandAfterUsage := Hand containing: { exampleCardOne }.
+	zathura := Zathura
+		           playWith: aDiceCup
+		           over: aBoard
+		           dealing: aCollectionOfHands.
+	zathura
+		play: OverloadCard new
+		by: 'SC30 StarFighter'
+		affecting: 'Millenium Falcon'.
+	zathura
+		play: CancellationCard new
+		by: 'Millenium Falcon'
+		affecting: { 
+				'Millenium Falcon'.
+				exampleCardOne }.
+	self
+		assert: (zathura showCardsOnHandFor: 'Millenium Falcon')
+		equals: expectedHandAfterUsage showHand.
 	emptyCollection := OrderedCollection new.
-	self assert: (zathura cardsBeingAppliedOn: 'Millenium Falcon') equals: emptyCollection.
+	self
+		assert: (zathura cardsBeingAppliedOn: 'Millenium Falcon')
+		equals: emptyCollection
 ]
 
 { #category : #tests }
 ZathuraTest >> test29SpaceshipCanCancelASpeedCardBeingAppliedOnAnotherSpaceship [
 
-	| aBoard aCollectionOfSpaceships aCollectionOfSpots aDie1 aCollectionOfDice aDiceCup zathura firstSpot secondSpot thirdSpot fourthSpot   exampleCardOne exampleCardTwo aHand1 aHand2 aHand3 aCollectionOfHands expectedHandAfterUsage  emptyCollection |
+	| aBoard aCollectionOfSpaceships aCollectionOfSpots aDie1 aCollectionOfDice aDiceCup zathura firstSpot secondSpot thirdSpot fourthSpot exampleCardOne exampleCardTwo aHand1 aHand2 aHand3 aCollectionOfHands expectedHandAfterUsage emptyCollection |
 	firstSpot := Spot createWith: NoEffect new.
 	secondSpot := Spot createWith: NoEffect new.
 	thirdSpot := Spot createWith: NoEffect new.
@@ -1422,12 +1466,26 @@ ZathuraTest >> test29SpaceshipCanCancelASpeedCardBeingAppliedOnAnotherSpaceship 
 		                      aHand1.
 		                      aHand2.
 		                      aHand3 }.
-	expectedHandAfterUsage := Hand containing: { 
-											exampleCardOne. }.
-	zathura := Zathura playWith: aDiceCup over: aBoard dealing: aCollectionOfHands.
-	zathura play: (SpeedCard new) by: 'SC30 StarFighter' affecting: 'SC30 StarFighter'.
-	zathura play: (CancellationCard new) by: 'Millenium Falcon' affecting: {'SC30 StarFighter'. exampleCardOne }.
-	self assert: (zathura showCardsOnHandFor: 'Millenium Falcon') equals: expectedHandAfterUsage showHand.
+	expectedHandAfterUsage := Hand containing: { exampleCardOne }.
+	zathura := Zathura
+		           playWith: aDiceCup
+		           over: aBoard
+		           dealing: aCollectionOfHands.
+	zathura
+		play: SpeedCard new
+		by: 'SC30 StarFighter'
+		affecting: 'SC30 StarFighter'.
+	zathura
+		play: CancellationCard new
+		by: 'Millenium Falcon'
+		affecting: { 
+				'SC30 StarFighter'.
+				exampleCardOne }.
+	self
+		assert: (zathura showCardsOnHandFor: 'Millenium Falcon')
+		equals: expectedHandAfterUsage showHand.
 	emptyCollection := OrderedCollection new.
-	self assert: (zathura cardsBeingAppliedOn: 'SC30 StarFighter') equals: emptyCollection.
+	self
+		assert: (zathura cardsBeingAppliedOn: 'SC30 StarFighter')
+		equals: emptyCollection
 ]

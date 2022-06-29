@@ -42,7 +42,8 @@ Hand >> assertCardIsOnHand: cardToPlay [
 
 { #category : #getter }
 Hand >> cardsOnHand [
-	^ (deck size)
+
+	^ deck size
 ]
 
 { #category : #initialization }
@@ -58,13 +59,16 @@ Hand >> playCardOfType: aCard [
 
 	| cardToPlay |
 	cardToPlay := nil.
-	cardToPlay := deck detect: [:eachCard |aCard = eachCard] ifNone: [nil].
-			deck remove: cardToPlay.
+	cardToPlay := deck
+		              detect: [ :eachCard | aCard = eachCard ]
+		              ifNone: [ nil ].
+	deck remove: cardToPlay.
 	self assertCardIsOnHand: cardToPlay.
 	^ cardToPlay
 ]
 
 { #category : #getter }
 Hand >> showHand [
-	^ deck   
+
+	^ deck
 ]
