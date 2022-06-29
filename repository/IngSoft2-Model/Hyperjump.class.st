@@ -49,7 +49,7 @@ Hyperjump >> getJumpNumberInSpots: aBoard [
 { #category : #initialization }
 Hyperjump >> initializeWith: aJumpsArray [
 
-	jumpsArray:= ((aJumpsArray sorted )reversed).
+	jumpsArray:= (aJumpsArray sorted reversed).
 ]
 
 { #category : #getters }
