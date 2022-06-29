@@ -64,9 +64,9 @@ DistanceTest >> test05AParsecEquals3LightYears [
 { #category : #tests }
 DistanceTest >> test05SixLightYearsEqualTwoParsecs [
 
-	| aParsec aLightYear |
-	aParsec:= Parsecs with: 2.
-	aLightYear:= Lightyear with: 6.
+	| aDistanceInParsecs aDistanceInLightYears |
+	aDistanceInParsecs := Parsecs with: 2.
+	aDistanceInLightYears := Lightyear with: 6.
 	
-	self assert: aParsec amount equals: aLightYear amountInParsecs.
+	self assert: aDistanceInParsecs amount equals: aDistanceInLightYears amountInParsecs.
 ]
