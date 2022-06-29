@@ -24,8 +24,8 @@ DiceCupTest >> test01DiceCupRollIsAnInteger [
 DiceCupTest >> test02DiceCupWithLoadedRollIsSumOfLoadedSides [
 
 	| aDie1 aDie2 aDiceCup aResult aCollection |
-	aDie1 := LoadedDie with: 5 loadedWith: 4.
-	aDie2 := LoadedDie with: 6 loadedWith: 6.
+	aDie1 := LoadedDie with:  4.
+	aDie2 := LoadedDie with:  6.
 	aCollection := Array new: 2.
 	aCollection at: 1 put: aDie1.
 	aCollection at: 2 put: aDie2.

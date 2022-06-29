@@ -8,7 +8,7 @@ Class {
 TurnControllerTest >> test01TurnControllerKeepsTrackOfTurns [
 
 	| aTurnController spaceshipsPositions initialPosition |
-	initialPosition := Position atLap: 0 andSpot: 1.
+	initialPosition := Position at: 0 on: 1.
 	spaceshipsPositions := Dictionary new: 3.
 	spaceshipsPositions at: 'SC30 StarFighter' put: initialPosition.
 	spaceshipsPositions at: 'Razor Crest' put: initialPosition.
@@ -23,7 +23,7 @@ TurnControllerTest >> test01TurnControllerKeepsTrackOfTurns [
 TurnControllerTest >> test02CanChangeActiveSpaceshipToTheNextOne [
 
 	| aTurnController spaceshipsPositions initialPosition |
-	initialPosition := Position atLap: 0 andSpot: 1.
+	initialPosition := Position at: 0 on: 1.
 	spaceshipsPositions := Dictionary new: 3.
 	spaceshipsPositions at: 'SC30 StarFighter' put: initialPosition.
 	spaceshipsPositions at: 'Razor Crest' put: initialPosition.
@@ -37,7 +37,7 @@ TurnControllerTest >> test02CanChangeActiveSpaceshipToTheNextOne [
 TurnControllerTest >> test03CanChangeToFirstSpacehipWhenReachedTheLastOne [
 
 	| aTurnController spaceshipsPositions initialPosition |
-	initialPosition := Position atLap: 0 andSpot: 1.
+	initialPosition := Position at: 0 on: 1.
 	spaceshipsPositions := Dictionary new: 3.
 	spaceshipsPositions at: 'SC30 StarFighter' put: initialPosition.
 	spaceshipsPositions at: 'Razor Crest' put: initialPosition.

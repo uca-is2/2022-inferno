@@ -16,19 +16,62 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #'class initialization' }
-Zathura class >> playWith: aDiceCup over: aBoard dealing: handsOfCards [
+{ #category : #asserting }
+Zathura class >> assertAmountOfSpaceshipOn: aBoard matchesAmountOf: handsOfCards [
 
 	handsOfCards size = aBoard spaceshipPositions size ifFalse: [ 
 		Error signal:
-			'Can not play with amount of hands different than amount of players' ].
+			'Can not play with amount of hands different than amount of spaceships' ]
+]
+
+{ #category : #'class initialization' }
+Zathura class >> playWith: aDiceCup over: aBoard dealing: aCollectionOfHands [
+
+	self
+		assertAmountOfSpaceshipOn: aBoard
+		matchesAmountOf: aCollectionOfHands.
+	self selfAssertEachPlayerHasTwoCardsAtTheBegining: aCollectionOfHands.
 	^ self new
 		  initializeWith: aDiceCup
 		  over: aBoard
-		  dealing: handsOfCards
+		  dealing: aCollectionOfHands
 ]
 
-{ #category : #playing }
+{ #category : #'class initialization' }
+Zathura class >> selfAssertEachPlayerHasTwoCardsAtTheBegining: aCollectionOfHands [
+
+	aCollectionOfHands do: [ :hand | 
+		hand cardsOnHand = 2 ifFalse: [ 
+			Error signal: 'All players should start with 2 cards' ] ]
+]
+
+{ #category : #cardApplying }
+Zathura >> applierFor: aCard by: aSpaceship [
+
+	(self assertThatIsOfTypeAcceleration: aCard) ifTrue: [ 
+		self currentSpaceshipPlaysCard: aCard playedBy: aSpaceship ]
+]
+
+{ #category : #cardApplying }
+Zathura >> applierFor: aCard to: affectedSpaceship by: aSpaceship [
+
+	(self assertThatIsOverloadOrSpeed: aCard) ifTrue: [ 
+		self
+			currentSpaceshipPlaysCard: aCard
+			applyTo: affectedSpaceship
+			playedBy: aSpaceship ].
+
+	(self assertThatIsCancellationCard: aCard) ifTrue: [ 
+		self
+			cancelCard: (affectedSpaceship at: 2)
+			from: (affectedSpaceship at: 1)
+			playedBy: aSpaceship ].
+		
+	(self assertThatIsRepeatCard: aCard) ifTrue: [ 
+		self repeatEffectCardPlayedBy: aSpaceship applyTo: affectedSpaceship ]
+]
+
+{ #category : #assertions }
 Zathura >> assert: aCard isBeingAppliedTo: aSpaceship [
 
 	((cardsBeingApplied at: aSpaceship) includes: aCard) ifFalse: [ 
@@ -36,7 +79,7 @@ Zathura >> assert: aCard isBeingAppliedTo: aSpaceship [
 			'there is no card of that type being applied to that spaceship' ]
 ]
 
-{ #category : #playing }
+{ #category : #assertions }
 Zathura >> assertCorrectMethodForTypeOfCard: anAcceleratorCard [
 
 	| acceleratorCard |
@@ -45,28 +88,65 @@ Zathura >> assertCorrectMethodForTypeOfCard: anAcceleratorCard [
 		Error signal: 'Wrong method used, this is not an acceleration card' ]
 ]
 
-{ #category : #playing }
+{ #category : #assertions }
 Zathura >> assertGameIsFinished [
 
 	gameIsFinished ifTrue: [ 
 		Error signal: 'Game is finished! You cannot keep playing this game.' ]
 ]
 
-{ #category : #playing }
+{ #category : #assertions }
 Zathura >> assertItIsThatSpaceshipsTurn: aSpaceship [
 
 	aSpaceship == turnController activeSpaceship ifFalse: [ 
 		Error signal: 'Cannot play turn if it is not that spaceship turn.' ]
 ]
 
-{ #category : #playing }
+{ #category : #assertions }
 Zathura >> assertSpaceshipCanPlayCard: aSpaceship [
 
 	aSpaceship = turnController activeSpaceship ifFalse: [ 
 		Error signal: 'Cannot play this card when it is not your turn' ]
 ]
 
-{ #category : #playing }
+{ #category : #assertions }
+Zathura >> assertThatIsCancellationCard: aCard [
+
+	^ aCard = CancellationCard new
+]
+
+{ #category : #assertions }
+Zathura >> assertThatIsOfTypeAcceleration: aCard [
+
+	^ aCard = AccelerationCard new
+]
+
+{ #category : #assertions }
+Zathura >> assertThatIsOverloadOrSpeed: aCard [
+
+	^ aCard = OverloadCard new | (aCard = SpeedCard new)
+]
+
+{ #category : #assertions }
+Zathura >> assertThatIsRedoCard: aCard [
+
+	^ aCard = RedoCard new
+]
+
+{ #category : #assertions }
+Zathura >> assertThatIsRepeatCard: aCard [
+
+	^ aCard = RepeatCard new
+]
+
+{ #category : #assertions }
+Zathura >> assertThatIsValidCardType: aCard [
+
+	((self assertThatIsOverloadOrSpeed: aCard) or: ((self assertThatIsOfTypeAcceleration: aCard) or: ((self assertThatIsCancellationCard: aCard) or: ((self assertThatIsRepeatCard: aCard)or: (self assertThatIsRedoCard: aCard))))) ifFalse: [ 
+		Error signal: 'no existe ese tipo de carta' ]
+]
+
+{ #category : #cardApplying }
 Zathura >> cancelCard: aCard from: aSpaceship playedBy: anotherSpaceship [
 
 	| cancelCard |
@@ -77,7 +157,7 @@ Zathura >> cancelCard: aCard from: aSpaceship playedBy: anotherSpaceship [
 	lastCardPlayed := cancelCard
 ]
 
-{ #category : #playing }
+{ #category : #cardApplying }
 Zathura >> cardApplicator [
 
 	| cardsAffectingRoll cardsAffectingAllRolls addToRoll |
@@ -91,7 +171,30 @@ Zathura >> cardApplicator [
 	^ addToRoll
 ]
 
-{ #category : #playing }
+{ #category : #cardApplying }
+Zathura >> cardRedoerWith: aCard to: affectedSpaceship by: aSpaceship [
+
+	(self assertThatIsRedoCard: aCard) ifFalse: [ ^ self ].
+	(self assertThatIsOverloadOrSpeed: lastCardPlayed) ifTrue: [ 
+		self redoLastCardPlayedBy: aSpaceship applyTo: affectedSpaceship ].
+	(self assertThatIsOfTypeAcceleration: lastCardPlayed) ifTrue: [ 
+		self redoLastCardPlayedBy: aSpaceship ].
+	(self assertThatIsCancellationCard: lastCardPlayed) ifTrue: [ 
+		self
+			redoCancelationCard: (affectedSpaceship at: 2)
+			from: (affectedSpaceship at: 1)
+			PlayedBy: aSpaceship ].
+	(self assertThatIsRepeatCard: lastCardPlayed) ifTrue: [ 
+		self redoRepeatCardPlayedBy: aSpaceship applyTo: affectedSpaceship ]
+]
+
+{ #category : #getters }
+Zathura >> cardsBeingAppliedOn: aSpaceship [
+
+	^ cardsBeingApplied at: aSpaceship.
+]
+
+{ #category : #cardApplying }
 Zathura >> currentSpaceshipPlaysCard: aPermanentCard applyTo: aSpaceship playedBy: anotherSpaceship [
 
 	| cardToApply |
@@ -102,7 +205,7 @@ Zathura >> currentSpaceshipPlaysCard: aPermanentCard applyTo: aSpaceship playedB
 	lastCardPlayed := cardToApply
 ]
 
-{ #category : #playing }
+{ #category : #cardApplying }
 Zathura >> currentSpaceshipPlaysCard: anAcceleratorCard playedBy: aSpaceship [
 
 	| cardToApply |
@@ -114,7 +217,7 @@ Zathura >> currentSpaceshipPlaysCard: anAcceleratorCard playedBy: aSpaceship [
 	lastCardPlayed := cardToApply
 ]
 
-{ #category : #getter }
+{ #category : #getters }
 Zathura >> handOf: aSpaceship [
 
 	^ spaceshipHands at: aSpaceship
@@ -126,7 +229,7 @@ Zathura >> hasGameFinished [
 	^ gameIsFinished
 ]
 
-{ #category : #playing }
+{ #category : #assertions }
 Zathura >> hasItReachedTheFinishLine: currentSpaceship [
 
 	(board positionOf: currentSpaceship) spotNumber
@@ -145,7 +248,7 @@ Zathura >> initializeWith: aDiceCup over: aBoard dealing: handsOfCards [
 	gameIsFinished := false.
 	turnController := TurnController with: aBoard spaceshipPositions.
 	lastCardPlayed := CancellationCard new.
-	spaceshipHands := Dictionary new: aBoard spaceshipPositions size.
+	spaceshipHands := Dictionary new: (aBoard spaceshipPositions size).
 	spaceshipKeys := aBoard spaceshipPositions keys.
 	cardsBeingApplied := Dictionary new:
 		                     aBoard spaceshipPositions size + 1.
@@ -160,6 +263,15 @@ Zathura >> initializeWith: aDiceCup over: aBoard dealing: handsOfCards [
 ]
 
 { #category : #playing }
+Zathura >> play: aCard by: aSpaceship affecting: affectedSpaceship [
+
+	self applierFor: aCard to: affectedSpaceship by: aSpaceship.
+	self applierFor: aCard by: aSpaceship.
+	self cardRedoerWith: aCard to: affectedSpaceship by: aSpaceship.
+	self assertThatIsValidCardType: aCard
+]
+
+{ #category : #playing }
 Zathura >> playNextTurn [
 
 	| currentSpaceship |
@@ -171,89 +283,85 @@ Zathura >> playNextTurn [
 { #category : #playing }
 Zathura >> playTurn: aSpaceship [
 
-	| positionBeforeRoll lapBeforeRoll spotBeforeRoll rollNumber cardsEffectsOnRoll pickedCard |
+	| positionBeforeRoll rollNumber cardsEffectsOnRoll pickedCard |
 	self assertItIsThatSpaceshipsTurn: aSpaceship.
 	positionBeforeRoll := board positionOf: aSpaceship.
-	lapBeforeRoll := positionBeforeRoll lapNumber.
-	spotBeforeRoll := positionBeforeRoll spotNumber.
 	rollNumber := dice roll.
 	cardsEffectsOnRoll := self cardApplicator.
 	pickedCard := board
 		              move: aSpaceship
-		              fromSpot: spotBeforeRoll
-		              andLap: lapBeforeRoll
+		              from: positionBeforeRoll
 		              to: rollNumber + cardsEffectsOnRoll.
-
-	(spaceshipHands at: aSpaceship) grabOne: pickedCard.
+	(spaceshipHands at: aSpaceship) addPickedCardToHand: pickedCard.
 	self hasItReachedTheFinishLine: aSpaceship.
 	turnController nextSpaceshipInLine
 ]
 
-{ #category : #getter }
+{ #category : #getters }
 Zathura >> positionOf: aSpaceship [
 
 	^ board positionOf: aSpaceship
 ]
 
-{ #category : #getter }
+{ #category : #getters }
 Zathura >> rankingOfSpaceships [
 
 	^ board rankingOfSpaceships
 ]
 
-{ #category : #playing }
+{ #category : #cardApplying }
 Zathura >> redoCancelationCard: aCard from: aSpaceship PlayedBy: anotherSpaceship [
 
 	| redoCard |
 	redoCard := RedoCard new.
 	(spaceshipHands at: anotherSpaceship) playCardOfType: redoCard.
-	(spaceshipHands at: anotherSpaceship) grabOne: lastCardPlayed.
+	(spaceshipHands at: anotherSpaceship) addPickedCardToHand: lastCardPlayed.
 	self cancelCard: aCard from: aSpaceship playedBy: anotherSpaceship
 ]
 
-{ #category : #playing }
+{ #category : #cardApplying }
 Zathura >> redoLastCardPlayedBy: aSpaceship [
 
 	| redoCard |
 	redoCard := RedoCard new.
 	(spaceshipHands at: aSpaceship) playCardOfType: redoCard.
 	self assertSpaceshipCanPlayCard: aSpaceship.
-	(spaceshipHands at: aSpaceship) grabOne: lastCardPlayed.
+	(spaceshipHands at: aSpaceship) addPickedCardToHand: lastCardPlayed.
 	self currentSpaceshipPlaysCard: lastCardPlayed playedBy: aSpaceship
 ]
 
-{ #category : #playing }
+{ #category : #cardApplying }
 Zathura >> redoLastCardPlayedBy: aSpaceship applyTo: anotherSpaceship [
 
 	| redoCard |
 	redoCard := RedoCard new.
 	(spaceshipHands at: anotherSpaceship) playCardOfType: redoCard.
 	self assertSpaceshipCanPlayCard: aSpaceship.
-	(spaceshipHands at: anotherSpaceship) grabOne: lastCardPlayed.
+	(spaceshipHands at: anotherSpaceship) addPickedCardToHand: lastCardPlayed.
 	self
 		currentSpaceshipPlaysCard: lastCardPlayed
 		applyTo: anotherSpaceship
 		playedBy: aSpaceship
 ]
 
-{ #category : #playing }
+{ #category : #cardApplying }
 Zathura >> redoRepeatCardPlayedBy: aSpaceship applyTo: anotherSpaceship [
 
 	| redoCard |
 	redoCard := RedoCard new.
 	(spaceshipHands at: aSpaceship) playCardOfType: redoCard.
-	(spaceshipHands at: aSpaceship) grabOne: lastCardPlayed.
+	(spaceshipHands at: aSpaceship) addPickedCardToHand: lastCardPlayed.
 	self repeatEffectCardPlayedBy: aSpaceship applyTo: anotherSpaceship
 ]
 
-{ #category : #playing }
+{ #category : #cardApplying }
 Zathura >> repeatEffectCardPlayedBy: aSpaceship applyTo: anotherSpaceship [
 
 	| repeatCard cardPicked |
 	repeatCard := RepeatCard new.
 	(spaceshipHands at: anotherSpaceship) playCardOfType: repeatCard.
 	cardPicked := board applyLastEffectTo: anotherSpaceship.
-	(spaceshipHands at: anotherSpaceship) grabOne: cardPicked.
+	(spaceshipHands at: anotherSpaceship) addPickedCardToHand: cardPicked.
 	lastCardPlayed := repeatCard
 ]
 
